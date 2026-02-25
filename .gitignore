@@ -1,3 +1,6 @@
 .env
 __pycache__/
 outputs/
+
+# Client generated outputs
+clients/*/outputs/
