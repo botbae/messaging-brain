@@ -12,8 +12,12 @@ Build a writing agent that produces sellable UX + marketing + content outputs. L
   - `src/main.py` is the entrypoint
 
 ## How to run
-- Landing page draft:
-  - `PROMPT="AI UX writing assistant" python src/main.py`
+- Interactive brief (CLI prompts):
+  - `python src/main.py`
+- Using environment variables:
+  - `PRODUCT="AI UX writing assistant" AUDIENCE="SaaS founders" PAIN="Struggle to explain product clearly" OFFER="Done-with-you messaging operator" TONE="Clear and direct" CTA="Book a working session" python src/main.py`
+- Using a JSON brief file:
+  - `python src/main.py --brief briefs/sample.json`
 
 ## Constraints
 - No external LLM APIs for now (work in mock / structured templates).
