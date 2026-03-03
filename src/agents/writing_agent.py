@@ -242,7 +242,7 @@ class WritingAgent:
             validator_fn=_valid,
         )
         if out:
-            return out.rstrip() + "\n"
+            return (out.rstrip("\n") + "\n")
         return self._write_landing_page_fallback(brief, decisions)
 
     def _write_landing_page_fallback(self, brief: ClientBrief, decisions: dict) -> str:
@@ -282,7 +282,7 @@ PROOF / SIGNALS
 CTA
 Book a short working session to sharpen your messaging.
 """
-        return body.rstrip() + "\n"
+        return (body.rstrip("\n") + "\n")
 
     def rewrite_landing_page(self, brief: ClientBrief, draft: str, critique: dict) -> str:
         """Deterministic rewrite pass based on critic feedback.
@@ -403,7 +403,7 @@ CALL TO ACTION
             out = text
             for h in ("HOOK", "PROBLEM", "INSIGHT", "SOFT PITCH", "CTA"):
                 out = out.replace(f"**{h}**", h)
-            return out.rstrip() + "\n"
+            return (out.rstrip("\n") + "\n")
 
         system = (
             "You are a B2B messaging strategist. Write clearly and sharply. No hype. "
@@ -626,7 +626,8 @@ CTA
                 out_lines.append(body)
             out_lines.append("")
 
-        return "\n".join(out_lines).rstrip() + ("\n" if draft.endswith("\n") else "\n")
+        result = "\n".join(out_lines).rstrip("\n") + "\n"
+        return result
 
     def write_ux_microcopy(self, brief: ClientBrief) -> str:
         """Generate UX microcopy options: onboarding, empty state, error, confirmation toast."""
@@ -667,7 +668,7 @@ ERROR MESSAGE
 CONFIRMATION TOAST
 {chr(10).join(confirmation)}
 """
-        return body.rstrip() + "\n"
+        return (body.rstrip("\n") + "\n")
 
     def rewrite_ux_microcopy(self, brief: ClientBrief, draft: str, strategy: dict) -> str:
         """Rule-based pass: keep structure; optionally apply strategy notes as comments or leave draft unchanged."""
@@ -710,7 +711,7 @@ SOCIAL POST
 APP STORE SUBTITLE
 {app_store}
 """
-        return body.rstrip() + "\n"
+        return (body.rstrip("\n") + "\n")
 
     def rewrite_launch_pack(self, brief: ClientBrief, draft: str, strategy: dict) -> str:
         """Rule-based pass: keep structure and headers; no reorder."""
@@ -849,7 +850,7 @@ APP STORE SUBTITLE
         try:
             out = llm_generate(system=system, user=user, model="llama3:8b", temperature=0.3)
             if out and "ICP" in out and "POSITIONING STATEMENT" in out and "RISKS / WEAKNESS" in out:
-                return out.rstrip() + "\n"
+                return (out.rstrip("\n") + "\n")
         except Exception:
             pass
         return self._write_positioning_fallback(brief)
@@ -884,7 +885,7 @@ For {audience} who {pain}, {product} is the [category] that [unique mechanism]. 
 RISKS / WEAKNESS
 [Add honest constraints or positioning risks.]
 """
-        return body.rstrip() + "\n"
+        return (body.rstrip("\n") + "\n")
 
     def write_ux_pack(self, brief: ClientBrief, target: str = "product") -> str:
         """Generate UX pack for operator (this app) or product (user's product). Uses decisions for product; operator is app-specific. One retry; concrete fallback."""
@@ -948,11 +949,11 @@ RISKS / WEAKNESS
             out = llm_generate(system=system, user=user, model="llama3:8b", temperature=0.3)
             normalized = _normalize_ux_output(out or "")
             if _validate_ux_output(normalized):
-                return normalized.rstrip() + "\n"
+                return (normalized.rstrip("\n") + "\n")
             out = llm_generate(system=system_strict, user=user, model="llama3:8b", temperature=0.2)
             normalized = _normalize_ux_output(out or "")
             if _validate_ux_output(normalized):
-                return normalized.rstrip() + "\n"
+                return (normalized.rstrip("\n") + "\n")
         except Exception:
             pass
         return self._write_ux_pack_fallback(brief, target=target, decisions=decisions)
@@ -999,7 +1000,7 @@ BUTTON LABELS
 7. Open latest
 8. Back
 """
-        return body.rstrip() + "\n"
+        return (body.rstrip("\n") + "\n")
 
     def _ux_pack_fallback_product(self, brief: ClientBrief, decisions: dict) -> str:
         """Concrete UX pack for user product from brief; no placeholders."""
@@ -1043,7 +1044,7 @@ BUTTON LABELS
 7. Delete
 8. Done
 """
-        return body.rstrip() + "\n"
+        return (body.rstrip("\n") + "\n")
 
 
 @dataclass

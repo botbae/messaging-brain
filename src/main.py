@@ -132,6 +132,8 @@ def run() -> None:
     if show_strategy and strategy:
         final_text = _append_strategy_block(final_text, strategy)
 
+    final_text = final_text.rstrip("\n") + "\n"
+
     out_path = next_output_path(brief.product, mode, client_slug)
 
     with open(out_path, "w", encoding="utf-8") as f:
