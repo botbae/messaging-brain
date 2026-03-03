@@ -17,6 +17,83 @@ def _validate_headers(text: str, required_headers: tuple[str, ...]) -> bool:
     return all(h in t for h in required_headers)
 
 
+_UX_HEADERS = (
+    "UX CONTEXT",
+    "ONBOARDING",
+    "EMPTY STATE",
+    "ERROR",
+    "TOAST",
+    "BUTTON LABELS",
+)
+_UX_BANNED = (
+    "streamline", "high-quality", "unlock", "revolutionize",
+    "killer app", "you know the drill", "meh",
+    "compelling", "drives conversions", "transform",
+)
+_UX_PLACEHOLDER_SUBSTRINGS = ("[insert", "[add", "insert context", "[context", "[product")
+
+
+def _normalize_ux_output(raw: str) -> str:
+    """Strip preamble, remove markdown bold from headers, remove UX WRITING PACK line."""
+    if not raw or not raw.strip():
+        return raw or ""
+    t = raw.strip()
+    idx = t.find("UX CONTEXT")
+    if idx < 0:
+        idx = t.find("**UX CONTEXT**")
+    if idx > 0:
+        t = t[idx:]
+    for h in _UX_HEADERS:
+        t = t.replace(f"**{h}**", h)
+    lines = t.splitlines()
+    out = []
+    for line in lines:
+        s = line.strip()
+        if s.upper() == "UX WRITING PACK" or (s.startswith("**") and s.endswith("**") and "UX WRITING PACK" in s.upper()):
+            continue
+        out.append(line)
+    return "\n".join(out).strip()
+
+
+def _validate_ux_output(text: str) -> bool:
+    """Check headers in order, counts (3,3,3,3,8), no banned phrases, no bracket placeholders."""
+    if not text or not text.strip():
+        return False
+    t = text.strip().lower()
+    for h in _UX_HEADERS:
+        if h not in text:  # case-sensitive header presence
+            return False
+    pos = 0
+    for h in _UX_HEADERS:
+        i = text.find(h, pos)
+        if i < 0:
+            return False
+        pos = i + len(h)
+    if _contains_banned_phrases(text, _UX_BANNED):
+        return False
+    for p in _UX_PLACEHOLDER_SUBSTRINGS:
+        if p in t:
+            return False
+    # Count items per section: ONBOARDING 3, EMPTY STATE 3, ERROR 3, TOAST 3, BUTTON LABELS 8
+    sections = ("ONBOARDING", "EMPTY STATE", "ERROR", "TOAST", "BUTTON LABELS")
+    expected = (3, 3, 3, 3, 8)
+    for sect, exp in zip(sections, expected):
+        start = text.find(sect)
+        if start < 0:
+            return False
+        end = len(text)
+        for next_s in sections:
+            if next_s != sect:
+                j = text.find(next_s, start + 1)
+                if 0 <= j < end:
+                    end = j
+        block = text[start:end]
+        numbered = [x for x in block.splitlines() if x.strip() and x.strip()[0].isdigit()]
+        if len(numbered) < exp:
+            return False
+    return True
+
+
 def _run_with_retry(
     generate_fn: Callable[[], Optional[str]],
     strict_generate_fn: Callable[[], Optional[str]],
@@ -809,98 +886,146 @@ RISKS / WEAKNESS
 """
         return body.rstrip() + "\n"
 
-    def write_ux_pack(self, brief: ClientBrief) -> str:
-        """Generate UX writing pack from positioning decisions via Ollama; fallback to template if invalid."""
-        decisions = self.extract_positioning_decisions(brief)
+    def write_ux_pack(self, brief: ClientBrief, target: str = "product") -> str:
+        """Generate UX pack for operator (this app) or product (user's product). Uses decisions for product; operator is app-specific. One retry; concrete fallback."""
+        decisions = self.extract_positioning_decisions(brief) if target == "product" else {}
 
-        _UX_HEADERS = (
-            "UX CONTEXT",
-            "ONBOARDING",
-            "EMPTY STATE",
-            "ERROR",
-            "TOAST",
-            "BUTTON LABELS",
-        )
-        _UX_BANNED = (
-            "streamline", "high-quality", "unlock", "revolutionize",
-            "killer app", "you know the drill", "meh",
-        )
+        def _valid(out: Optional[str]) -> bool:
+            if not out:
+                return False
+            normalized = _normalize_ux_output(out)
+            return _validate_ux_output(normalized)
 
-        def _valid(out: str) -> bool:
-            return (
-                bool(out)
-                and _validate_headers(out, _UX_HEADERS)
-                and not _contains_banned_phrases(out, _UX_BANNED)
+        if target == "operator":
+            system = (
+                "You are a UX writer for a CLI tool that: lets users create/save a brief, extracts positioning decisions, "
+                "generates landing/linkedin/ux outputs, and saves latest/versioned files. "
+                "Output ONLY the document. No preamble like 'Here is...'. No markdown bold on headers. No placeholders like [Insert...]. "
+                "Use exact headers in this order: UX CONTEXT, ONBOARDING (exactly 3 items numbered 1-3), EMPTY STATE (3), ERROR (3), TOAST (3), BUTTON LABELS (8 numbered 1-8). "
+                "UX CONTEXT must describe this tool. ONBOARDING/EMPTY STATE/ERROR/TOAST must reference: brief, decisions, generate, save, Ollama not running, brief.json invalid, output failed validation. "
+                "BUTTON LABELS must be real actions: e.g. Review decisions, Generate landing, Save brief, Regenerate, Open latest. "
+                "Banned: streamline, high-quality, unlock, revolutionize, killer app, you know the drill, meh."
+            )
+            user = (
+                "Write a UX writing pack for THIS application (positioning operator CLI). "
+                "Flows: create/save brief, extract positioning decisions, generate landing/linkedin/ux, save latest and versioned files. "
+                "Errors: Ollama not running, brief.json invalid, output failed validation. "
+                "Tone: clear and direct. Output only the document with exact headers and counts."
+            )
+        else:
+            tone_instruction = (brief.tone or "Clear and friendly").strip()
+            user_parts = [
+                "Write a UX writing pack for the USER's product. Use ONLY these brief fields.",
+                f"Product: {brief.product or 'Not specified'}",
+                f"Audience: {brief.audience or 'Not specified'}",
+                f"Pain: {brief.pain or 'Not specified'}",
+                f"Offer: {brief.offer or 'Not specified'}",
+                f"Tone: {tone_instruction}",
+            ]
+            if brief.context:
+                user_parts.append(f"Context: {brief.context}")
+            user_parts.append(
+                "No generic SaaS fluff. No 'compelling', 'drives conversions', 'unlock'. "
+                "Exact headers: UX CONTEXT, ONBOARDING (3 items 1-3), EMPTY STATE (3), ERROR (3), TOAST (3), BUTTON LABELS (8 items 1-8). "
+                "No preamble. No markdown bold. No [Insert...] or [add...] placeholders. Output only the document."
+            )
+            user = "\n".join(user_parts)
+            system = (
+                "You are a UX writer. Produce microcopy for the user's product from the brief. "
+                "Use exact headers in order: UX CONTEXT, ONBOARDING, EMPTY STATE, ERROR, TOAST, BUTTON LABELS. "
+                "ONBOARDING 3 items. EMPTY STATE 3. ERROR 3. TOAST 3. BUTTON LABELS 8. Numbered 1-N. "
+                "No preamble. No bold headers. No placeholders. Banned: streamline, high-quality, unlock, revolutionize, killer app, you know the drill, meh, compelling, drives conversions."
             )
 
-        system = (
-            "You are a UX writer. Produce a UX writing pack with exact section headers in this order: "
-            "UX CONTEXT, ONBOARDING (exactly 3 options), EMPTY STATE (3 options), ERROR (3 options), "
-            "TOAST (3 options), BUTTON LABELS (8 options). "
-            "Use clear, concise language. No filler or buzzwords. Output only the document with those headers."
-        )
         system_strict = (
-            "You are a UX writer. Strict rules: Use ONLY these exact headers in this order: "
-            "UX CONTEXT, ONBOARDING, EMPTY STATE, ERROR, TOAST, BUTTON LABELS. "
-            "Under ONBOARDING exactly 3 options. Under EMPTY STATE exactly 3. Under ERROR exactly 3. "
-            "Under TOAST exactly 3. Under BUTTON LABELS exactly 8 options. "
-            "Banned: streamline, high-quality, unlock, revolutionize, killer app, you know the drill, meh. "
-            "Plain language only. Output only the document. No preamble."
+            "UX writer. Output ONLY the document. No preamble. No markdown. No placeholders. "
+            "Exact headers: UX CONTEXT, ONBOARDING, EMPTY STATE, ERROR, TOAST, BUTTON LABELS. "
+            "ONBOARDING 3 numbered. EMPTY STATE 3. ERROR 3. TOAST 3. BUTTON LABELS 8 numbered. "
+            "Banned: streamline, high-quality, unlock, revolutionize, killer app, you know the drill, meh, [insert, [add."
         )
-        tone_instruction = (brief.tone or "Clear and friendly").strip()
-        user_parts = [
-            "Write a UX writing pack using ONLY the positioning decisions below.",
-            "",
-            "Positioning Decisions:",
-            f"  ICP: {decisions.get('icp', '')}",
-            f"  Primary Problem: {decisions.get('primary_problem', '')}",
-            f"  Current Alternative: {decisions.get('current_alternative', '')}",
-            f"  Desired Outcome: {decisions.get('desired_outcome', '')}",
-            f"  Category Frame: {decisions.get('category_frame', '')}",
-            f"  Differentiation: {decisions.get('differentiation', '')}",
-            "",
-            f"User custom instructions (tone): {tone_instruction}",
-            "",
-            "Instructions: Microcopy must be specific to the ICP and primary_problem. "
-            "Frame current_alternative and why it fails as friction. Target desired_outcome as the behavior we want. "
-            "Keep UX CONTEXT, ONBOARDING (3), EMPTY STATE (3), ERROR (3), TOAST (3), BUTTON LABELS (8).",
-            "",
-            "Output format (exact headers in this order): UX CONTEXT, ONBOARDING, EMPTY STATE, ERROR, TOAST, BUTTON LABELS.",
-        ]
-        user = "\n".join(user_parts)
 
-        out = _run_with_retry(
-            generate_fn=lambda: llm_generate(system=system, user=user, model="llama3:8b", temperature=0.3),
-            strict_generate_fn=lambda: llm_generate(system=system_strict, user=user, model="llama3:8b", temperature=0.25),
-            validator_fn=_valid,
-        )
-        if out:
-            return out.rstrip() + "\n"
-        return self._write_ux_pack_fallback(brief, decisions)
+        try:
+            out = llm_generate(system=system, user=user, model="llama3:8b", temperature=0.3)
+            normalized = _normalize_ux_output(out or "")
+            if _validate_ux_output(normalized):
+                return normalized.rstrip() + "\n"
+            out = llm_generate(system=system_strict, user=user, model="llama3:8b", temperature=0.2)
+            normalized = _normalize_ux_output(out or "")
+            if _validate_ux_output(normalized):
+                return normalized.rstrip() + "\n"
+        except Exception:
+            pass
+        return self._write_ux_pack_fallback(brief, target=target, decisions=decisions)
 
-    def _write_ux_pack_fallback(self, brief: ClientBrief, decisions: dict) -> str:
-        """Minimal UX pack template when LLM unavailable or validation fails."""
-        icp = decisions.get("icp", "") or clean_phrase(brief.audience) or "your users"
-        problem = decisions.get("primary_problem", "") or "Get to the outcome faster."
-        outcome = decisions.get("desired_outcome", "") or "Clear next step."
-        product = clean_phrase(brief.product) or "Product"
-        tone = lower_first(clean_phrase(brief.tone) or "clear and friendly")
-        body = f"""UX CONTEXT
-{product} for {icp}. {problem} Tone: {tone}. Target behavior: {outcome}.
+    def _write_ux_pack_fallback(self, brief: ClientBrief, target: str = "product", decisions: Optional[dict] = None) -> str:
+        """Concrete fallback: no placeholders. Operator = this app; product = from brief."""
+        decisions = decisions or {}
+        if target == "operator":
+            return self._ux_pack_fallback_operator()
+        return self._ux_pack_fallback_product(brief, decisions)
+
+    def _ux_pack_fallback_operator(self) -> str:
+        """Concrete UX pack for this tool (brief, decisions, generate, save, errors)."""
+        body = """UX CONTEXT
+CLI tool: you add a client brief, extract positioning decisions, then generate landing, LinkedIn, or UX outputs. Files are saved as versioned and latest in the client outputs folder.
 
 ONBOARDING
-1. Welcome. Get started in a few steps.
-2. First time here? Set up your first item.
-3. Let's get you started.
+1. Add your client name and path to the brief, or use the demo client.
+2. Run positioning to extract decisions, then run landing, linkedin, or ux_operator/ux_product.
+3. Check the outputs folder for the latest file and versioned history.
 
 EMPTY STATE
-1. Nothing here yet. Add your first item.
+1. No brief found. Create clients/<name>/brief.json or pass --brief path.
+2. No outputs yet. Run a mode (e.g. landing or linkedin) to generate the first file.
+3. No decisions yet. Run positioning first if you use decision-driven modes.
+
+ERROR
+1. Ollama not running. Start Ollama and ensure the model is available.
+2. brief.json invalid. Fix the JSON in the client brief file and try again.
+3. Output failed validation. The run was replaced by a fallback; check the latest file.
+
+TOAST
+1. Brief saved. You can run positioning or generate next.
+2. Output saved. Versioned and latest files updated.
+3. Manifest appended. This run is logged in _manifest.jsonl.
+
+BUTTON LABELS
+1. Save brief
+2. Review decisions
+3. Generate landing
+4. Generate LinkedIn
+5. Generate UX pack
+6. Regenerate
+7. Open latest
+8. Back
+"""
+        return body.rstrip() + "\n"
+
+    def _ux_pack_fallback_product(self, brief: ClientBrief, decisions: dict) -> str:
+        """Concrete UX pack for user product from brief; no placeholders."""
+        product = clean_phrase(brief.product) or "Product"
+        audience = clean_phrase(brief.audience) or "your users"
+        audience = lower_first(audience)
+        pain = clean_sentence(brief.pain or "Getting to the outcome quickly.")
+        offer = clean_phrase(brief.offer) or "clear next steps"
+        offer = lower_first(offer)
+        tone = lower_first(clean_phrase(brief.tone) or "clear and friendly")
+        body = f"""UX CONTEXT
+{product} for {audience}. {pain} Tone: {tone}. We help with {offer}.
+
+ONBOARDING
+1. Welcome. Set up your first step in under a minute.
+2. First time here? Add your details to get started.
+3. You are three steps from your first result.
+
+EMPTY STATE
+1. Nothing here yet. Add your first item to see how it works.
 2. Your list is empty. Create something to get started.
 3. No items yet. Add one to begin.
 
 ERROR
 1. Something went wrong. Try again in a moment.
-2. We couldn't complete that. Check your connection and retry.
+2. We could not complete that. Check your connection and retry.
 3. Action failed. If it keeps happening, contact support.
 
 TOAST
