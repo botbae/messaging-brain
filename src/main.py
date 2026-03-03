@@ -2,6 +2,8 @@
 
 import json
 import os
+import subprocess
+import sys
 from datetime import datetime, timezone
 
 from agent_loop import (
@@ -47,7 +49,7 @@ def _ensure_output_artifacts(base_dir) -> None:
         manifest_path.touch()
 
 
-def run() -> str:
+def run() -> None:
     brief, mode, client_slug, brief_path_used = build_brief_and_mode()
     agent = WritingAgent()
 
@@ -79,7 +81,13 @@ def run() -> str:
             final_text = agent.write_positioning(brief)
             strategy = None
         elif mode == "ux":
-            final_text = agent.write_ux_pack(brief)
+            final_text = agent.write_ux_pack(brief, target="product")
+            strategy = None
+        elif mode == "ux_operator":
+            final_text = agent.write_ux_pack(brief, target="operator")
+            strategy = None
+        elif mode == "ux_product":
+            final_text = agent.write_ux_pack(brief, target="product")
             strategy = None
         else:
             final_text = agent.write_landing_page(brief)
@@ -108,7 +116,13 @@ def run() -> str:
             final_text, meta = run_positioning_loop(brief, agent)
             strategy = meta.get("strategy")
         elif mode == "ux":
-            final_text = agent.write_ux_pack(brief)
+            final_text = agent.write_ux_pack(brief, target="product")
+            strategy = None
+        elif mode == "ux_operator":
+            final_text = agent.write_ux_pack(brief, target="operator")
+            strategy = None
+        elif mode == "ux_product":
+            final_text = agent.write_ux_pack(brief, target="product")
             strategy = None
         else:
             critic = CriticAgent()
@@ -151,12 +165,14 @@ def run() -> str:
     print(f"Output: {out_path}")
     print(f"Latest: {latest_path}")
 
+    open_latest = os.getenv("OPEN_LATEST", "").lower() == "true"
+    if open_latest and sys.platform == "darwin":
+        # Open the latest output in the default app (macOS)
+        subprocess.run(["open", str(latest_path)], check=False)
+
     print("\n--- GENERATED OUTPUT ---\n")
     print(final_text)
     print("\n--- END OUTPUT ---\n")
 
-    return final_text
-
-
 if __name__ == "__main__":
-    print(run())
+    run()

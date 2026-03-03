@@ -103,8 +103,8 @@ def build_brief_and_mode() -> Tuple[ClientBrief, str, Optional[str], Optional[Pa
         "--mode",
         type=str,
         default="landing",
-        choices=["landing", "linkedin", "ux_microcopy", "launch_pack", "audit", "positioning", "ux"],
-        help="Output mode: landing, linkedin, ux_microcopy, launch_pack, audit, positioning, or ux (default: landing).",
+        choices=["landing", "linkedin", "ux_microcopy", "launch_pack", "audit", "positioning", "ux", "ux_operator", "ux_product"],
+        help="Output mode: landing, linkedin, ux_microcopy, launch_pack, audit, positioning, ux, ux_operator, or ux_product (default: landing).",
     )
     args = parser.parse_args()
 

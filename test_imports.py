@@ -1,2 +1,3 @@
-import crewai, anthropic, dotenv
-print("OK:", crewai.__version__)
+<file name=src/main.py>if __name__ == "__main__":
+    run()
+</file>
