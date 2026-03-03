@@ -1,219 +1,159 @@
-import argparse
+"""Entry point controlling the writing workflow."""
+
 import json
 import os
-from pathlib import Path
-from typing import Optional
+from datetime import datetime, timezone
 
-from writing_agent import ClientBrief, CriticAgent, WritingAgent
+from agent_loop import (
+    run_audit_loop,
+    run_audit_mode,
+    run_landing_loop,
+    run_launch_pack_loop,
+    run_linkedin_loop,
+    run_positioning_loop,
+    run_ux_microcopy_loop,
+)
+from agents.writing_agent import CriticAgent, StrategistAgent, WritingAgent
+from core.brief import build_brief_and_mode
+from core.output import next_output_path
 
-
-def _prompt(text: str, default: str = "") -> str:
-    label = f"{text}"
-    if default:
-        label += f" [{default}]"
-    label += ": "
-    value = input(label).strip()
-    return value or default
-
-
-def _brief_from_file(path: str) -> ClientBrief:
-    with open(path, "r", encoding="utf-8") as f:
-        data = json.load(f)
-
-    return ClientBrief(
-        product=data.get("product", "") or "Product",
-        audience=data.get("audience", "") or "Founders, PMs, and operators",
-        pain=data.get("pain", "") or "struggling to explain the value clearly",
-        offer=data.get("offer", "") or "done-with-you messaging and copywriting",
-        tone=data.get("tone", "") or "clear, confident, and human",
-        cta=data.get("cta", "") or "Book a short working session.",
-        examples=data.get("examples", "") or "",
-        context=data.get("context", "") or "",
-    )
+MODEL_NAME = "llama3:8b"
 
 
-def _brief_from_env() -> Optional[ClientBrief]:
-    product = os.getenv("PRODUCT")
-    audience = os.getenv("AUDIENCE")
-    pain = os.getenv("PAIN")
-    offer = os.getenv("OFFER")
-    tone = os.getenv("TONE")
-    cta = os.getenv("CTA")
-    examples = os.getenv("EXAMPLES", "")
-    context = os.getenv("CONTEXT", "")
+def _append_strategy_block(text: str, strategy: dict) -> str:
+    if not strategy:
+        return text
 
-    # Only treat env vars as a brief if at least one of the required
-    # core fields is provided. Optional fields alone should not bypass
-    # the interactive prompt flow.
-    if not any([product, audience, pain, offer, tone, cta]):
-        return None
-
-    return ClientBrief(
-        product=product or "Product",
-        audience=audience or "Founders, PMs, and operators",
-        pain=pain or "struggling to explain the value clearly",
-        offer=offer or "done-with-you messaging and copywriting",
-        tone=tone or "clear, confident, and human",
-        cta=cta or "Book a short working session.",
-        examples=examples or "",
-        context=context or "",
-    )
+    lines = [text.rstrip(), "", "STRATEGY (AUTO)"]
+    for key in ["positioning", "clarity_fixes", "cta_improvements", "must_include"]:
+        items = strategy.get(key) or []
+        for item in items:
+            lines.append(f"- {item}")
+    return "\n".join(lines) + "\n"
 
 
-def _brief_interactive() -> ClientBrief:
-    default_product = os.getenv("PRODUCT", "AI writing assistant")
-
-    product = _prompt("Product", default_product)
-    audience = _prompt("Audience", "Founders, PMs, and operators")
-    pain = _prompt("Main pain you solve", "They struggle to explain the product clearly.")
-    offer = _prompt("Primary offer", "Done-with-you messaging and copywriting.")
-    tone = _prompt("Tone", "Clear, confident, and human.")
-    cta = _prompt("Primary call-to-action", "Book a short working session.")
-    examples = _prompt("Examples / inspiration (links or notes, optional)", "")
-    context = _prompt("Anything else we should know (optional)", "")
-
-    return ClientBrief(
-        product=product,
-        audience=audience,
-        pain=pain,
-        offer=offer,
-        tone=tone,
-        cta=cta,
-        examples=examples,
-        context=context,
-    )
+def _print_execution_banner(mode: str, client_slug: str | None, agent_loop_on: bool) -> None:
+    print("====================================")
+    print(f"MODE: {mode}")
+    print(f"CLIENT: {client_slug or ''}")
+    print(f"MODEL: {MODEL_NAME}")
+    print(f"AGENT_LOOP: {str(agent_loop_on).lower()}")
 
 
-def _build_brief_and_mode():
-    parser = argparse.ArgumentParser(description="Run the writing agent on a client brief.")
-    parser.add_argument(
-        "--brief",
-        type=str,
-        help="Path to a JSON file containing a client brief.",
-    )
-    parser.add_argument(
-        "--client",
-        type=str,
-        help="Optional client name for session folders (clients/<client>/...).",
-    )
-    parser.add_argument(
-        "--mode",
-        type=str,
-        default="landing",
-        choices=["landing", "linkedin"],
-        help="Output mode: landing or linkedin (default: landing).",
-    )
-    args = parser.parse_args()
-
-    client_slug = _slugify(args.client) if args.client else None
-
-    # Resolve brief depending on client + brief flags
-    brief_path_used: Optional[Path] = None
-
-    if client_slug:
-        client_root = Path("clients") / client_slug
-        client_root.mkdir(parents=True, exist_ok=True)
-        client_brief_path = client_root / "brief.json"
-
-        if args.brief:
-            # Load from provided path and persist into the client folder.
-            brief = _brief_from_file(args.brief)
-            brief_path_used = client_brief_path
-            with open(client_brief_path, "w", encoding="utf-8") as f:
-                json.dump(brief.__dict__, f, indent=2)
-        else:
-            if client_brief_path.exists():
-                # Reuse existing client brief.
-                brief = _brief_from_file(str(client_brief_path))
-                brief_path_used = client_brief_path
-            else:
-                # Fall back to hybrid builder (env → interactive), then persist.
-                env_brief = _brief_from_env()
-                if env_brief is not None:
-                    brief = env_brief
-                else:
-                    brief = _brief_interactive()
-                brief_path_used = client_brief_path
-                with open(client_brief_path, "w", encoding="utf-8") as f:
-                    json.dump(brief.__dict__, f, indent=2)
-    else:
-        # Existing behavior when no client is specified.
-        if args.brief:
-            brief = _brief_from_file(args.brief)
-        else:
-            env_brief = _brief_from_env()
-            if env_brief is not None:
-                brief = env_brief
-            else:
-                brief = _brief_interactive()
-
-    return brief, args.mode, client_slug, brief_path_used
-
-
-def _slugify(text: str) -> str:
-    raw = (text or "product").strip().lower()
-    if not raw:
-        raw = "product"
-    chars = []
-    for ch in raw:
-        if ch.isalnum():
-            chars.append(ch)
-        else:
-            chars.append("-")
-    slug = "".join(chars).strip("-")
-    while "--" in slug:
-        slug = slug.replace("--", "-")
-    return slug or "product"
-
-
-def _next_output_path(product: str, mode: str, client_slug: Optional[str]) -> Path:
-    if client_slug:
-        base_dir = Path("clients") / client_slug / "outputs"
-    else:
-        product_slug = _slugify(product)
-        base_dir = Path("outputs") / product_slug
+def _ensure_output_artifacts(base_dir) -> None:
     base_dir.mkdir(parents=True, exist_ok=True)
-
-    pattern = f"{mode}_v*.md"
-    max_index = 0
-    for path in base_dir.glob(pattern):
-        stem = path.stem  # e.g. landing_v2
-        prefix = f"{mode}_v"
-        if not stem.startswith(prefix):
-            continue
-        suffix = stem[len(prefix) :]
-        try:
-            idx = int(suffix)
-        except ValueError:
-            continue
-        if idx > max_index:
-            max_index = idx
-
-    next_index = max_index + 1 if max_index > 0 else 1
-    return base_dir / f"{mode}_v{next_index}.md"
+    manifest_path = base_dir / "_manifest.jsonl"
+    if not manifest_path.exists():
+        manifest_path.touch()
 
 
 def run() -> str:
-    brief, mode, client_slug, brief_path_used = _build_brief_and_mode()
+    brief, mode, client_slug, brief_path_used = build_brief_and_mode()
     agent = WritingAgent()
 
-    if mode == "landing":
-        draft_v1 = agent.write_landing_page(brief)
-        critic = CriticAgent()
-        critique = critic.review_landing_page(draft_v1, brief)
-        final_text = agent.rewrite_landing_page(brief, draft_v1, critique)
-    else:  # linkedin
-        final_text = agent.write_linkedin_post(brief)
+    agent_loop_on = os.getenv("AGENT_LOOP", "").lower() == "true"
+    show_strategy = os.getenv("SHOW_STRATEGY", "").lower() == "true"
+    _print_execution_banner(mode, client_slug, agent_loop_on)
 
-    out_path = _next_output_path(brief.product, mode, client_slug)
+    if not agent_loop_on:
+        if mode == "landing":
+            draft_v1 = agent.write_landing_page(brief)
+            critic = CriticAgent()
+            critique = critic.review_landing_page(draft_v1, brief)
+            final_text = agent.rewrite_landing_page(brief, draft_v1, critique)
+            strategy = None
+        elif mode == "linkedin":
+            final_text = agent.write_linkedin_post(brief)
+            strategy = None
+        elif mode == "ux_microcopy":
+            final_text = agent.write_ux_microcopy(brief)
+            strategy = None
+        elif mode == "launch_pack":
+            final_text = agent.write_launch_pack(brief)
+            strategy = None
+        elif mode == "audit":
+            final_text = run_audit_mode(brief)
+            strategy = None
+        elif mode == "positioning":
+            agent.extract_positioning_decisions(brief)
+            final_text = agent.write_positioning(brief)
+            strategy = None
+        elif mode == "ux":
+            final_text = agent.write_ux_pack(brief)
+            strategy = None
+        else:
+            final_text = agent.write_landing_page(brief)
+            strategy = None
+    else:
+        strategist = StrategistAgent()
+        if mode == "landing":
+            critic = CriticAgent()
+            final_text, meta = run_landing_loop(brief, agent, critic, strategist)
+            strategy = meta.get("strategy")
+        elif mode == "linkedin":
+            final_text, meta = run_linkedin_loop(brief, agent, strategist)
+            strategy = meta.get("strategy")
+        elif mode == "ux_microcopy":
+            final_text, meta = run_ux_microcopy_loop(brief, agent, strategist)
+            strategy = meta.get("strategy")
+        elif mode == "launch_pack":
+            final_text, meta = run_launch_pack_loop(brief, agent, strategist)
+            strategy = meta.get("strategy")
+        elif mode == "audit":
+            critic = CriticAgent()
+            final_text, meta = run_audit_loop(brief, critic)
+            strategy = meta.get("strategy")
+        elif mode == "positioning":
+            agent.extract_positioning_decisions(brief)
+            final_text, meta = run_positioning_loop(brief, agent)
+            strategy = meta.get("strategy")
+        elif mode == "ux":
+            final_text = agent.write_ux_pack(brief)
+            strategy = None
+        else:
+            critic = CriticAgent()
+            final_text, meta = run_landing_loop(brief, agent, critic, strategist)
+            strategy = meta.get("strategy")
+
+    if show_strategy and strategy:
+        final_text = _append_strategy_block(final_text, strategy)
+
+    out_path = next_output_path(brief.product, mode, client_slug)
 
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(final_text)
 
+    base_dir = out_path.parent
+    _ensure_output_artifacts(base_dir)
+    latest_path = base_dir / f"{mode}_latest.md"
+    with open(latest_path, "w", encoding="utf-8") as f:
+        f.write(final_text)
+
+    manifest_path = base_dir / "_manifest.jsonl"
+    manifest_entry = {
+        "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+        "client": client_slug or "",
+        "mode": mode,
+        "brief_path": str(brief_path_used) if brief_path_used is not None else "",
+        "output_path": str(out_path),
+        "latest_path": str(latest_path),
+        "model_used": MODEL_NAME,
+        "agent_loop": agent_loop_on,
+    }
+    with open(manifest_path, "a", encoding="utf-8") as f:
+        f.write(json.dumps(manifest_entry) + "\n")
+
     if brief_path_used is not None:
         print(f"Brief: {brief_path_used}")
-    out_path_display = out_path
-    print(f"Output: {out_path_display}")
+    print(f"Saved versioned file: {out_path}")
+    print(f"Updated latest file: {latest_path}")
+    print("Manifest appended.")
+    print(f"Output: {out_path}")
+    print(f"Latest: {latest_path}")
+
+    print("\n--- GENERATED OUTPUT ---\n")
+    print(final_text)
+    print("\n--- END OUTPUT ---\n")
 
     return final_text
 
