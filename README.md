@@ -1,77 +1,45 @@
 # Decision-First Positioning Operator
 
-A terminal-first writing agent that produces sellable UX, marketing, and positioning content. All content modes (landing, LinkedIn, UX pack) are driven by **extracted positioning decisions** from your brief—so messaging stays sharp and consistent.
+Terminal-first writing system that enforces **positioning decisions first**, then generates outputs (LinkedIn, landing, UX pack) from those decisions.
 
 ## Quickstart
 
-1. Install and run [Ollama](https://ollama.com) with `llama3:8b`.
-2. From the repo root:
-   ```bash
-   python src/main.py --client demo --mode positioning
-   python src/main.py --client demo --mode linkedin
-   python src/main.py --client demo --mode landing
-   python src/main.py --client demo --mode ux
-   ```
-3. Check outputs:
-   ```bash
-   ls -lt clients/demo/outputs | head
-   ```
+1) Ensure Ollama is running and you have the model:
+```bash
+ollama pull llama3:8b
+```
 
-## Folder structure map
-
-| Path | Purpose |
-|------|---------|
-| `src/main.py` | CLI orchestrator: brief loading, mode dispatch, output save, latest update, manifest append. |
-| `src/agents/writing_agent.py` | Decision extraction + mode generators + validation/fallback logic. |
-| `src/agent_loop.py` | Optional multi-agent loop flows. |
-| `src/core/brief.py` | CLI args + brief loading/saving. |
-| `src/core/output.py` | Versioned output path selection. |
-| `clients/<client>/brief.json` | Saved client brief when using `--client`. |
-| `clients/<client>/outputs/` | Versioned outputs, latest files, and `_manifest.jsonl`. |
-| `outputs/<product-slug>/` | Output location when `--client` is not provided. |
-
-## Example commands
-
+2) Run any mode:
 ```bash
 python src/main.py --client demo --mode positioning
 python src/main.py --client demo --mode linkedin
 python src/main.py --client demo --mode landing
 python src/main.py --client demo --mode ux
-
-python src/main.py --brief briefs/sample.json --mode landing
-python src/main.py --brief briefs/sample.json --mode ux
 ```
 
-## Decision-first flow
+## Where outputs are saved
 
-- **Decision phase:** Extracts a strict set of positioning decisions (ICP, primary problem, current alternative, desired outcome, category frame, differentiation, anti-positioning) from the brief.
-- **Expression phase:** Landing, LinkedIn, and UX pack generation use only those decisions plus tone.
-- **Validation phase:** Output is validated for required headers and banned phrases; strict retry and rule-based fallback are applied when needed.
+With `--client demo`:
+- Versioned: `clients/demo/outputs/<mode>_vN.md`
+- Latest: `clients/demo/outputs/<mode>_latest.md`
+- Manifest: `clients/demo/outputs/_manifest.jsonl`
 
-## Output locations
+## Useful flags
 
-- With `--client demo`: `clients/demo/outputs/`
-- Without `--client` and using `--brief`: `outputs/<product-slug>/`
-- Each mode writes:
-- Versioned file: `<mode>_vN.md`
-- Latest file: `<mode>_latest.md`
-- Manifest log: `_manifest.jsonl`
-
-## DEBUG_DECISIONS
-
-Set `DEBUG_DECISIONS=true` to print extracted positioning decisions in the terminal.
-
+Print extracted decisions:
 ```bash
 DEBUG_DECISIONS=true python src/main.py --client demo --mode linkedin
 ```
 
-## Docs
+Enable agent loop (if supported by the selected mode):
+```bash
+AGENT_LOOP=true python src/main.py --client demo --mode linkedin
+```
 
-- [docs/WALKTHROUGH.md](docs/WALKTHROUGH.md) — Folder map and how to read the latest output.
-- [docs/PROMPTS.md](docs/PROMPTS.md) — Decisions → expression pattern and banned phrases.
+## Repo map
 
-## Constraints
-
-- No external LLM APIs; uses local Ollama only.
-- Terminal-first; no UI.
-- Standard library + existing dependencies only.
+- `src/main.py` — CLI orchestrator (prints banner, saves version + latest, appends manifest)
+- `src/agents/writing_agent.py` — decision extraction + generators + validators
+- `src/core/brief.py` — brief loading (file/env/interactive) + `--client` sessions
+- `clients/<client>/brief.json` — saved client brief
+- `clients/<client>/outputs/` — outputs
