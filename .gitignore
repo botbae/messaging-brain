@@ -4,3 +4,17 @@ outputs/
 
 # Client generated outputs
 clients/*/outputs/
+
+# Runtime artifacts
+.claude/
+clients/*/product_profile.json
+clients/*/idea_extract.json
+clients/*/outputs/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Local environment
+.env
+.venv
