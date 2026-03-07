@@ -87,7 +87,7 @@ def brief_interactive() -> ClientBrief:
     )
 
 
-def build_brief_and_mode() -> Tuple[ClientBrief, str, Optional[str], Optional[Path]]:
+def build_brief_and_mode() -> Tuple[ClientBrief, str, Optional[str], Optional[Path], Optional[str]]:
     parser = argparse.ArgumentParser(description="Run the writing agent on a client brief.")
     parser.add_argument(
         "--brief",
@@ -103,12 +103,36 @@ def build_brief_and_mode() -> Tuple[ClientBrief, str, Optional[str], Optional[Pa
         "--mode",
         type=str,
         default="landing",
-        choices=["landing", "linkedin", "ux_microcopy", "launch_pack", "audit", "positioning", "ux", "ux_operator", "ux_product"],
-        help="Output mode: landing, linkedin, ux_microcopy, launch_pack, audit, positioning, ux, ux_operator, or ux_product (default: landing).",
+        choices=["landing", "linkedin", "ux_microcopy", "launch_pack", "audit", "positioning", "ux", "ux_operator", "ux_product", "brain", "idea"],
+        help="Output mode: landing, linkedin, ux_microcopy, launch_pack, audit, positioning, ux, ux_operator, ux_product, brain, or idea (default: landing).",
+    )
+    parser.add_argument(
+        "--idea",
+        type=str,
+        default=None,
+        help="Product idea string (for --mode idea).",
     )
     args = parser.parse_args()
 
     client_slug = clean_phrase(args.client) if args.client else None
+    idea_text = getattr(args, "idea", None) or None
+
+    # Idea mode: only need --idea; no brief file or interactive prompt.
+    # client_slug is passed through so main.py can save the extract and seed the brain.
+    if args.mode == "idea" and idea_text:
+        from agents.writing_agent import ClientBrief
+        idea_client_slug = clean_phrase(args.client) if args.client else None
+        minimal_brief = ClientBrief(
+            product=idea_text.strip(),
+            audience="",
+            pain="",
+            offer="",
+            tone="",
+            cta="",
+            examples="",
+            context="",
+        )
+        return minimal_brief, "idea", idea_client_slug, None, idea_text.strip()
 
     brief_path_used: Optional[Path] = None
 
@@ -145,5 +169,5 @@ def build_brief_and_mode() -> Tuple[ClientBrief, str, Optional[str], Optional[Pa
             else:
                 brief = brief_interactive()
 
-    return brief, args.mode, client_slug, brief_path_used
+    return brief, args.mode, client_slug, brief_path_used, idea_text
 
