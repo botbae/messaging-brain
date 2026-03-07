@@ -1,9 +1,10 @@
 import json
 import os
+import re
 from dataclasses import dataclass
 from typing import Callable, List, Optional
 
-from core.llm import generate as llm_generate
+from core.model_provider import generate as llm_generate
 from core.utils import clean_phrase, clean_sentence, lower_first
 
 
@@ -32,6 +33,23 @@ _UX_BANNED = (
 )
 _UX_PLACEHOLDER_SUBSTRINGS = ("[insert", "[add", "insert context", "[context", "[product")
 
+_UX_PRODUCT_BANNED = (
+    "welcome", "get started", "first time", "add your first", "nothing here yet",
+    "your list is empty", "something went wrong", "try again", "check your connection",
+    "done", "updated", "saved", "continue", "submit",
+)
+_UX_PRODUCT_SCENARIO_TAGS = ("[brief intake]", "[decision review]", "[generation review]")
+_UX_PRODUCT_CONCRETE_ACTIONS = (
+    "brief.json", "review decisions", "generate landing", "generate linkedin",
+    "generate ux", "open latest", "validation failed", "ollama not running", "output saved",
+)
+# Operator workflow terms that must not appear in product-mode UX copy.
+_UX_PRODUCT_OPERATOR_TERMS = (
+    "brief.json", "generate landing", "generate linkedin", "generate ux",
+    "open latest", "ollama not running", "output saved",
+    "--brief", "--mode", "--client",
+)
+
 
 def _normalize_ux_output(raw: str) -> str:
     """Strip preamble, remove markdown bold from headers, remove UX WRITING PACK line."""
@@ -55,17 +73,18 @@ def _normalize_ux_output(raw: str) -> str:
     return "\n".join(out).strip()
 
 
-def _validate_ux_output(text: str) -> bool:
-    """Check headers in order, counts (3,3,3,3,8), no banned phrases, no bracket placeholders."""
+def _validate_ux_output(text: str, target: Optional[str] = None) -> bool:
+    """Check headers in order, counts (3,3,3,3,8), no banned phrases, no bracket placeholders. If target=='product', apply product-specific rules."""
     if not text or not text.strip():
         return False
     t = text.strip().lower()
+    t_upper = text.upper()
     for h in _UX_HEADERS:
-        if h not in text:  # case-sensitive header presence
+        if h not in t_upper:  # case-insensitive header presence
             return False
     pos = 0
     for h in _UX_HEADERS:
-        i = text.find(h, pos)
+        i = t_upper.find(h, pos)
         if i < 0:
             return False
         pos = i + len(h)
@@ -91,6 +110,37 @@ def _validate_ux_output(text: str) -> bool:
         numbered = [x for x in block.splitlines() if x.strip() and x.strip()[0].isdigit()]
         if len(numbered) < exp:
             return False
+
+    if target == "product":
+        if _contains_banned_phrases(text, _UX_PRODUCT_BANNED):
+            return False
+        if _contains_banned_phrases(t, _UX_PRODUCT_OPERATOR_TERMS):
+            return False
+        if "TARGET: product" not in text and "target: product" not in t:
+            return False
+        for sect, exp in zip(sections, expected):
+            start = text.find(sect)
+            if start < 0:
+                return False
+            end = len(text)
+            for next_s in sections:
+                if next_s != sect:
+                    j = text.find(next_s, start + 1)
+                    if 0 <= j < end:
+                        end = j
+            block = text[start:end]
+            numbered = [x.strip() for x in block.splitlines() if x.strip() and x.strip()[0].isdigit()]
+            tags_in_section = set()
+            for line in numbered:
+                after_num = line.lstrip("0123456789").lstrip(".) ")
+                after_num_lower = after_num.lower()
+                if not any(after_num_lower.startswith(tag.lower()) for tag in _UX_PRODUCT_SCENARIO_TAGS):
+                    return False
+                for tag in _UX_PRODUCT_SCENARIO_TAGS:
+                    if tag.lower() in after_num_lower:
+                        tags_in_section.add(tag.lower())
+            if len(tags_in_section) < 2:
+                return False
     return True
 
 
@@ -173,6 +223,9 @@ class ClientBrief:
 @dataclass
 class WritingAgent:
     name: str = "WritingAgent"
+    # Preloaded positioning decisions from product_profile.json (the Messaging Brain).
+    # When set, extract_positioning_decisions() uses these directly instead of calling the LLM.
+    brain_decisions: Optional[dict] = None
 
     def write_landing_page(self, brief: ClientBrief) -> str:
         """Generate landing page from positioning decisions via LLM; fallback to rule-based template if invalid."""
@@ -205,8 +258,13 @@ class WritingAgent:
             )
 
         system = (
-            "You are a B2B landing page strategist. Use ONLY the positioning decisions provided. "
+            "You are a B2B landing page strategist. Write from the positioning decisions only — no invented claims. "
             "No hype. No generic SaaS clichés. No questions in the HEADLINE. "
+            "HEADLINE must name the ICP and desired_outcome in one concrete declarative statement — not a slogan. "
+            "PROBLEM must state primary_problem in plain language — concrete people facing real friction, not abstract nouns. "
+            "WHY CURRENT OPTIONS FAIL must explain specifically why current_alternative fails the ICP, not just that it does. "
+            "DIFFERENTIATION must lead with differentiation and close with a direct contrast against anti_positioning. "
+            "Do not repeat the same sentence structure across sections. "
             "Output must use EXACT headers in this order: HEADLINE, SUBHEAD, WHO ITS FOR, PROBLEM, "
             "WHY CURRENT OPTIONS FAIL, WHAT THIS IS, DIFFERENTIATION, PROOF / SIGNALS, CTA. "
             "One block of content under each. No preamble. Banned: streamline, empower, unlock, "
@@ -215,7 +273,10 @@ class WritingAgent:
         system_strict = (
             "B2B landing page. STRICT: Only these headers in order: HEADLINE, SUBHEAD, WHO ITS FOR, "
             "PROBLEM, WHY CURRENT OPTIONS FAIL, WHAT THIS IS, DIFFERENTIATION, PROOF / SIGNALS, CTA. "
-            "HEADLINE must be a statement, not a question. No hype words. No banned phrases. Output only the document."
+            "HEADLINE: declarative statement naming who it is for and what outcome they get. Not a question, not a slogan. "
+            "PROBLEM: one or two sentences naming the real friction in concrete terms. "
+            "DIFFERENTIATION: state it directly, then contrast with what this is not. "
+            "No hype words. No banned phrases. Output only the document."
         )
         user_parts = [
             "Write a landing page using ONLY the positioning decisions below.",
@@ -229,7 +290,18 @@ class WritingAgent:
             f"  Differentiation: {decisions.get('differentiation', '')}",
             f"  Anti-Positioning: {decisions.get('anti_positioning', '')}",
             "",
-            f"User custom instructions (tone): {brief.tone or 'Clear and direct'}",
+            f"Tone: {brief.tone or 'Clear and direct'}",
+            "",
+            "Per-section instructions (do not include these in output):",
+            "  HEADLINE: One declarative statement. Name the ICP and desired_outcome. No slogans, no rhetorical devices.",
+            "  SUBHEAD: One sentence bridging primary_problem to desired_outcome.",
+            "  WHO ITS FOR: Name the ICP directly. One or two concrete sentences about their situation.",
+            "  PROBLEM: State primary_problem without abstraction. Name real friction, not categories.",
+            "  WHY CURRENT OPTIONS FAIL: Explain specifically why current_alternative falls short — name the gap.",
+            "  WHAT THIS IS: State category_frame plainly. Say what it is and does, not what it transforms.",
+            "  DIFFERENTIATION: Lead with differentiation. Close with one contrast against anti_positioning.",
+            "  PROOF / SIGNALS: One concrete signal — a specific outcome, behavior, or metric — that supports differentiation. Do not write 'To be added'.",
+            "  CTA: One short action line tied to desired_outcome. Use a concrete verb.",
             "",
             "Output format (exact headers in this order): HEADLINE, SUBHEAD, WHO ITS FOR, PROBLEM, "
             "WHY CURRENT OPTIONS FAIL, WHAT THIS IS, DIFFERENTIATION, PROOF / SIGNALS, CTA.",
@@ -250,11 +322,13 @@ class WritingAgent:
         icp = decisions.get("icp", "") or clean_phrase(brief.audience) or "Your ideal customers"
         problem = decisions.get("primary_problem", "") or clean_sentence(brief.pain or "Core problem not articulated.")
         alternative = decisions.get("current_alternative", "") or "Generic options that do not address this."
-        outcome = decisions.get("desired_outcome", "") or "Clear messaging that converts."
+        outcome = decisions.get("desired_outcome", "") or clean_phrase(brief.offer) or "Clear messaging that converts."
         category = decisions.get("category_frame", "") or f"{clean_phrase(brief.product) or 'Product'} for {icp}."
         diff = decisions.get("differentiation", "") or clean_phrase(brief.offer) or "Focused on this outcome."
         product = clean_phrase(brief.product) or "This product"
-        tone = (brief.tone or "Clear and direct").strip()
+        cta = clean_sentence(brief.cta or "Book a short working session.")
+        proof = clean_phrase(brief.examples or "") or ""
+        proof_block = f"From the brief: {proof}" if proof else "To be added: client logos, testimonials, or a concrete metric."
         body = f"""HEADLINE
 {product}: {outcome}
 
@@ -277,10 +351,10 @@ DIFFERENTIATION
 {diff}
 
 PROOF / SIGNALS
-[Add logos, metrics, or social proof.]
+{proof_block}
 
 CTA
-Book a short working session to sharpen your messaging.
+{cta}
 """
         return (body.rstrip("\n") + "\n")
 
@@ -720,7 +794,15 @@ APP STORE SUBTITLE
         return draft
 
     def extract_positioning_decisions(self, brief: ClientBrief) -> dict:
-        """Decision phase: extract positioning decisions as strict JSON; fallback to brief-derived dict if invalid."""
+        """Decision phase: extract positioning decisions as strict JSON; fallback to brief-derived dict if invalid.
+
+        If brain_decisions are preloaded from product_profile.json (set by main.py after loading the
+        Messaging Brain), they are returned immediately — no LLM call is made.
+        """
+        if self.brain_decisions:
+            _print_decisions_if_debug(self.brain_decisions)
+            return self.brain_decisions
+
         _DECISION_KEYS = (
             "icp", "primary_problem", "current_alternative", "desired_outcome",
             "category_frame", "differentiation", "anti_positioning",
@@ -748,10 +830,13 @@ APP STORE SUBTITLE
             for k in _DECISION_KEYS:
                 if k not in data or not isinstance(data.get(k), str):
                     return None
-            combined = " ".join(str(data.get(k, "")) for k in _DECISION_KEYS)
+            result = {k: (data[k] or "").strip() for k in _DECISION_KEYS}
+            if not all(result[k] for k in _DECISION_KEYS):
+                return None  # empty field — cannot propagate to generation
+            combined = " ".join(result[k] for k in _DECISION_KEYS)
             if _contains_banned_phrases(combined, _BANNED):
                 return None
-            return {k: (data[k] or "").strip() for k in _DECISION_KEYS}
+            return result
 
         system = (
             "You are a product positioning strategist. "
@@ -795,6 +880,7 @@ APP STORE SUBTITLE
             validator_fn=lambda d: d is not None,
         )
         if parsed is not None:
+            parsed, _ = GroundingAgent().ground(parsed, brief)
             _print_decisions_if_debug(parsed)
             return parsed
         fallback = self._extract_positioning_decisions_fallback(brief)
@@ -818,7 +904,13 @@ APP STORE SUBTITLE
         }
 
     def write_positioning(self, brief: ClientBrief) -> str:
-        """Generate positioning doc via Ollama; fall back to minimal template if LLM unavailable."""
+        """Generate positioning doc via LLM; fall back to minimal template if unavailable.
+
+        Uses pre-extracted positioning decisions (from brain or LLM) so that the output
+        reflects the Messaging Brain when product_profile.json has been loaded.
+        """
+        decisions = self.extract_positioning_decisions(brief)
+
         system = (
             "You are an industry-grade positioning strategist. "
             "Produce a clear, structured positioning document. "
@@ -829,12 +921,21 @@ APP STORE SUBTITLE
             "Output only the document with those headers. No preamble."
         )
         user_parts = [
-            "Write a positioning document using this brief.",
+            "Write a positioning document using the brief and pre-extracted decisions below.",
             f"Product: {brief.product or 'Not specified'}",
             f"Audience: {brief.audience or 'Not specified'}",
             f"Pain: {brief.pain or 'Not specified'}",
             f"Offer: {brief.offer or 'Not specified'}",
             f"Tone: {brief.tone or 'Clear and confident'}",
+            "",
+            "Pre-extracted Positioning Decisions (use these to drive the document):",
+            f"  ICP: {decisions.get('icp', '')}",
+            f"  Primary Problem: {decisions.get('primary_problem', '')}",
+            f"  Current Alternative: {decisions.get('current_alternative', '')}",
+            f"  Desired Outcome: {decisions.get('desired_outcome', '')}",
+            f"  Category Frame: {decisions.get('category_frame', '')}",
+            f"  Differentiation: {decisions.get('differentiation', '')}",
+            f"  Anti-Positioning: {decisions.get('anti_positioning', '')}",
         ]
         if brief.examples:
             user_parts.append(f"Examples: {brief.examples}")
@@ -856,34 +957,36 @@ APP STORE SUBTITLE
         return self._write_positioning_fallback(brief)
 
     def _write_positioning_fallback(self, brief: ClientBrief) -> str:
-        """Minimal positioning template when Ollama is unavailable."""
+        """Brief-interpolated positioning template when Ollama is unavailable."""
         product = clean_phrase(brief.product) or "Product"
         audience = clean_phrase(brief.audience) or "Target audience"
-        pain = clean_sentence(brief.pain or "Core problem not yet articulated.")
-        offer = clean_phrase(brief.offer) or "Clear value proposition"
+        pain_phrase = lower_first(clean_phrase(brief.pain or "articulate value clearly"))
+        pain_sentence = clean_sentence(brief.pain or "Core problem not yet articulated.")
+        offer = clean_phrase(brief.offer) or "a focused, high-signal alternative"
+        cta = clean_phrase(brief.cta or "Book a working session")
         body = f"""ICP
 {audience}
 
 CORE PAIN
-{pain}
+{pain_sentence}
 
 DESIRED OUTCOME
-Clear messaging and positioning that converts.
-
-UNIQUE MECHANISM
 {offer}
 
+UNIQUE MECHANISM
+Focused, done-with-you engagement from a structured brief — not a generic template or self-serve tool.
+
 CATEGORY FRAME
-{product} sits in the space of [category]. It is for {audience} who need [outcome].
+{product} is a positioning and messaging tool for {audience}.
 
 DIFFERENTIATION
-Focused on [specific outcome]. Not a generic tool.
+{offer}. Scoped to one outcome, not a broad-purpose content platform.
 
 POSITIONING STATEMENT
-For {audience} who {pain}, {product} is the [category] that [unique mechanism]. Unlike [alternatives], we [differentiator].
+For {audience} who struggle to {pain_phrase}, {product} delivers {offer}. Unlike generic writing tools, it works from a structured brief and produces specific, grounded copy.
 
 RISKS / WEAKNESS
-[Add honest constraints or positioning risks.]
+Scope is limited to messaging and positioning. Requires a complete brief to produce useful output. Results depend on the quality of the input brief.
 """
         return (body.rstrip("\n") + "\n")
 
@@ -895,12 +998,13 @@ RISKS / WEAKNESS
             if not out:
                 return False
             normalized = _normalize_ux_output(out)
-            return _validate_ux_output(normalized)
+            return _validate_ux_output(normalized, target=target)
 
         if target == "operator":
             system = (
                 "You are a UX writer for a CLI tool that: lets users create/save a brief, extracts positioning decisions, "
                 "generates landing/linkedin/ux outputs, and saves latest/versioned files. "
+                "First line of UX CONTEXT must be exactly: TARGET: operator "
                 "Output ONLY the document. No preamble like 'Here is...'. No markdown bold on headers. No placeholders like [Insert...]. "
                 "Use exact headers in this order: UX CONTEXT, ONBOARDING (exactly 3 items numbered 1-3), EMPTY STATE (3), ERROR (3), TOAST (3), BUTTON LABELS (8 numbered 1-8). "
                 "UX CONTEXT must describe this tool. ONBOARDING/EMPTY STATE/ERROR/TOAST must reference: brief, decisions, generate, save, Ollama not running, brief.json invalid, output failed validation. "
@@ -915,44 +1019,85 @@ RISKS / WEAKNESS
             )
         else:
             tone_instruction = (brief.tone or "Clear and friendly").strip()
+            icp = decisions.get("icp") or brief.audience or "users"
+            primary_problem = decisions.get("primary_problem") or brief.pain or "unclear positioning"
+            desired_outcome = decisions.get("desired_outcome") or brief.offer or "clear messaging"
+            differentiation = decisions.get("differentiation") or ""
             user_parts = [
-                "Write a UX writing pack for the USER's product. Use ONLY these brief fields.",
-                f"Product: {brief.product or 'Not specified'}",
-                f"Audience: {brief.audience or 'Not specified'}",
-                f"Pain: {brief.pain or 'Not specified'}",
-                f"Offer: {brief.offer or 'Not specified'}",
-                f"Tone: {tone_instruction}",
+                f"Write a UX writing pack for this product: {brief.product or 'the product'}. First line of UX CONTEXT must be: TARGET: product",
+                "",
+                "Positioning Decisions (use these to write specific, grounded microcopy):",
+                f"  ICP: {icp}",
+                f"  Primary Problem: {primary_problem}",
+                f"  Desired Outcome: {desired_outcome}",
+            ]
+            if differentiation:
+                user_parts.append(f"  Differentiation: {differentiation}")
+            user_parts += [
+                "",
+                f"  Product: {brief.product or 'Not specified'}",
+                f"  Tone: {tone_instruction}",
             ]
             if brief.context:
-                user_parts.append(f"Context: {brief.context}")
+                user_parts.append(f"  Context: {brief.context}")
             user_parts.append(
-                "No generic SaaS fluff. No 'compelling', 'drives conversions', 'unlock'. "
-                "Exact headers: UX CONTEXT, ONBOARDING (3 items 1-3), EMPTY STATE (3), ERROR (3), TOAST (3), BUTTON LABELS (8 items 1-8). "
-                "No preamble. No markdown bold. No [Insert...] or [add...] placeholders. Output only the document."
+                "\nHARD RULES: Every numbered microcopy line MUST begin with one of: [brief intake], [decision review], [generation review]. "
+                f"These are the three workflow stages for {brief.product or 'the product'}: intake, decisions, generation. "
+                f"Ground every line in the ICP ({icp}) and primary problem ({primary_problem}). "
+                "Name real people and real friction — not abstract states like 'nothing here' or 'something went wrong'. "
+                "Empty states must describe what is missing from the user's actual workflow at that stage. "
+                "Error messages must explain what failed in product terms, not system terms. "
+                "Button labels must reflect concrete actions in the three workflow stages. "
+                "DO NOT reference CLI commands, file paths (brief.json), or operator workflows (Generate landing, Ollama, Output saved). "
+                "BANNED phrases: welcome, get started, first time, add your first, nothing here yet, your list is empty, "
+                "something went wrong, try again, check your connection, done, updated, saved, continue, submit. "
+                "Exact headers: UX CONTEXT (first line TARGET: product), ONBOARDING 3, EMPTY STATE 3, ERROR 3, TOAST 3, BUTTON LABELS 8. No preamble. No markdown bold."
             )
             user = "\n".join(user_parts)
             system = (
-                "You are a UX writer. Produce microcopy for the user's product from the brief. "
-                "Use exact headers in order: UX CONTEXT, ONBOARDING, EMPTY STATE, ERROR, TOAST, BUTTON LABELS. "
-                "ONBOARDING 3 items. EMPTY STATE 3. ERROR 3. TOAST 3. BUTTON LABELS 8. Numbered 1-N. "
-                "No preamble. No bold headers. No placeholders. Banned: streamline, high-quality, unlock, revolutionize, killer app, you know the drill, meh, compelling, drives conversions."
+                f"You are a UX writer for '{brief.product or 'the product'}', used by {icp}. "
+                f"Their core problem: {primary_problem}. Their desired outcome: {desired_outcome}. "
+                "First line of UX CONTEXT must be: TARGET: product. "
+                "Every numbered line MUST start with one of: [brief intake], [decision review], [generation review]. "
+                "These tags mark the three stages of this product's workflow — intake, decisions, generation. "
+                "Ground all copy in the ICP's real context and specific problem. "
+                "Empty states must name what is absent at that workflow stage, not generic emptiness. "
+                "Errors must describe what went wrong in product terms. "
+                "DO NOT mention CLI commands, file paths (brief.json), or tool-specific operator workflows. "
+                "BANNED: welcome, get started, first time, add your first, nothing here yet, your list is empty, "
+                "something went wrong, try again, check your connection, done, updated, saved, continue, submit. "
+                "Exact headers: UX CONTEXT, ONBOARDING (3), EMPTY STATE (3), ERROR (3), TOAST (3), BUTTON LABELS (8). Numbered 1-N. No preamble. No bold."
             )
 
-        system_strict = (
-            "UX writer. Output ONLY the document. No preamble. No markdown. No placeholders. "
-            "Exact headers: UX CONTEXT, ONBOARDING, EMPTY STATE, ERROR, TOAST, BUTTON LABELS. "
-            "ONBOARDING 3 numbered. EMPTY STATE 3. ERROR 3. TOAST 3. BUTTON LABELS 8 numbered. "
-            "Banned: streamline, high-quality, unlock, revolutionize, killer app, you know the drill, meh, [insert, [add."
-        )
+        if target == "product":
+            icp_strict = decisions.get("icp") or brief.audience or "users"
+            problem_strict = decisions.get("primary_problem") or brief.pain or "unclear positioning"
+            system_strict = (
+                f"UX writer for '{brief.product or 'the product'}', used by {icp_strict}. "
+                f"Core problem: {problem_strict}. "
+                "First line of UX CONTEXT: TARGET: product. "
+                "Every numbered line MUST start with [brief intake], [decision review], or [generation review]. "
+                "Ground all copy in the ICP's real context — no generic states, no system-speak. "
+                "DO NOT mention CLI commands, file paths (brief.json), or tool-specific workflows (Generate landing, Ollama, Output saved). "
+                "BANNED: welcome, get started, first time, add your first, nothing here yet, your list is empty, something went wrong, try again, check your connection, done, updated, saved, continue, submit. "
+                "Exact headers and counts. No preamble. No bold."
+            )
+        else:
+            system_strict = (
+                "UX writer. Output ONLY the document. No preamble. No markdown. No placeholders. "
+                "Exact headers: UX CONTEXT, ONBOARDING, EMPTY STATE, ERROR, TOAST, BUTTON LABELS. "
+                "ONBOARDING 3 numbered. EMPTY STATE 3. ERROR 3. TOAST 3. BUTTON LABELS 8 numbered. "
+                "Banned: streamline, high-quality, unlock, revolutionize, killer app, you know the drill, meh, [insert, [add."
+            )
 
         try:
             out = llm_generate(system=system, user=user, model="llama3:8b", temperature=0.3)
             normalized = _normalize_ux_output(out or "")
-            if _validate_ux_output(normalized):
+            if _validate_ux_output(normalized, target):
                 return (normalized.rstrip("\n") + "\n")
             out = llm_generate(system=system_strict, user=user, model="llama3:8b", temperature=0.2)
             normalized = _normalize_ux_output(out or "")
-            if _validate_ux_output(normalized):
+            if _validate_ux_output(normalized, target):
                 return (normalized.rstrip("\n") + "\n")
         except Exception:
             pass
@@ -968,6 +1113,7 @@ RISKS / WEAKNESS
     def _ux_pack_fallback_operator(self) -> str:
         """Concrete UX pack for this tool (brief, decisions, generate, save, errors)."""
         body = """UX CONTEXT
+TARGET: operator
 CLI tool: you add a client brief, extract positioning decisions, then generate landing, LinkedIn, or UX outputs. Files are saved as versioned and latest in the client outputs folder.
 
 ONBOARDING
@@ -1003,46 +1149,54 @@ BUTTON LABELS
         return (body.rstrip("\n") + "\n")
 
     def _ux_pack_fallback_product(self, brief: ClientBrief, decisions: dict) -> str:
-        """Concrete UX pack for user product from brief; no placeholders."""
-        product = clean_phrase(brief.product) or "Product"
-        audience = clean_phrase(brief.audience) or "your users"
-        audience = lower_first(audience)
-        pain = clean_sentence(brief.pain or "Getting to the outcome quickly.")
-        offer = clean_phrase(brief.offer) or "clear next steps"
-        offer = lower_first(offer)
-        tone = lower_first(clean_phrase(brief.tone) or "clear and friendly")
+        """Concrete UX pack for product mode: scenario tags, no operator/CLI terms, no banned phrases."""
+        def _safe(s: str, default: str) -> str:
+            if not s:
+                return default
+            lower = s.lower()
+            if any(b in lower for b in _UX_PRODUCT_BANNED):
+                return default
+            if any(b in lower for b in _UX_PRODUCT_OPERATOR_TERMS):
+                return default
+            return s.strip()
+        product = _safe(brief.product or "", "the product")
+        icp = _safe(decisions.get("icp") or brief.audience or "", "your team")
+        problem = _safe(decisions.get("primary_problem") or brief.pain or "", "unclear positioning")
+        outcome = _safe(decisions.get("desired_outcome") or "", "messaging that resonates")
+        offer = _safe(brief.offer or "", "a clearer story")
         body = f"""UX CONTEXT
-{product} for {audience}. {pain} Tone: {tone}. We help with {offer}.
+TARGET: product
+{product} for {icp}. Core problem: {problem}. Desired outcome: {outcome}.
 
 ONBOARDING
-1. Welcome. Set up your first step in under a minute.
-2. First time here? Add your details to get started.
-3. You are three steps from your first result.
+1. [brief intake] Paste your product notes—we'll shape them into a tight story for {icp}.
+2. [decision review] Review the positioning decisions pulled from your brief.
+3. [generation review] Your first draft is ready. Open it to review and request a rewrite if needed.
 
 EMPTY STATE
-1. Nothing here yet. Add your first item to see how it works.
-2. Your list is empty. Create something to get started.
-3. No items yet. Add one to begin.
+1. [brief intake] No brief yet. Add your product notes to begin positioning.
+2. [decision review] No positioning decisions yet. Paste your brief to extract them.
+3. [generation review] No draft yet. Run positioning first, then request a draft.
 
 ERROR
-1. Something went wrong. Try again in a moment.
-2. We could not complete that. Check your connection and retry.
-3. Action failed. If it keeps happening, contact support.
+1. [brief intake] Brief is incomplete. Fill in the audience, pain, and offer fields.
+2. [decision review] Positioning failed. Check that your brief has enough detail to extract decisions.
+3. [generation review] Draft failed validation. Request a regeneration or adjust your brief.
 
 TOAST
-1. Saved. Your changes are stored.
-2. Done. You can keep editing or leave.
-3. Updated. Refresh to see changes.
+1. [brief intake] Brief captured. Positioning decisions will be extracted next.
+2. [decision review] Decisions locked. Your draft will reflect {offer}.
+3. [generation review] Draft ready. Review and request a rewrite or approve to finalize.
 
 BUTTON LABELS
-1. Save
-2. Cancel
-3. Continue
-4. Back
-5. Submit
-6. Edit
-7. Delete
-8. Done
+1. Add brief
+2. Review decisions
+3. Request draft
+4. Rewrite draft
+5. Approve draft
+6. Start over
+7. View history
+8. Back
 """
         return (body.rstrip("\n") + "\n")
 
@@ -1110,6 +1264,68 @@ class CriticAgent:
             # main.py can toggle this to include critique in output
             "include_in_output": False,
         }
+
+
+@dataclass
+class GroundingAgent:
+    """Verifies that LLM-extracted decisions are semantically grounded in the source brief.
+
+    Uses token-level Jaccard overlap (stdlib only). If a decision field has no token
+    overlap with its corresponding brief field, it is patched back to the brief value.
+    """
+
+    name: str = "GroundingAgent"
+    threshold: float = 0.05  # minimum Jaccard overlap before patching
+
+    def _jaccard(self, a: str, b: str) -> float:
+        ta = set(re.sub(r"[^\w\s]", "", (a or "").lower()).split())
+        tb = set(re.sub(r"[^\w\s]", "", (b or "").lower()).split())
+        if not ta or not tb:
+            return 0.0
+        return len(ta & tb) / len(ta | tb)
+
+    def ground(self, decisions: dict, brief: ClientBrief) -> tuple[dict, list[str]]:
+        """Patch decisions that have drifted from brief fields. Returns (patched, notes)."""
+        patched = dict(decisions)
+        notes: list[str] = []
+
+        icp = patched.get("icp", "")
+        if self._jaccard(icp, brief.audience or "") < self.threshold:
+            patched["icp"] = clean_phrase(brief.audience) or icp
+            notes.append("icp: low overlap with brief.audience — patched")
+
+        problem = patched.get("primary_problem", "")
+        if self._jaccard(problem, brief.pain or "") < self.threshold:
+            patched["primary_problem"] = clean_sentence(brief.pain or problem)
+            notes.append("primary_problem: low overlap with brief.pain — patched")
+
+        return patched, notes
+
+
+@dataclass
+class FactGuardAgent:
+    """Strips numeric claims not grounded in the source brief (brief.examples / brief.context).
+
+    Percentage claims (73%) and dollar figures ($1M) that appear verbatim in neither
+    brief.examples nor brief.context are replaced with [VERIFY: <claim>] markers.
+    """
+
+    name: str = "FactGuardAgent"
+
+    def clean(self, text: str, brief: ClientBrief) -> str:
+        sources = " ".join(
+            filter(None, [(brief.examples or ""), (brief.context or "")])
+        ).lower()
+
+        def _guard(m: re.Match) -> str:
+            claim = m.group(0)
+            if claim.lower() in sources:
+                return claim
+            return f"[VERIFY: {claim}]"
+
+        text = re.sub(r"\b\d[\d,]*(?:\.\d+)?%", _guard, text)
+        text = re.sub(r"(?<!\w)\$[\d,]+(?:\.\d+)?[MKBmkb]?\b", _guard, text)
+        return text
 
 
 @dataclass
