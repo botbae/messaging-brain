@@ -10,6 +10,26 @@ from agents.writing_agent import ClientBrief
 from .utils import clean_phrase
 
 
+def _brief_from_profile_path(profile_path: Path) -> Optional[ClientBrief]:
+    """Construct a ClientBrief from a saved product_profile.json. Returns None on failure."""
+    try:
+        from product_profile import ProductProfile
+        profile = ProductProfile.load(profile_path)
+        d = profile.decisions or {}
+        return ClientBrief(
+            product=profile.product or "",
+            audience=d.get("icp") or profile.audience or "",
+            pain=d.get("primary_problem") or profile.problem or "",
+            offer=d.get("desired_outcome") or d.get("differentiation") or profile.advantage or "",
+            tone=profile.tone or "",
+            cta="",
+            examples="",
+            context=profile.context or "",
+        )
+    except Exception:
+        return None
+
+
 def prompt(text: str, default: str = "") -> str:
     label = f"{text}"
     if default:
@@ -24,12 +44,12 @@ def brief_from_file(path: str) -> ClientBrief:
         data = json.load(f)
 
     return ClientBrief(
-        product=data.get("product", "") or "Product",
-        audience=data.get("audience", "") or "Founders, PMs, and operators",
-        pain=data.get("pain", "") or "struggling to explain the value clearly",
-        offer=data.get("offer", "") or "done-with-you messaging and copywriting",
-        tone=data.get("tone", "") or "clear, confident, and human",
-        cta=data.get("cta", "") or "Book a short working session.",
+        product=data.get("product", "") or "",
+        audience=data.get("audience", "") or "",
+        pain=data.get("pain", "") or "",
+        offer=data.get("offer", "") or "",
+        tone=data.get("tone", "") or "",
+        cta=data.get("cta", "") or "",
         examples=data.get("examples", "") or "",
         context=data.get("context", "") or "",
     )
@@ -52,26 +72,26 @@ def brief_from_env() -> Optional[ClientBrief]:
         return None
 
     return ClientBrief(
-        product=product or "Product",
-        audience=audience or "Founders, PMs, and operators",
-        pain=pain or "struggling to explain the value clearly",
-        offer=offer or "done-with-you messaging and copywriting",
-        tone=tone or "clear, confident, and human",
-        cta=cta or "Book a short working session.",
+        product=product or "",
+        audience=audience or "",
+        pain=pain or "",
+        offer=offer or "",
+        tone=tone or "",
+        cta=cta or "",
         examples=examples or "",
         context=context or "",
     )
 
 
 def brief_interactive() -> ClientBrief:
-    default_product = os.getenv("PRODUCT", "AI writing assistant")
+    default_product = os.getenv("PRODUCT", "")
 
     product = prompt("Product", default_product)
-    audience = prompt("Audience", "Founders, PMs, and operators")
-    pain = prompt("Main pain you solve", "They struggle to explain the product clearly.")
-    offer = prompt("Primary offer", "Done-with-you messaging and copywriting.")
-    tone = prompt("Tone", "Clear, confident, and human.")
-    cta = prompt("Primary call-to-action", "Book a short working session.")
+    audience = prompt("Audience", "")
+    pain = prompt("Main pain you solve", "")
+    offer = prompt("Primary offer", "")
+    tone = prompt("Tone", "clear and direct")
+    cta = prompt("Primary call-to-action", "")
     examples = prompt("Examples / inspiration (links or notes, optional)", "")
     context = prompt("Anything else we should know (optional)", "")
 
@@ -151,11 +171,20 @@ def build_brief_and_mode() -> Tuple[ClientBrief, str, Optional[str], Optional[Pa
                 brief = brief_from_file(str(client_brief_path))
                 brief_path_used = client_brief_path
             else:
-                env_brief = brief_from_env()
-                if env_brief is not None:
-                    brief = env_brief
+                # No brief.json yet — check for a saved product profile before prompting.
+                # After /idea or /brain, product_profile.json exists but brief.json may not.
+                # Constructing the brief from the profile avoids stale interactive defaults.
+                profile_path = client_root / "product_profile.json"
+                profile_brief = _brief_from_profile_path(profile_path) if profile_path.exists() else None
+                if profile_brief is not None:
+                    brief = profile_brief
+                    print(f"Brief resolved from existing product profile: {profile_path}")
                 else:
-                    brief = brief_interactive()
+                    env_brief = brief_from_env()
+                    if env_brief is not None:
+                        brief = env_brief
+                    else:
+                        brief = brief_interactive()
                 brief_path_used = client_brief_path
                 with open(client_brief_path, "w", encoding="utf-8") as f:
                     json.dump(brief.__dict__, f, indent=2)

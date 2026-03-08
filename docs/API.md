@@ -94,6 +94,47 @@ and `clients/<client>/product_profile.json` (the Messaging Brain).
 
 ---
 
+### POST /brain/save
+
+Persist edited Messaging Brain fields back to `clients/<client>/product_profile.json`.
+The profile must already exist (run `POST /brain` first). Only supplied non-empty fields are
+overwritten; all other existing data is preserved.
+
+**Field mapping** (`idea_extract` → stored brain):
+
+| Request field     | decisions key        | top-level profile field |
+|-------------------|----------------------|-------------------------|
+| `icp`             | `icp`                | —                       |
+| `problem`         | `primary_problem`    | `problem`               |
+| `category`        | `category_frame`     | —                       |
+| `differentiation` | `differentiation`    | `advantage`             |
+
+**Request:**
+```json
+{
+  "client": "myproduct",
+  "idea_extract": {
+    "icp": "B2B SaaS founders",
+    "problem": "Can't explain their product clearly to buyers",
+    "category": "AI writing tools",
+    "differentiation": "The only tool that writes from your positioning, not a blank prompt"
+  }
+}
+```
+
+**Response:**
+```json
+{
+  "client": "myproduct",
+  "product_profile": { ... }
+}
+```
+
+**Errors:**
+- `404` — no `product_profile.json` found; run `POST /brain` first.
+
+---
+
 ### POST /generate/landing
 
 Generate a landing page using the client's stored brain.
@@ -161,6 +202,19 @@ curl -X POST http://localhost:8000/brain \
     }
   }'
 
+# /brain/save
+curl -X POST http://localhost:8000/brain/save \
+  -H "Content-Type: application/json" \
+  -d '{
+    "client": "myproduct",
+    "idea_extract": {
+      "icp": "B2B SaaS founders",
+      "problem": "Cannot explain their product clearly to buyers",
+      "category": "AI writing tools",
+      "differentiation": "The only tool that writes from your positioning, not a blank prompt"
+    }
+  }'
+
 # /generate/landing
 curl -X POST http://localhost:8000/generate/landing \
   -H "Content-Type: application/json" \
@@ -180,3 +234,4 @@ curl -X POST http://localhost:8000/generate/ux \
 - Ollama must be running at `localhost:11434` before calling any generation endpoint.
 - The CLI (`python src/main.py`) continues to work unchanged alongside the API.
 - This is not production-hardened: no auth, no rate limiting, no persistent sessions.
+- CORS is enabled for `http://localhost:3000` only — for local frontend development with the Next.js dev server.

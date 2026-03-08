@@ -16,7 +16,7 @@ from agent_loop import (
     run_positioning_loop,
     run_ux_microcopy_loop,
 )
-from agents.writing_agent import CriticAgent, FactGuardAgent, StrategistAgent, WritingAgent
+from agents.writing_agent import ClientBrief, CriticAgent, FactGuardAgent, StrategistAgent, WritingAgent
 from core.brief import build_brief_and_mode
 from core.model_provider import generate as llm_generate
 from core.output import next_output_path, slugify
@@ -53,6 +53,33 @@ def _ensure_output_artifacts(base_dir) -> None:
         manifest_path.touch()
 
 
+def _extract_product_name(idea_text: str, category: str = "") -> str:
+    """Extract a clean product name from a free-form idea string.
+
+    Priority:
+      1. Everything before 'is a' / 'is an' in the idea text (e.g. 'Unimind is an...' → 'Unimind')
+      2. First capitalized word when idea starts with a proper noun
+      3. First three words if all else fails
+    Falls back to first 40 chars of category, then raw truncated idea.
+    """
+    text = (idea_text or "").strip()
+    for sep in [" is an ", " is a ", " - ", " — "]:
+        if sep.lower() in text.lower():
+            idx = text.lower().index(sep.lower())
+            candidate = text[:idx].strip().rstrip(".,;:")
+            if candidate and len(candidate) <= 60:
+                return candidate
+    words = text.split()
+    if words and words[0][0].isupper() and len(words[0]) >= 3:
+        return words[0]
+    if category:
+        for sep in [" for ", " that ", " to "]:
+            if sep in category:
+                return category.split(sep)[0].strip()[:50]
+        return category[:50]
+    return " ".join(words[:3]) if words else text[:40]
+
+
 def _idea_to_profile(extract: dict, idea_text: str) -> "ProductProfile":
     """Convert raw idea extraction output to an initial ProductProfile (Messaging Brain seed).
 
@@ -68,8 +95,9 @@ def _idea_to_profile(extract: dict, idea_text: str) -> "ProductProfile":
         "differentiation": extract.get("differentiation", ""),
         "anti_positioning": "",
     }
+    product_name = _extract_product_name(idea_text, category=extract.get("category", ""))
     return ProductProfile(
-        product=idea_text.strip()[:120],
+        product=product_name,
         audience=extract.get("icp", ""),
         problem=extract.get("problem", ""),
         alternatives="",
@@ -81,20 +109,59 @@ def _idea_to_profile(extract: dict, idea_text: str) -> "ProductProfile":
     )
 
 
-def _load_brain_if_exists(client_slug: str | None) -> dict | None:
-    """Load positioning decisions from clients/<client>/product_profile.json if it exists.
-
-    Returns the decisions dict (non-empty), or None if not found.
-    """
+def _load_profile_if_exists(client_slug: str | None) -> "ProductProfile | None":
+    """Load the full ProductProfile from clients/<client>/product_profile.json if it exists."""
     if not client_slug:
         return None
     profile_path = Path("clients") / client_slug / "product_profile.json"
     if not profile_path.exists():
         return None
-    profile = ProductProfile.load(profile_path)
-    if profile.decisions:
+    return ProductProfile.load(profile_path)
+
+
+def _load_brain_if_exists(client_slug: str | None) -> dict | None:
+    """Load positioning decisions from clients/<client>/product_profile.json if it exists.
+
+    Returns the decisions dict (non-empty), or None if not found.
+    """
+    profile = _load_profile_if_exists(client_slug)
+    if profile and profile.decisions:
         return profile.decisions
     return None
+
+
+def _resolve_brief_from_profile(brief: ClientBrief, profile: "ProductProfile") -> ClientBrief:
+    """Return a new ClientBrief where stale fields are overridden by the saved ProductProfile.
+
+    Priority per field:
+      product  → profile.product (brain-set description)
+      audience → decisions.icp → profile.audience → brief.audience
+      pain     → decisions.primary_problem → profile.problem → brief.pain
+      offer    → decisions.desired_outcome → decisions.differentiation
+                 → profile.advantage → brief.offer
+      tone     → profile.tone → brief.tone
+      cta / examples / context → brief only (supplementary, not overridden by brain)
+    """
+    d = profile.decisions or {}
+    # Apply clean_phrase to product so a raw idea string stored by an older /idea run
+    # is at least truncated at the first sentence boundary before being used in generation.
+    raw_product = profile.product or brief.product
+    product = clean_phrase(raw_product) or raw_product
+    return ClientBrief(
+        product=product,
+        audience=d.get("icp") or profile.audience or brief.audience,
+        pain=d.get("primary_problem") or profile.problem or brief.pain,
+        offer=(
+            d.get("desired_outcome")
+            or d.get("differentiation")
+            or profile.advantage
+            or brief.offer
+        ),
+        tone=profile.tone or brief.tone,
+        cta=brief.cta,
+        examples=brief.examples,
+        context=brief.context,
+    )
 
 
 def _recover_json_object(raw: str) -> str:
@@ -207,7 +274,7 @@ def _run_brain_mode(brief, client_slug: str | None) -> tuple["ProductProfile", P
     decisions = agent.extract_positioning_decisions(brief)
     profile = ProductProfile(
         product=clean_phrase(brief.product) or "",
-        audience=clean_phrase(brief.audience) or "",
+        audience=(decisions.get("icp") or clean_phrase(brief.audience) or "").strip(),
         problem=(brief.pain or "").strip(),
         alternatives=(decisions.get("current_alternative") or "").strip(),
         advantage=clean_phrase(brief.offer) or "",
@@ -260,7 +327,6 @@ def _run_generate(
             final_text = run_audit_mode(brief)
             strategy = None
         elif mode == "positioning":
-            agent.extract_positioning_decisions(brief)
             final_text = agent.write_positioning(brief)
             strategy = None
         elif mode == "ux":
@@ -295,7 +361,6 @@ def _run_generate(
             final_text, meta = run_audit_loop(brief, critic)
             strategy = meta.get("strategy")
         elif mode == "positioning":
-            agent.extract_positioning_decisions(brief)
             final_text, meta = run_positioning_loop(brief, agent)
             strategy = meta.get("strategy")
         elif mode in ("ux", "ux_product"):
@@ -360,11 +425,15 @@ def run() -> None:
         return
 
     # Load the Messaging Brain (product_profile.json) if it exists for this client.
-    # When present, the agent uses pre-extracted decisions instead of re-running the LLM
-    # decision phase — brief still provides raw context for fallbacks and fact-grounding.
-    brain = _load_brain_if_exists(client_slug)
+    # When present: (1) pre-extracted decisions bypass the LLM decision phase, and
+    # (2) the brief is resolved so profile fields are the source of truth for generation —
+    # stale brief.json content cannot dominate outputs once a brain has been saved.
+    profile = _load_profile_if_exists(client_slug)
+    brain = profile.decisions if (profile and profile.decisions) else None
     if brain:
         print(f"Brain loaded: clients/{client_slug}/product_profile.json")
+        brief = _resolve_brief_from_profile(brief, profile)
+        print("Brief resolved from product profile (brain is source of truth).")
 
     agent_loop_on = os.getenv("AGENT_LOOP", "").lower() == "true"
     show_strategy = os.getenv("SHOW_STRATEGY", "").lower() == "true"
