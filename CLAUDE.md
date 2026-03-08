@@ -113,7 +113,7 @@ The backend is a local CLI ready for **frontend prototyping**. It is **not produ
 
 Before treating it as a production backend, the following are missing:
 - **Tests** — no test suite exists; generators and validators are untested in isolation
-- **API layer** — no HTTP server; would need a thin wrapper (Flask, FastAPI, or stdlib) before a frontend can call it
+- **API layer** — FastAPI wrapper exists at `src/api/app.py` (6 endpoints); not production-hardened (no auth, no rate limiting)
 - **Formal schemas** — `ClientBrief` and `ProductProfile` are dataclasses, not validated schemas (no Pydantic, no JSON Schema enforcement at boundaries)
 - **Auth / state model** — no authentication, no session management, no multi-user separation
 - **Robust error surfaces** — LLM failures currently fall back to rule-based templates silently; a real API needs structured error responses
@@ -132,6 +132,6 @@ If a frontend is built, it should live in a separate repo and call this backend.
 
 ## Notes
 
-- `hello.py` at the repo root is a standalone Anthropic SDK smoke test (requires `ANTHROPIC_API_KEY` in `.env`), not part of the main workflow
+- `docs/experimental/hello.py` is a standalone Anthropic SDK smoke test (requires `ANTHROPIC_API_KEY` in `.env`), not part of the main workflow
 - `outputs/` and `clients/*/outputs/` are gitignored
 - See `docs/parked_modules.md` for components that are planned but not yet active

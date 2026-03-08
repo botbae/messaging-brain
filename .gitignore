@@ -18,3 +18,4 @@ __pycache__/
 # Local environment
 .env
 .venv
+.DS_Store
