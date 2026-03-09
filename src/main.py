@@ -18,7 +18,20 @@ from agent_loop import (
 )
 from agents.writing_agent import ClientBrief, CriticAgent, FactGuardAgent, StrategistAgent, WritingAgent
 from core.brief import build_brief_and_mode
+from core.generation_context import (
+    GenerationContext,
+    assess_readiness,
+    build_generation_context,
+    context_to_brief,
+)
 from core.model_provider import generate as llm_generate
+from core.strategy_context import (
+    PositioningContext,
+    NarrativeContext,
+    assess_narrative_readiness,
+    build_strategy_layers,
+    log_strategy_context,
+)
 from core.output import next_output_path, slugify
 from core.utils import clean_phrase
 from product_profile import ProductProfile
@@ -301,11 +314,17 @@ def _run_generate(
     agent_loop_on: bool = False,
     show_strategy: bool = False,
     brief_path_used: Path | None = None,
+    positioning: PositioningContext | None = None,
+    narrative: NarrativeContext | None = None,
 ) -> tuple[str, Path, Path]:
     """Dispatch to the correct agent, save output files, and return (final_text, out_path, latest_path)."""
     agent = WritingAgent()
     if brain:
         agent.brain_decisions = brain
+    if positioning:
+        agent.positioning = positioning
+    if narrative:
+        agent.narrative = narrative
 
     if not agent_loop_on:
         if mode == "landing":
@@ -424,16 +443,35 @@ def run() -> None:
         _run_brain_mode(brief, client_slug)
         return
 
-    # Load the Messaging Brain (product_profile.json) if it exists for this client.
-    # When present: (1) pre-extracted decisions bypass the LLM decision phase, and
-    # (2) the brief is resolved so profile fields are the source of truth for generation —
-    # stale brief.json content cannot dominate outputs once a brain has been saved.
+    # Build generation context: merges brain + brief with clear priority.
+    # Overrides > Brain > Brief. This replaces the old _resolve_brief_from_profile flow.
     profile = _load_profile_if_exists(client_slug)
-    brain = profile.decisions if (profile and profile.decisions) else None
+    gen_ctx = build_generation_context(brief=brief, profile=profile)
+    brain = gen_ctx.decisions if gen_ctx.decisions else None
+    # Replace brief with merged version so generators get the right data
+    brief = context_to_brief(gen_ctx)
+
     if brain:
         print(f"Brain loaded: clients/{client_slug}/product_profile.json")
-        brief = _resolve_brief_from_profile(brief, profile)
-        print("Brief resolved from product profile (brain is source of truth).")
+        print(f"Context sources: {gen_ctx.sources}")
+
+    # Build strategy layers: positioning + narrative
+    positioning, narrative = build_strategy_layers(gen_ctx)
+    log_strategy_context(positioning, narrative)
+    print(f"Positioning: {positioning.filled_count()}/7 fields | Narrative: {narrative.filled_count()}/5 fields")
+
+    # Readiness check: warn if missing required fields
+    readiness = assess_readiness(gen_ctx, mode)
+    if not readiness.ready:
+        print(f"\nWARNING: {readiness.message}")
+        print("Proceeding with available data — output quality may be limited.\n")
+    elif readiness.message:
+        print(f"\nNOTE: {readiness.message}\n")
+
+    # Narrative readiness check
+    nar_readiness = assess_narrative_readiness(positioning, narrative, mode)
+    if not nar_readiness.ready:
+        print(f"\nNARRATIVE WARNING: {nar_readiness.message}\n")
 
     agent_loop_on = os.getenv("AGENT_LOOP", "").lower() == "true"
     show_strategy = os.getenv("SHOW_STRATEGY", "").lower() == "true"
@@ -445,6 +483,8 @@ def run() -> None:
         agent_loop_on=agent_loop_on,
         show_strategy=show_strategy,
         brief_path_used=brief_path_used,
+        positioning=positioning,
+        narrative=narrative,
     )
 
     if brief_path_used is not None:

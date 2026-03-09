@@ -162,43 +162,70 @@ def _normalize_ux_output(raw: str) -> str:
     return "\n".join(out).strip()
 
 
-def _ux_domain_drift_cleanup(text: str) -> str:
+def _ux_domain_drift_cleanup(text: str, product_name: str = "", category: str = "") -> str:
     """Post-generation pass: replace generic SaaS patterns with product-native equivalents.
 
     This is a rule-based string substitution pass — it does not call the LLM.
     It catches common domain-drift phrases that slip through the banned list check.
+    Uses the actual product name and category to make replacements contextual.
     """
     if not text:
         return text
+
+    # Determine product-native replacement nouns from category
+    cat_lower = (category or "").lower()
+    if any(w in cat_lower for w in ("messaging", "positioning", "copy", "content", "launch")):
+        output_noun = "output"
+        setup_noun = "messaging brain"
+        action_noun = "generate"
+    elif any(w in cat_lower for w in ("invest", "finance", "sip", "risk", "kyc", "wealth", "fintech")):
+        output_noun = "plan"
+        setup_noun = "profile"
+        action_noun = "set up"
+    elif any(w in cat_lower for w in ("influencer", "creator", "match", "brand")):
+        output_noun = "match"
+        setup_noun = "brief"
+        action_noun = "find"
+    elif any(w in cat_lower for w in ("sanctuary", "shelter", "animal", "care", "rescue")):
+        output_noun = "record"
+        setup_noun = "profile"
+        action_noun = "register"
+    else:
+        output_noun = "result"
+        setup_noun = "profile"
+        action_noun = "start"
+
+    pname = product_name or "this product"
+
     replacements = (
         # Campaign drift
-        ("Launch Campaign", "Generate Output"),
-        ("launch campaign", "generate output"),
-        ("Campaign failed", "Generation failed"),
-        ("campaign failed", "generation failed"),
-        ("No campaign defined", "No output defined yet"),
-        ("no campaign defined", "no output defined yet"),
-        ("No campaign brief yet", "No brief defined yet"),
-        ("no campaign brief yet", "no brief defined yet"),
-        ("No campaigns launched yet", "No outputs generated yet"),
-        ("no campaigns launched yet", "no outputs generated yet"),
-        ("Campaign launched", "Output generated"),
-        ("campaign launched", "output generated"),
-        ("Define Campaign", "Define Audience"),
-        ("define campaign", "define audience"),
+        ("Launch Campaign", f"Create {output_noun.capitalize()}"),
+        ("launch campaign", f"create {output_noun}"),
+        ("Campaign failed", f"{output_noun.capitalize()} creation failed"),
+        ("campaign failed", f"{output_noun} creation failed"),
+        ("No campaign defined", f"No {output_noun} defined yet"),
+        ("no campaign defined", f"no {output_noun} defined yet"),
+        ("No campaign brief yet", f"No {setup_noun} defined yet"),
+        ("no campaign brief yet", f"no {setup_noun} defined yet"),
+        ("No campaigns launched yet", f"No {output_noun}s created yet"),
+        ("no campaigns launched yet", f"no {output_noun}s created yet"),
+        ("Campaign launched", f"{output_noun.capitalize()} created"),
+        ("campaign launched", f"{output_noun} created"),
+        ("Define Campaign", f"Define {setup_noun.split()[-1].capitalize()}"),
+        ("define campaign", f"define {setup_noun.split()[-1]}"),
         # Insight drift
-        ("Add Insights", "Build Brain"),
-        ("add insights", "build brain"),
-        ("Review Insights", "Review Output"),
-        ("review insights", "review output"),
+        ("Add Insights", f"Build {setup_noun.split()[-1].capitalize()}"),
+        ("add insights", f"build {setup_noun.split()[-1]}"),
+        ("Review Insights", f"Review {output_noun.capitalize()}"),
+        ("review insights", f"review {output_noun}"),
         # Workflow / pipeline / project drift
-        ("No workflow yet", "No messaging brain yet"),
-        ("no workflow yet", "no messaging brain yet"),
-        ("your pipeline", "your output"),
-        ("the pipeline", "the output"),
+        ("No workflow yet", f"No {setup_noun} yet"),
+        ("no workflow yet", f"no {setup_noun} yet"),
+        ("your pipeline", f"your {output_noun}s"),
+        ("the pipeline", f"the {output_noun}s"),
         # Review Progress drift
-        ("Review Progress", "View Output"),
-        ("review progress", "view output"),
+        ("Review Progress", f"View {output_noun.capitalize()}"),
+        ("review progress", f"view {output_noun}"),
         # Stage drift
         ("move to next stage", "continue"),
         ("move to the next stage", "continue"),
@@ -206,8 +233,8 @@ def _ux_domain_drift_cleanup(text: str) -> str:
         ("Move to the Next Stage", "Continue"),
         ("next stage", "next step"),
         ("Next Stage", "Next Step"),
-        ("plan ready", "output ready"),
-        ("Plan Ready", "Output Ready"),
+        ("plan ready", f"{output_noun} ready"),
+        ("Plan Ready", f"{output_noun.capitalize()} Ready"),
     )
     result = text
     for old, new in replacements:
@@ -366,10 +393,16 @@ class WritingAgent:
     # Preloaded positioning decisions from product_profile.json (the Messaging Brain).
     # When set, extract_positioning_decisions() uses these directly instead of calling the LLM.
     brain_decisions: Optional[dict] = None
+    # Strategy layers — set by main.py / API before calling generators.
+    # When set, generators use these for deeper product-grounded output.
+    positioning: Optional[object] = None   # PositioningContext
+    narrative: Optional[object] = None     # NarrativeContext
 
     def write_landing_page(self, brief: ClientBrief) -> str:
-        """Generate landing page from positioning decisions via LLM; fallback to rule-based template if invalid."""
+        """Generate landing page from positioning + narrative contexts via LLM; fallback to rule-based template if invalid."""
         decisions = self.extract_positioning_decisions(brief)
+        pos = self.positioning  # PositioningContext (may be None for backward compat)
+        nar = self.narrative    # NarrativeContext (may be None for backward compat)
 
         _LANDING_HEADERS = (
             "HEADLINE", "SUBHEAD", "WHO ITS FOR", "PROBLEM", "WHY CURRENT OPTIONS FAIL",
@@ -396,14 +429,24 @@ class WritingAgent:
             return "?" in block
 
         def _headline_ok(text: str) -> bool:
-            """Headline content line must be ≤ 12 words."""
             first = _section_first_line(text, "HEADLINE", "SUBHEAD")
             return len(first.split()) <= 12 if first else True
 
         def _subhead_ok(text: str) -> bool:
-            """Subhead content line must be ≤ 25 words."""
             first = _section_first_line(text, "SUBHEAD", "WHO ITS FOR")
             return len(first.split()) <= 25 if first else True
+
+        def _sections_distinct(text: str) -> bool:
+            problem_text = _section_first_line(text, "PROBLEM", "WHY CURRENT OPTIONS FAIL")
+            why_text = _section_first_line(text, "WHY CURRENT OPTIONS FAIL", "WHAT THIS IS")
+            if not problem_text or not why_text:
+                return True
+            p_words = set(problem_text.lower().split())
+            w_words = set(why_text.lower().split())
+            if not p_words or not w_words:
+                return True
+            overlap = len(p_words & w_words) / min(len(p_words), len(w_words))
+            return overlap < 0.6
 
         def _valid(out: str) -> bool:
             return (
@@ -413,86 +456,118 @@ class WritingAgent:
                 and not _headline_has_question(out)
                 and _headline_ok(out)
                 and _subhead_ok(out)
+                and _sections_distinct(out)
             )
 
-        icp = decisions.get("icp", "")
-        primary_problem = decisions.get("primary_problem", "")
-        current_alternative = decisions.get("current_alternative", "")
-        desired_outcome = decisions.get("desired_outcome", "")
-        category_frame = decisions.get("category_frame", "")
-        differentiation = decisions.get("differentiation", "")
-        anti_positioning = decisions.get("anti_positioning", "")
+        # Extract positioning fields from PositioningContext if available, else from decisions
+        icp = (getattr(pos, "icp", "") if pos else "") or decisions.get("icp", "")
+        core_problem = (getattr(pos, "core_problem", "") if pos else "") or decisions.get("primary_problem", "")
+        enemy = (getattr(pos, "enemy", "") if pos else "") or decisions.get("current_alternative", "")
+        promise = (getattr(pos, "promise", "") if pos else "") or decisions.get("desired_outcome", "")
+        category = (getattr(pos, "category", "") if pos else "") or decisions.get("category_frame", "")
+        differentiation = (getattr(pos, "differentiation", "") if pos else "") or decisions.get("differentiation", "")
+        anti_positioning = (getattr(pos, "anti_positioning", "") if pos else "") or decisions.get("anti_positioning", "")
+
+        # Extract narrative fields if available
+        product_story = getattr(nar, "product_story", "") if nar else ""
+        problem_story = getattr(nar, "problem_story", "") if nar else ""
+        user_journey = getattr(nar, "user_journey", "") if nar else ""
+        transformation = getattr(nar, "transformation", "") if nar else ""
+        solution_story = getattr(nar, "solution_story", "") if nar else ""
 
         system = (
-            "You are a senior product marketer and UX writer. "
-            "Write first-class product messaging for a real product launch. Every section must express the actual product — no templates. "
-            "HEADLINE: ≤ 12 words. A sharp, memorable declarative statement of what this product enables. "
-            "  NOT a sentence about the ICP. NOT 'For [ICP] who struggle to...'. NOT a slogan. NOT a question. "
-            "  Good example: 'Turn messy product ideas into clear messaging.' — that kind of concision and specificity. "
-            "SUBHEAD: ≤ 25 words. One sentence. Explain the product clearly — category + how it solves the problem. No filler. "
-            "WHO ITS FOR: Maximum 2 short sentences. Describe the ICP directly. No emotional storytelling, no 'You know the feeling'. "
-            "PROBLEM: concrete, specific friction. Name the real pain — no abstract claims. "
-            "WHY CURRENT OPTIONS FAIL: name the specific current alternative. Explain exactly where it falls short. "
-            "  Never write 'generic options fail'. Name the gap specifically. "
-            "WHAT THIS IS: define the product category. Explain the core mechanism briefly. "
-            "DIFFERENTIATION: lead with the differentiation, close with what this is NOT. "
-            "PROOF / SIGNALS: one believable neutral claim. "
-            "  NEVER write specific time claims ('under an hour', 'in minutes', 'within 5 minutes'). "
-            "  Use: 'Early users report clearer messaging after their first session.' or 'Teams quickly align on product language.' "
-            "CTA: product-specific action verb tied to the desired outcome. One short line. "
-            "  Not 'Sign up today'. Not 'Get started today'. Make it specific to what this product delivers. "
-            "Banned phrases: streamline, empower, unlock, innovative, cutting-edge, revolutionize, best-in-class, game-changing, "
-            "generic options, modern platform, powerful solution, next generation, seamless experience, all-in-one, under an hour, in minutes. "
-            "Output EXACT headers in this order: HEADLINE, SUBHEAD, WHO ITS FOR, PROBLEM, "
+            "You are a senior product marketer writing a landing page for a real product launch. "
+            "Your output must read like strategic product copy — not a filled template. "
+            "Every section must feel connected. The page should tell a coherent story from headline to CTA. "
+            "\n"
+            "HEADLINE: ≤ 12 words. Express the PROMISE — what the user gets. "
+            "  Not a description of the ICP. Not a question. Not a slogan. "
+            "  Sharp, specific, declarative. "
+            "SUBHEAD: ≤ 25 words. One sentence. What the product IS and how it gets them there. "
+            "WHO ITS FOR: 1-2 direct sentences. Name the ICP and their situation. No emotional framing. "
+            "PROBLEM: The user's lived experience of the friction. Write it as if describing their actual day. "
+            "  Do NOT name alternatives here — focus on what the user FEELS and DOES. "
+            "WHY CURRENT OPTIONS FAIL: Name the specific ENEMY (the current alternative). "
+            "  Explain the structural flaw — why it was never designed for this problem. "
+            "  This section advances the argument beyond PROBLEM. Never repeat the pain — explain the gap. "
+            "WHAT THIS IS: Category + core mechanism in 1-2 sentences. "
+            "DIFFERENTIATION: Why this, not the alternative. Close with what this is NOT. "
+            "  Must say something new — do not repeat WHAT THIS IS. "
+            "PROOF / SIGNALS: One believable claim grounded in real product behavior. "
+            "  NO time claims. NO fabricated stats. NO fake testimonials. "
+            "CTA: One line. Product-specific action tied to the promise. Not 'Sign up today'. "
+            "\n"
+            "WRITING RULES: "
+            "Vary sentence length. Use concrete nouns over abstract ones. "
+            "Each section must advance the argument — never restate what a previous section said. "
+            "Write prose, not bullet points. The page should flow as a single persuasive arc. "
+            "\n"
+            "Banned: streamline, empower, unlock, innovative, cutting-edge, revolutionize, best-in-class, game-changing, "
+            "generic options, modern platform, powerful solution, next generation, seamless experience, all-in-one, "
+            "under an hour, in minutes, sign up today, get started today. "
+            "\n"
+            "Headers in EXACT order: HEADLINE, SUBHEAD, WHO ITS FOR, PROBLEM, "
             "WHY CURRENT OPTIONS FAIL, WHAT THIS IS, DIFFERENTIATION, PROOF / SIGNALS, CTA. "
-            "One block of content under each. No preamble. No explanation. Output only the document."
+            "Output only the document. No preamble."
         )
         system_strict = (
-            "Senior product marketer. STRICT output only. "
-            "HEADLINE: ≤ 12 words. Sharp declarative statement of the product outcome. Not a description of the ICP. Not a question. "
-            "SUBHEAD: ≤ 25 words. One sentence. Category + how it solves the problem. "
-            "WHO ITS FOR: max 2 sentences. Direct ICP description, no emotional framing. "
-            "PROBLEM: concrete friction, no abstraction. "
-            "WHY CURRENT OPTIONS FAIL: name the specific alternative, explain the gap — not 'generic options'. "
-            "DIFFERENTIATION: direct, then contrast against anti-positioning. "
-            "PROOF / SIGNALS: neutral believable claim — NO time claims ('under an hour', 'in minutes'), NO invented percentages. "
-            "CTA: one line, product-specific verb. Not 'Sign up today'. "
-            "Headers in order: HEADLINE, SUBHEAD, WHO ITS FOR, PROBLEM, WHY CURRENT OPTIONS FAIL, WHAT THIS IS, DIFFERENTIATION, PROOF / SIGNALS, CTA. "
-            "No hype words. No banned phrases. Output only the document."
+            "Senior product marketer. STRICT format. "
+            "HEADLINE: ≤ 12 words, the promise. SUBHEAD: ≤ 25 words, product + mechanism. "
+            "WHO ITS FOR: 1-2 sentences, direct. "
+            "PROBLEM: user's lived pain, no alternatives mentioned. "
+            "WHY CURRENT OPTIONS FAIL: name the enemy, explain structural flaw, do NOT repeat PROBLEM. "
+            "WHAT THIS IS: category + mechanism. DIFFERENTIATION: what's new, then what this is NOT. "
+            "PROOF: one believable claim, no stats, no time claims. CTA: one line, product verb. "
+            "Advance argument across sections. No repetition. Prose, not bullets. "
+            "Headers: HEADLINE, SUBHEAD, WHO ITS FOR, PROBLEM, WHY CURRENT OPTIONS FAIL, WHAT THIS IS, DIFFERENTIATION, PROOF / SIGNALS, CTA. "
+            "No banned phrases. Output only."
         )
+
+        # Build user prompt with both positioning AND narrative context
         user_parts = [
-            "You are a senior product marketer and UX writer.",
+            f"Write a landing page for: {brief.product or 'Not specified'}",
             "",
-            "Write a landing page for the following product. Express these positioning decisions directly — not as a template. Every word must reflect the actual product.",
-            "",
-            f"Product: {brief.product or 'Not specified'}",
-            "",
-            "Positioning Decisions:",
+            "=== POSITIONING (what this product IS) ===",
+            f"  Promise: {promise}",
             f"  ICP: {icp}",
-            f"  Primary Problem: {primary_problem}",
-            f"  Current Alternative: {current_alternative}",
-            f"  Desired Outcome: {desired_outcome}",
-            f"  Category Frame: {category_frame}",
+            f"  Core Problem: {core_problem}",
+            f"  Enemy (current alternative): {enemy}",
+            f"  Category: {category}",
             f"  Differentiation: {differentiation}",
-            f"  Anti-Positioning: {anti_positioning}",
+            f"  Anti-Positioning (what this is NOT): {anti_positioning}",
+        ]
+
+        # Add narrative context if available — this gives the LLM deeper product understanding
+        if any([product_story, problem_story, transformation, solution_story]):
+            user_parts += [
+                "",
+                "=== NARRATIVE (the story behind the product) ===",
+            ]
+            if product_story:
+                user_parts.append(f"  Product Story: {product_story}")
+            if problem_story:
+                user_parts.append(f"  Problem Story: {problem_story}")
+            if user_journey:
+                user_parts.append(f"  User Journey: {user_journey}")
+            if transformation:
+                user_parts.append(f"  Transformation: {transformation}")
+            if solution_story:
+                user_parts.append(f"  Solution Story: {solution_story}")
+
+        user_parts += [
             "",
             f"Tone: {brief.tone or 'Clear and direct'}",
             "",
-            "Per-section instructions (do not include these in output):",
-            f"  HEADLINE: ≤ 12 words. A sharp, memorable statement of what this product enables. "
-            f"  Do NOT start with '{icp}' or describe the ICP — instead express the outcome concisely. "
-            f"  Think: short, specific, declarative. No slogans. No questions.",
-            f"  SUBHEAD: ≤ 25 words. One sentence. Explain what {brief.product or 'the product'} is and how it solves the problem. Include the category frame ({category_frame}).",
-            f"  WHO ITS FOR: Maximum 2 sentences. Name {icp} directly. Describe their situation concretely. No emotional storytelling.",
-            f"  PROBLEM: State '{primary_problem}' without abstraction. Name the real friction. Be specific.",
-            f"  WHY CURRENT OPTIONS FAIL: Explain specifically why {current_alternative or 'the current alternative'} falls short. Name the gap. Do not write 'generic options fail'.",
-            f"  WHAT THIS IS: State the category frame ({category_frame}). Briefly explain the core mechanism.",
-            f"  DIFFERENTIATION: Lead with '{differentiation}'. Close with a contrast against '{anti_positioning}'.",
-            "  PROOF / SIGNALS: One believable, neutral signal. NEVER write specific time claims ('under an hour', 'in minutes', 'within X minutes'). Use: 'Early users report...' or 'Teams quickly...'",
-            f"  CTA: One short action line tied to '{desired_outcome}'. Use a concrete product-specific verb. Not 'Sign up today'.",
+            "=== SECTION MAPPING (use as guide, do not include in output) ===",
+            f"  HEADLINE ← promise: {promise}",
+            f"  PROBLEM ← problem story: {problem_story or core_problem}",
+            f"  WHY CURRENT OPTIONS FAIL ← enemy: {enemy} + anti-positioning: {anti_positioning}",
+            f"  WHAT THIS IS ← solution story: {solution_story or category}",
+            f"  DIFFERENTIATION ← differentiation: {differentiation}",
+            f"  PROOF / SIGNALS ← transformation: {transformation or 'Early adopter signal'}",
+            f"  CTA ← promise: {promise}",
             "",
-            "Output format (exact headers in this order): HEADLINE, SUBHEAD, WHO ITS FOR, PROBLEM, "
-            "WHY CURRENT OPTIONS FAIL, WHAT THIS IS, DIFFERENTIATION, PROOF / SIGNALS, CTA.",
+            "Output the document. No preamble.",
         ]
         user = "\n".join(user_parts)
 
@@ -590,16 +665,24 @@ CTA
 
         # LLM senior editor pass: tighten and sharpen without replacing product-specific language
         editor_system = (
-            "You are a senior editor reviewing a product landing page draft. "
-            "Your job: tighten and sharpen. Do NOT replace product-specific language with generic templates. "
+            "You are a senior editor tightening a product landing page. "
+            "Do NOT replace product-specific language with generic templates. Do NOT add new content. "
+            "Your job is to CUT, SHARPEN, and REMOVE REPETITION.\n"
             "RULES:\n"
-            "1. HEADLINE: must be ≤ 12 words. Cut aggressively. A sharp outcome statement, not an ICP description.\n"
-            "2. SUBHEAD: must be ≤ 25 words. One sentence. Keep category + problem-to-outcome arc.\n"
-            "3. WHO ITS FOR: maximum 2 sentences. Remove emotional storytelling. State the ICP directly.\n"
-            "4. PROOF / SIGNALS: remove any specific time claims ('under an hour', 'in minutes', 'within X'). Replace with 'Early users report...' or similar neutral phrasing.\n"
-            "5. CTA: one line. Remove 'Sign up today' or 'Get started today'. Use a product-specific action.\n"
-            "6. Remove repetition across sections — if a phrase appears in multiple sections, cut it from the weaker one.\n"
-            "7. Keep all 9 headers in the exact same order. Return only the full revised document. No preamble. No explanation."
+            "1. HEADLINE: ≤ 12 words. Cut to a sharp outcome statement.\n"
+            "2. SUBHEAD: ≤ 25 words. One sentence. Category + problem arc.\n"
+            "3. WHO ITS FOR: max 2 sentences. Remove emotional framing.\n"
+            "4. PROBLEM vs WHY CURRENT OPTIONS FAIL: MUST be distinct. "
+            "PROBLEM = user's lived pain. WHY CURRENT OPTIONS FAIL = the alternative's structural flaw. "
+            "If they repeat, rewrite WHY to focus on the named alternative.\n"
+            "5. PROOF / SIGNALS: remove time claims, fabricated stats. Keep only believable neutral claims.\n"
+            "6. CTA: one line. Product-specific verb.\n"
+            "7. Cross-section repetition: if a phrase appears in 2+ sections, cut it from the weaker one.\n"
+            "8. DIFFERENTIATION must not repeat WHAT THIS IS.\n"
+            "9. Remove AI-sounding transitions: 'In today's world', 'That's where X comes in', 'But what if', "
+            "'Imagine a world', 'The truth is', 'Here's the thing', 'Let's face it'.\n"
+            "10. Remove filler adjectives: robust, comprehensive, unique, truly, simply, actually.\n"
+            "11. Keep all 9 headers. Return only the revised document. No preamble."
         )
         editor_user = f"Tighten and sharpen this landing page:\n\n{draft}"
         try:
@@ -1227,14 +1310,40 @@ MESSAGING NOTES
         return (body.rstrip("\n") + "\n")
 
     def write_ux_pack(self, brief: ClientBrief, target: str = "product") -> str:
-        """Generate UX pack for operator (this app) or product (user's product). Uses decisions for product; operator is app-specific. One retry; concrete fallback."""
+        """Generate UX pack for operator (this app) or product (user's product). Uses positioning + narrative for product; operator is app-specific. One retry; concrete fallback."""
         decisions = self.extract_positioning_decisions(brief) if target == "product" else {}
+        pos = self.positioning  # PositioningContext (may be None)
+        nar = self.narrative    # NarrativeContext (may be None)
+
+        # Check narrative readiness for product UX — if too thin, return guidance instead of bad output
+        if target == "product" and nar:
+            nar_filled = getattr(nar, "filled_count", lambda: 0)()
+            if nar_filled < 3:
+                return self._ux_not_ready_message(brief, nar_filled)
 
         def _valid(out: Optional[str]) -> bool:
             if not out:
                 return False
             normalized = _normalize_ux_output(out)
             return _validate_ux_output(normalized, target=target)
+
+        # Derive product-native vocabulary from category instead of hardcoding Unimind terms
+        cat_lower = (decisions.get("category_frame", "") or "").lower() if decisions else ""
+        if any(w in cat_lower for w in ("messaging", "positioning", "copy", "content", "launch")):
+            vocab_nouns = "messaging brain, audience, problem, positioning, landing page, ux copy, outputs, product idea, message"
+            vocab_banned = "campaign, workflow, pipeline, project, stage, insight, ticket"
+        elif any(w in cat_lower for w in ("invest", "finance", "sip", "risk", "kyc", "wealth", "fintech")):
+            vocab_nouns = "portfolio, risk profile, SIP, KYC, investment, plan, questionnaire, returns, holdings"
+            vocab_banned = "campaign, workflow, pipeline, messaging brain, landing page, positioning, content"
+        elif any(w in cat_lower for w in ("influencer", "creator", "match", "brand")):
+            vocab_nouns = "brand, creator, match, brief, audience, content, collaboration, approval"
+            vocab_banned = "campaign, workflow, pipeline, messaging brain, landing page, positioning, ticket"
+        elif any(w in cat_lower for w in ("sanctuary", "shelter", "animal", "care", "rescue", "cow", "gaushala")):
+            vocab_nouns = "animal, record, caretaker, health check, feeding, shelter, donation, sponsor"
+            vocab_banned = "campaign, workflow, pipeline, messaging brain, landing page, positioning, ticket, SaaS"
+        else:
+            vocab_nouns = "profile, setup, result, input, output, settings, account"
+            vocab_banned = "campaign, workflow, pipeline, project, stage, insight, ticket"
 
         if target == "operator":
             system = (
@@ -1255,23 +1364,38 @@ MESSAGING NOTES
             )
         else:
             tone_instruction = (brief.tone or "Clear and friendly").strip()
-            icp = decisions.get("icp") or brief.audience or "users"
-            primary_problem = decisions.get("primary_problem") or brief.pain or "unclear positioning"
-            desired_outcome = decisions.get("desired_outcome") or brief.offer or "clear messaging"
-            differentiation = decisions.get("differentiation") or ""
-            category_frame = decisions.get("category_frame") or ""
+            icp = (getattr(pos, "icp", "") if pos else "") or decisions.get("icp") or brief.audience or "users"
+            primary_problem = (getattr(pos, "core_problem", "") if pos else "") or decisions.get("primary_problem") or brief.pain or "unclear positioning"
+            desired_outcome = (getattr(pos, "promise", "") if pos else "") or decisions.get("desired_outcome") or brief.offer or "clear messaging"
+            differentiation = (getattr(pos, "differentiation", "") if pos else "") or decisions.get("differentiation") or ""
+            category_frame = (getattr(pos, "category", "") if pos else "") or decisions.get("category_frame") or ""
+
+            # Extract narrative fields for richer UX grounding
+            user_journey = getattr(nar, "user_journey", "") if nar else ""
+            product_story = getattr(nar, "product_story", "") if nar else ""
+            solution_story = getattr(nar, "solution_story", "") if nar else ""
+
             user_parts = [
                 f"Write a UX writing pack for this product: {brief.product or 'the product'}. First line of UX CONTEXT must be: TARGET: product",
                 "",
-                "Positioning Decisions (use these to write specific, grounded microcopy):",
+                "Positioning (what this product IS):",
                 f"  ICP: {icp}",
-                f"  Primary Problem: {primary_problem}",
-                f"  Desired Outcome: {desired_outcome}",
+                f"  Core Problem: {primary_problem}",
+                f"  Promise: {desired_outcome}",
             ]
             if category_frame:
-                user_parts.append(f"  Category / What it is: {category_frame}")
+                user_parts.append(f"  Category: {category_frame}")
             if differentiation:
                 user_parts.append(f"  Differentiation: {differentiation}")
+            # Add narrative context if available — helps LLM write journey-aware UX
+            if any([user_journey, product_story, solution_story]):
+                user_parts += ["", "Narrative (the product story — use to ground UX in real flows):"]
+                if product_story:
+                    user_parts.append(f"  Product Story: {product_story}")
+                if user_journey:
+                    user_parts.append(f"  User Journey: {user_journey}")
+                if solution_story:
+                    user_parts.append(f"  How It Works: {solution_story}")
             user_parts += [
                 "",
                 f"  Product: {brief.product or 'Not specified'}",
@@ -1288,30 +1412,27 @@ MESSAGING NOTES
                 "  These are positioning reference context only. Translate them into short, specific UI microcopy."
                 "  Example: 'Instead of X, users get Y' becomes a button 'Save Results' or toast 'Results ready.' — never a strategy sentence in UI."
                 "\nVOCABULARY: Use vocabulary that reflects the product mechanics."
-                "  Allowed nouns: messaging brain, audience, problem, positioning, landing page, ux copy, outputs, product idea, message."
-                "  NEVER use generic SaaS workspace vocabulary: campaign, workflow, pipeline, project, stage, insight, ticket."
+                f"  Allowed nouns: {vocab_nouns}."
+                f"  NEVER use generic SaaS workspace vocabulary: {vocab_banned}."
                 "\nFORMAT: Each numbered item is ONE line only. No sub-descriptions, no line breaks within a numbered item."
                 "\nUX CONTEXT: After 'TARGET: product', write ONE concise sentence describing the product and who uses it. "
                 "  No strategy labels. No truncated decision text. Plain, product-native description only."
                 "\nONBOARDING: name the actual first steps in this product — reflect the real product flow, not generic onboarding."
                 "  Each step is one short sentence telling the user exactly what to do. No strategy text, no 'Instead of...' framing."
-                "  Example good style: '1. Define your audience.' '2. Clarify the core problem.' '3. Generate your first output.'"
+                f"  Use vocabulary from this product domain: {vocab_nouns}."
                 "\nEMPTY STATE: explain what is missing at this product stage using product-native language. Guide toward the next concrete action."
                 "  Keep copy short — aim for ≤ 12 words each. Name the real thing missing, not 'Add your first item'."
-                "  Correct examples: 'No messaging brain yet. Describe your product to start.' / 'No landing page generated yet. Build your messaging brain first.' / 'No UX copy yet. Generate UX after defining audience and problem.'"
                 "\nERROR: short, clear, actionable. Explain what failed and what to do. ≤ 15 words each."
-                "  Not generic system errors. Name the product context — brain saving, generation, outputs."
-                "  Correct examples: 'Could not save messaging brain. Try again.' / 'Generation failed. Refine the problem or audience.' / 'Output could not be created. Check your messaging inputs.'"
+                "  Not generic system errors. Name the product context and the specific failure."
                 "\nTOAST: celebrate REAL completed actions in product-specific language. ≤ 8 words each."
                 "  NEVER write 'Step complete' or 'Move to the next stage'. "
                 "  Confirm the specific thing the user just did."
-                "  Example: 'Messaging brain saved.' or 'Audience defined.' or 'Output generated.'"
                 "\nBUTTON LABELS: 1-3 words. Concrete, domain-specific. Every label must reflect an actual action in THIS product."
                 "  Use a concrete verb + specific product object. All 8 must be grounded in this product's mechanics."
-                "  Valid examples: 'Define Audience', 'Clarify Problem', 'Build Brain', 'Generate Landing', 'Generate UX', 'Save Brain', 'Refine Message', 'Regenerate Output'."
+                f"  Use nouns from: {vocab_nouns}."
                 "  NEVER use generic SaaS verbs: 'Launch', 'Plan', 'Review', 'Track', 'Manage', 'Add Insights', 'Get Started', 'Proceed', 'Confirm', 'Continue' alone."
                 "\nDO NOT reference CLI commands, file paths (brief.json), or internal system workflows (Generate landing, Ollama, Output saved)."
-                "\nBANNED phrases: something went wrong, nothing here yet, your list is empty, check your connection, desired outcome:, differentiation:, instead of generating, step complete, move to the next stage, campaign, workflow, pipeline, project, stage, insight, ticket."
+                f"\nBANNED phrases: something went wrong, nothing here yet, your list is empty, check your connection, desired outcome:, differentiation:, instead of generating, step complete, move to the next stage, {vocab_banned}."
                 "\nExact headers: UX CONTEXT (first line TARGET: product), ONBOARDING 3, EMPTY STATE 3, ERROR 3, TOAST 3, BUTTON LABELS 8. No preamble. No markdown bold."
             )
             user = "\n".join(user_parts)
@@ -1325,23 +1446,22 @@ MESSAGING NOTES
                 "CRITICAL: Do NOT copy positioning context labels ('Desired Outcome:', 'Differentiation:', 'Category Frame:') or their full sentences into your output. "
                 "Translate positioning context into short, specific UI microcopy. Every line must feel like it belongs in a real interface. "
                 "VOCABULARY RULE: Use vocabulary that reflects the product mechanics. "
-                "  Allowed nouns: messaging brain, audience, problem, positioning, landing page, ux copy, outputs, product idea, message. "
-                "  NEVER use generic SaaS workspace vocabulary: campaign, workflow, pipeline, project, stage, insight, ticket. "
+                f"  Allowed nouns: {vocab_nouns}. "
+                f"  NEVER use generic SaaS workspace vocabulary: {vocab_banned}. "
                 "ONBOARDING: name the actual first steps users take in this product. Each step is one short sentence — what to do, not what the product is. No strategy framing. "
-                "  Example style: '1. Define your audience.' '2. Clarify the problem.' '3. Generate your first output.' "
+                f"  Use vocabulary from this product domain: {vocab_nouns}. "
                 "EMPTY STATE: name what is missing at this product stage using product-native language. Tell the user the concrete next action. ≤ 12 words per line. "
                 "  Not 'Add your first item'. Name the real missing thing. "
-                "  Examples: 'No messaging brain yet. Describe your product to start.' / 'No landing page generated yet. Build your messaging brain first.' / 'No UX copy yet. Generate UX after defining audience and problem.' "
                 "ERROR: ≤ 15 words each. Short, clear, product-specific. Name the failure and the fix. "
                 "  Not generic system messages. "
-                "  Examples: 'Could not save messaging brain. Try again.' / 'Generation failed. Refine the problem or audience.' / 'Output could not be created. Check your messaging inputs.' "
                 "TOAST: ≤ 8 words. Confirm the SPECIFIC action just completed. NEVER write 'Step complete' or 'Move to the next stage'. "
-                "  Product-specific milestone language only. Examples: 'Messaging brain saved.' / 'Output generated.' / 'Audience defined.' "
+                "  Product-specific milestone language only. "
                 "BUTTON LABELS: 1-3 words. Domain-specific action verbs grounded in this product's mechanics. "
-                "  Valid examples: 'Define Audience', 'Clarify Problem', 'Build Brain', 'Generate Landing', 'Generate UX', 'Save Brain', 'Refine Message', 'Regenerate Output'. "
+                f"  Use nouns from: {vocab_nouns}. "
                 "  NEVER use generic SaaS verbs alone: 'Launch', 'Plan', 'Review', 'Track', 'Manage', 'Add Insights', 'Get Started', 'Begin', 'Proceed', 'Confirm', 'Continue'. "
                 "DO NOT mention CLI commands, file paths (brief.json), or operator workflows. "
-                "BANNED: something went wrong, nothing here yet, your list is empty, check your connection, desired outcome:, differentiation:, instead of generating, step complete, move to the next stage, campaign, workflow, pipeline, project, stage, insight, ticket, book a short working session. "
+                "BANNED: something went wrong, nothing here yet, your list is empty, check your connection, desired outcome:, differentiation:, instead of generating, step complete, move to the next stage, book a short working session, "
+                f"{vocab_banned}. "
                 "Exact headers: UX CONTEXT, ONBOARDING (3), EMPTY STATE (3), ERROR (3), TOAST (3), BUTTON LABELS (8). Numbered 1-N. No preamble. No bold."
             )
 
@@ -1358,21 +1478,19 @@ MESSAGING NOTES
                 "UX CONTEXT: one plain sentence after TARGET: product — product description in user terms, no strategy labels. "
                 "CRITICAL: Do NOT copy 'Desired Outcome:', 'Differentiation:', or 'Category Frame:' text into your output. Context only. "
                 "Every line must be real UI microcopy — no strategy sentences, no positioning prose. "
-                "VOCABULARY: Use product-native nouns only — messaging brain, audience, problem, positioning, landing page, ux copy, outputs, message. "
-                "NEVER use: campaign, workflow, pipeline, project, stage, insight, ticket. "
+                f"VOCABULARY: Use product-native nouns only — {vocab_nouns}. "
+                f"NEVER use: {vocab_banned}. "
                 "ONBOARDING: actual product steps, concrete objects, one sentence each. "
-                "  Example: '1. Define your audience.' '2. Clarify the problem.' '3. Generate your first output.' "
+                f"  Use vocabulary from this product domain: {vocab_nouns}. "
                 "EMPTY STATE: ≤ 12 words. Name what is missing in product terms. Tell the user the next action. "
-                "  Example: 'No messaging brain yet. Describe your product to start.' "
                 "ERROR: ≤ 15 words. Name the failure and the fix in product terms. Not generic system errors. "
-                "  Example: 'Could not save messaging brain. Try again.' "
                 "TOAST: ≤ 8 words. Specific completed action — NEVER 'Step complete' or 'Move to the next stage'. "
-                "  Example: 'Messaging brain saved.' / 'Output generated.' "
                 "BUTTON LABELS: 1-3 words. Product-specific. "
-                "  Valid: 'Define Audience', 'Clarify Problem', 'Build Brain', 'Generate Landing', 'Generate UX', 'Save Brain', 'Refine Message', 'Regenerate Output'. "
+                f"  Use nouns from: {vocab_nouns}. "
                 "  Never 'Begin', 'Proceed', 'Confirm', 'Get Started', 'Launch', 'Plan', 'Track', 'Add Insights' alone. "
                 "DO NOT mention CLI commands, file paths (brief.json), or tool-specific workflows. "
-                "BANNED: something went wrong, nothing here yet, your list is empty, check your connection, desired outcome:, differentiation:, instead of generating, step complete, move to the next stage, campaign, workflow, pipeline, project, stage, insight, ticket. "
+                "BANNED: something went wrong, nothing here yet, your list is empty, check your connection, desired outcome:, differentiation:, instead of generating, step complete, move to the next stage, "
+                f"{vocab_banned}. "
                 "Exact headers and counts. No preamble. No bold."
             )
         else:
@@ -1383,22 +1501,42 @@ MESSAGING NOTES
                 "Banned: streamline, high-quality, unlock, revolutionize, killer app, you know the drill, meh, [insert, [add."
             )
 
+        drift_product = brief.product or ""
+        drift_category = decisions.get("category_frame", "") if decisions else ""
+
         try:
             out = llm_generate(system=system, user=user, model="llama3:8b", temperature=0.3)
             normalized = _normalize_ux_output(out or "")
             if target == "product":
-                normalized = _ux_domain_drift_cleanup(normalized)
+                normalized = _ux_domain_drift_cleanup(normalized, drift_product, drift_category)
             if _validate_ux_output(normalized, target):
                 return (normalized.rstrip("\n") + "\n")
             out = llm_generate(system=system_strict, user=user, model="llama3:8b", temperature=0.2)
             normalized = _normalize_ux_output(out or "")
             if target == "product":
-                normalized = _ux_domain_drift_cleanup(normalized)
+                normalized = _ux_domain_drift_cleanup(normalized, drift_product, drift_category)
             if _validate_ux_output(normalized, target):
                 return (normalized.rstrip("\n") + "\n")
         except Exception:
             pass
         return self._write_ux_pack_fallback(brief, target=target, decisions=decisions)
+
+    def _ux_not_ready_message(self, brief: ClientBrief, nar_filled: int) -> str:
+        """Return a readiness message when product narrative is too thin for UX generation."""
+        product = clean_phrase(brief.product) or "This product"
+        return (
+            f"UX GENERATION PAUSED\n\n"
+            f"Product: {product}\n"
+            f"Narrative fields filled: {nar_filled}/5\n\n"
+            f"UX copy requires enough product narrative to ground onboarding, empty states, "
+            f"errors, and button labels in real product flows.\n\n"
+            f"To proceed:\n"
+            f"1. Run --mode brain with a fuller brief (product, audience, pain, offer, context)\n"
+            f"2. Or provide more detail via --brief or API overrides\n\n"
+            f"The messaging brain needs: product story, user journey, problem story, "
+            f"solution story, and transformation narrative.\n"
+            f"Once at least 3 of 5 are filled, UX generation will proceed.\n"
+        )
 
     def _write_ux_pack_fallback(self, brief: ClientBrief, target: str = "product", decisions: Optional[dict] = None) -> str:
         """Concrete fallback: no placeholders. Operator = this app; product = from brief."""
