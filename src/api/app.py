@@ -21,11 +21,18 @@ from pydantic import BaseModel
 
 from agents.writing_agent import ClientBrief
 from core.brief import brief_from_file
+from core.generation_context import (
+    assess_readiness,
+    build_generation_context,
+    context_to_brief,
+)
+from core.strategy_context import (
+    assess_narrative_readiness,
+    build_strategy_layers,
+)
 from core.utils import clean_phrase
 from main import (
-    _load_brain_if_exists,
     _load_profile_if_exists,
-    _resolve_brief_from_profile,
     _run_brain_mode,
     _run_generate,
     _run_idea_mode,
@@ -74,6 +81,22 @@ class BrainRequest(BaseModel):
 
 class GenerateRequest(BaseModel):
     client: str
+    # Optional overrides — latest user edits that should take priority over saved brain/brief
+    product: Optional[str] = None
+    audience: Optional[str] = None
+    pain: Optional[str] = None
+    offer: Optional[str] = None
+    tone: Optional[str] = None
+    cta: Optional[str] = None
+    context: Optional[str] = None
+    # Decision-level overrides
+    icp: Optional[str] = None
+    primary_problem: Optional[str] = None
+    current_alternative: Optional[str] = None
+    desired_outcome: Optional[str] = None
+    category_frame: Optional[str] = None
+    differentiation: Optional[str] = None
+    anti_positioning: Optional[str] = None
 
 
 class IdeaExtractData(BaseModel):
@@ -131,19 +154,64 @@ def brain(req: BrainRequest):
 @app.post("/generate/landing")
 def generate_landing(req: GenerateRequest):
     """Generate a landing page for the client using their stored brain."""
-    return _run_generate_endpoint(req.client, "landing")
+    return _run_generate_endpoint(req, "landing")
 
 
 @app.post("/generate/ux")
 def generate_ux(req: GenerateRequest):
     """Generate a UX pack for the client using their stored brain."""
-    return _run_generate_endpoint(req.client, "ux")
+    return _run_generate_endpoint(req, "ux")
 
 
 @app.post("/generate/positioning")
 def generate_positioning(req: GenerateRequest):
     """Generate a positioning document for the client using their stored brain."""
-    return _run_generate_endpoint(req.client, "positioning")
+    return _run_generate_endpoint(req, "positioning")
+
+
+@app.post("/generate/linkedin")
+def generate_linkedin(req: GenerateRequest):
+    """Generate a LinkedIn post for the client using their stored brain."""
+    return _run_generate_endpoint(req, "linkedin")
+
+
+@app.post("/generate/launch_pack")
+def generate_launch_pack(req: GenerateRequest):
+    """Generate a launch pack for the client using their stored brain."""
+    return _run_generate_endpoint(req, "launch_pack")
+
+
+@app.post("/generate/{mode}")
+def generate_any(mode: str, req: GenerateRequest):
+    """Generic generation endpoint for any supported mode."""
+    valid_modes = {"landing", "linkedin", "ux", "ux_product", "ux_operator", "ux_microcopy",
+                   "launch_pack", "audit", "positioning"}
+    if mode not in valid_modes:
+        raise HTTPException(status_code=400, detail=f"Unknown mode '{mode}'. Valid: {sorted(valid_modes)}")
+    return _run_generate_endpoint(req, mode)
+
+
+@app.get("/readiness/{client}/{mode}")
+def check_readiness(client: str, mode: str):
+    """Check whether a client has enough data for a given output mode."""
+    client_slug = clean_phrase(client)
+    profile = _load_profile_if_exists(client_slug)
+    brief_path = Path("clients") / client_slug / "brief.json"
+    brief = brief_from_file(str(brief_path)) if brief_path.exists() else None
+
+    if not profile and not brief:
+        raise HTTPException(status_code=404, detail=f"No data for client '{client_slug}'.")
+
+    gen_ctx = build_generation_context(brief=brief, profile=profile)
+    readiness = assess_readiness(gen_ctx, mode)
+    return {
+        "client": client_slug,
+        "mode": mode,
+        "ready": readiness.ready,
+        "missing_required": readiness.missing_required,
+        "missing_recommended": readiness.missing_recommended,
+        "message": readiness.message,
+    }
 
 
 @app.post("/brain/save")
@@ -191,26 +259,15 @@ def brain_save(req: BrainSaveRequest):
 # Internal helper
 # ---------------------------------------------------------------------------
 
-def _run_generate_endpoint(client: str, mode: str) -> dict:
-    client_slug = clean_phrase(client)
+def _run_generate_endpoint(req: GenerateRequest, mode: str) -> dict:
+    client_slug = clean_phrase(req.client)
 
-    # product_profile.json is the primary source of truth.
-    # brief.json is supplementary (cta, examples, context) — it must not dominate.
+    # Load stored data
     profile = _load_profile_if_exists(client_slug)
-    brain = profile.decisions if (profile and profile.decisions) else None
-
     brief_path = Path("clients") / client_slug / "brief.json"
-    if brief_path.exists():
-        brief = brief_from_file(str(brief_path))
-        if profile:
-            brief = _resolve_brief_from_profile(brief, profile)
-    elif profile:
-        # No brief.json yet — construct brief entirely from the saved profile.
-        brief = _resolve_brief_from_profile(
-            ClientBrief(product="", audience="", pain="", offer="", tone="", cta="", examples="", context=""),
-            profile,
-        )
-    else:
+    brief = brief_from_file(str(brief_path)) if brief_path.exists() else None
+
+    if not profile and not brief:
         raise HTTPException(
             status_code=404,
             detail=(
@@ -219,11 +276,57 @@ def _run_generate_endpoint(client: str, mode: str) -> dict:
             ),
         )
 
-    final_text, out_path, latest_path = _run_generate(brief, mode, client_slug, brain=brain)
+    # Collect user overrides from request (non-None fields)
+    overrides = {}
+    for f in ("product", "audience", "pain", "offer", "tone", "cta", "context",
+              "icp", "primary_problem", "current_alternative", "desired_outcome",
+              "category_frame", "differentiation", "anti_positioning"):
+        val = getattr(req, f, None)
+        if val is not None and val.strip():
+            overrides[f] = val.strip()
+
+    # Build merged generation context: overrides > brain > brief
+    gen_ctx = build_generation_context(brief=brief, profile=profile, overrides=overrides)
+
+    # Readiness check
+    readiness = assess_readiness(gen_ctx, mode)
+    if not readiness.ready:
+        raise HTTPException(
+            status_code=422,
+            detail={
+                "message": readiness.message,
+                "missing_required": readiness.missing_required,
+                "missing_recommended": readiness.missing_recommended,
+            },
+        )
+
+    merged_brief = context_to_brief(gen_ctx)
+    brain = gen_ctx.decisions if gen_ctx.decisions else None
+
+    # Build strategy layers
+    positioning, narrative = build_strategy_layers(gen_ctx)
+    nar_readiness = assess_narrative_readiness(positioning, narrative, mode)
+
+    final_text, out_path, latest_path = _run_generate(
+        merged_brief, mode, client_slug, brain=brain,
+        positioning=positioning, narrative=narrative,
+    )
 
     return {
         "mode": mode,
         "text": final_text,
         "latest_path": str(latest_path),
         "versioned_path": str(out_path),
+        "context_sources": gen_ctx.sources,
+        "readiness": {
+            "ready": readiness.ready,
+            "missing_recommended": readiness.missing_recommended,
+            "message": readiness.message,
+        } if readiness.message else None,
+        "narrative_readiness": {
+            "ready": nar_readiness.ready,
+            "positioning_filled": nar_readiness.positioning_filled,
+            "narrative_filled": nar_readiness.narrative_filled,
+            "message": nar_readiness.message,
+        } if nar_readiness.message else None,
     }
