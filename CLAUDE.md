@@ -17,7 +17,11 @@ python src/main.py --brief briefs/sample.json --mode landing
 python src/main.py --brief clients/unimind/brief.json --client unimind --mode linkedin
 
 # All available modes
-# landing | linkedin | ux_microcopy | launch_pack | audit | positioning | ux | ux_operator | ux_product | brain | idea
+# landing | linkedin | ux_microcopy | launch_pack | audit | positioning | ux | ux_operator | ux_product | brain | idea | init_client
+
+# Initialize a fresh client (removes brain + idea_extract + clears outputs; use for clean testing)
+# python src/main.py --client test-unimind-clean --mode init_client
+# Optionally invalidate stale brief: python src/main.py --client test-unimind-clean --mode init_client --reset-brief
 
 # Via environment variables
 PRODUCT="..." AUDIENCE="..." PAIN="..." OFFER="..." TONE="..." CTA="..." python src/main.py

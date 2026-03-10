@@ -286,7 +286,12 @@ def _run_generate_endpoint(req: GenerateRequest, mode: str) -> dict:
             overrides[f] = val.strip()
 
     # Build merged generation context: overrides > brain > brief
+    # Cross-product detection will suppress stale brief fields automatically
     gen_ctx = build_generation_context(brief=brief, profile=profile, overrides=overrides)
+
+    # If cross-product was detected, include it in the response
+    if gen_ctx.cross_product_detected:
+        print(f"API: cross-product detected for client '{client_slug}': {gen_ctx.coherence_notes}")
 
     # Readiness check
     readiness = assess_readiness(gen_ctx, mode)
@@ -312,7 +317,7 @@ def _run_generate_endpoint(req: GenerateRequest, mode: str) -> dict:
         positioning=positioning, narrative=narrative,
     )
 
-    return {
+    result = {
         "mode": mode,
         "text": final_text,
         "latest_path": str(latest_path),
@@ -330,3 +335,10 @@ def _run_generate_endpoint(req: GenerateRequest, mode: str) -> dict:
             "message": nar_readiness.message,
         } if nar_readiness.message else None,
     }
+    if gen_ctx.cross_product_detected:
+        result["cross_product_warning"] = {
+            "detected": True,
+            "notes": gen_ctx.coherence_notes,
+            "suppressed_fields": [k for k, v in gen_ctx.sources.items() if "suppressed" in v],
+        }
+    return result

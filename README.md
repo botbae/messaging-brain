@@ -61,7 +61,11 @@ Interactive docs: `http://localhost:8000/docs`
 ```bash
 # All available modes
 python src/main.py --mode <mode> --client <name>
-# modes: idea | brain | positioning | landing | ux | linkedin | ux_microcopy | launch_pack | audit | ux_operator | ux_product
+# modes: idea | brain | positioning | landing | ux | linkedin | ux_microcopy | launch_pack | audit | ux_operator | ux_product | init_client
+
+# Initialize a fresh client for testing (removes brain, idea_extract, clears outputs)
+# python src/main.py --client test-unimind-clean --mode init_client
+# Full reset including brief: python src/main.py --client test-unimind-clean --mode init_client --reset-brief
 
 # From a brief file
 python src/main.py --brief briefs/sample.json --mode landing

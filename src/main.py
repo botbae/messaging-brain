@@ -32,6 +32,7 @@ from core.strategy_context import (
     build_strategy_layers,
     log_strategy_context,
 )
+from core.client_state import init_client_state
 from core.output import next_output_path, slugify
 from core.utils import clean_phrase
 from product_profile import ProductProfile
@@ -70,7 +71,7 @@ def _extract_product_name(idea_text: str, category: str = "") -> str:
     """Extract a clean product name from a free-form idea string.
 
     Priority:
-      1. Everything before 'is a' / 'is an' in the idea text (e.g. 'Unimind is an...' → 'Unimind')
+      1. Everything before 'is a' / 'is an' in the idea text (e.g. 'Unimind is an...' -> 'Unimind')
       2. First capitalized word when idea starts with a proper noun
       3. First three words if all else fails
     Falls back to first 40 chars of category, then raw truncated idea.
@@ -93,7 +94,7 @@ def _extract_product_name(idea_text: str, category: str = "") -> str:
     return " ".join(words[:3]) if words else text[:40]
 
 
-def _idea_to_profile(extract: dict, idea_text: str) -> "ProductProfile":
+def _idea_to_profile(extract: dict, idea_text: str, client_slug: str | None = None) -> "ProductProfile":
     """Convert raw idea extraction output to an initial ProductProfile (Messaging Brain seed).
 
     Fields that need a full brief (current_alternative, desired_outcome, anti_positioning)
@@ -119,6 +120,8 @@ def _idea_to_profile(extract: dict, idea_text: str) -> "ProductProfile":
         goal="",
         context="Seeded from idea extraction. Run --mode brain with a full brief to refine.",
         decisions=decisions,
+        source_idea=idea_text.strip()[:200] if idea_text else "",
+        client_name=client_slug or "",
     )
 
 
@@ -147,13 +150,13 @@ def _resolve_brief_from_profile(brief: ClientBrief, profile: "ProductProfile") -
     """Return a new ClientBrief where stale fields are overridden by the saved ProductProfile.
 
     Priority per field:
-      product  → profile.product (brain-set description)
-      audience → decisions.icp → profile.audience → brief.audience
-      pain     → decisions.primary_problem → profile.problem → brief.pain
-      offer    → decisions.desired_outcome → decisions.differentiation
-                 → profile.advantage → brief.offer
-      tone     → profile.tone → brief.tone
-      cta / examples / context → brief only (supplementary, not overridden by brain)
+      product  -> profile.product (brain-set description)
+      audience -> decisions.icp -> profile.audience -> brief.audience
+      pain     -> decisions.primary_problem -> profile.problem -> brief.pain
+      offer    -> decisions.desired_outcome -> decisions.differentiation
+                 -> profile.advantage -> brief.offer
+      tone     -> profile.tone -> brief.tone
+      cta / examples / context -> brief only (supplementary, not overridden by brain)
     """
     d = profile.decisions or {}
     # Apply clean_phrase to product so a raw idea string stored by an older /idea run
@@ -199,9 +202,25 @@ def _recover_json_object(raw: str) -> str:
         candidate = candidate + "\n}"
     else:
         candidate = raw[start : end + 1]
-    # Remove trailing commas before closing brace: {"a": "b",} → {"a": "b"}
+    # Remove trailing commas before closing brace: {"a": "b",} -> {"a": "b"}
     candidate = _re.sub(r",\s*}", "}", candidate)
     return candidate
+
+
+def _invalidate_stale_brief(client_slug: str, profile: ProductProfile) -> None:
+    """When brain has been updated to a new product, invalidate the old brief.json.
+
+    Renames clients/<client>/brief.json -> brief.json.stale so it cannot leak
+    into generation, but is preserved for recovery.
+    """
+    brief_path = Path("clients") / client_slug / "brief.json"
+    if not brief_path.exists():
+        return
+    stale_path = brief_path.with_suffix(".json.stale")
+    brief_path.rename(stale_path)
+    print(f"Stale brief invalidated: {brief_path} -> {stale_path}")
+    print(f"  Reason: brain product is '{profile.product}', brief was for a different product.")
+    print(f"  To restore, rename {stale_path} back to {brief_path}")
 
 
 def _run_idea_mode(idea_text: str, client_slug: str | None = None) -> tuple[dict | None, Path | None]:
@@ -210,6 +229,7 @@ def _run_idea_mode(idea_text: str, client_slug: str | None = None) -> tuple[dict
     If --client is provided:
       - Saves the raw extract to clients/<client>/idea_extract.json
       - Creates an initial product_profile.json (Messaging Brain seed)
+      - Invalidates any existing brief.json that refers to a different product
       - Run --mode brain with a full brief to refine the brain further
 
     Returns (result_dict, profile_path) or (None, None) on failure.
@@ -269,8 +289,27 @@ def _run_idea_mode(idea_text: str, client_slug: str | None = None) -> tuple[dict
             json.dump(result, f, indent=2)
         print(f"Saved idea extract: {extract_path}")
 
-        profile = _idea_to_profile(result, idea_text)
+        profile = _idea_to_profile(result, idea_text, client_slug=client_slug)
         profile_path = client_dir / "product_profile.json"
+
+        # Check if existing brief.json refers to a different product
+        # and invalidate it to prevent cross-product contamination
+        old_brief_path = client_dir / "brief.json"
+        if old_brief_path.exists():
+            try:
+                with open(old_brief_path, encoding="utf-8") as f:
+                    old_brief = json.load(f)
+                old_product = (old_brief.get("product") or "").strip().lower()
+                new_product = (profile.product or "").strip().lower()
+                if old_product and new_product and old_product != new_product:
+                    # Check if they're clearly different
+                    old_words = set(old_product.split())
+                    new_words = set(new_product.split())
+                    if not (old_words & new_words):
+                        _invalidate_stale_brief(client_slug, profile)
+            except Exception:
+                pass  # brief.json is malformed — will be caught elsewhere
+
         profile.save(profile_path)
         print(f"Created initial brain: {profile_path}")
         print("Run --mode brain with a full brief to refine the brain.")
@@ -295,6 +334,8 @@ def _run_brain_mode(brief, client_slug: str | None) -> tuple["ProductProfile", P
         goal=(decisions.get("desired_outcome") or "").strip(),
         context=(brief.context or "").strip(),
         decisions=decisions,
+        source_idea="",
+        client_name=client_slug or "",
     )
     client_dir = client_slug or slugify(brief.product or "product")
     profile_path = Path("clients") / client_dir / "product_profile.json"
@@ -427,8 +468,100 @@ def _run_generate(
     return final_text, out_path, latest_path
 
 
+# ---------------------------------------------------------------------------
+# Debug / integrity helpers
+# ---------------------------------------------------------------------------
+
+def _print_resolved_context(
+    client: str | None,
+    gen_ctx: "GenerationContext",
+    brain_path: Path | None,
+    brief_path: Path | None,
+    profile: "ProductProfile | None",
+) -> None:
+    """Print resolved generation context before generation begins (source per field, mismatch status)."""
+    src = gen_ctx.sources
+    print("\n--- RESOLVED GENERATION CONTEXT ---")
+    print(f"  Client:       {client or '(anonymous)'}")
+    print(f"  Product:      {gen_ctx.product or '(empty)'}  (source: {src.get('product', '?')})")
+    print(f"  Audience:     {gen_ctx.audience or '(empty)'}  (source: {src.get('audience', '?')})")
+    print(f"  Pain:         {gen_ctx.pain or '(empty)'}  (source: {src.get('pain', '?')})")
+    print(f"  Offer:        {gen_ctx.offer or '(empty)'}  (source: {src.get('offer', '?')})")
+    print(f"  Tone:         {gen_ctx.tone or '(empty)'}  (source: {src.get('tone', '?')})")
+    print(f"  CTA:          {gen_ctx.cta or '(empty)'}  (source: {src.get('cta', '?')})")
+    print(f"  Brain:        {brain_path or '(none)'}")
+    print(f"  Brief:        {brief_path or '(none)'}")
+    if profile:
+        print(f"  Profile updated_at:    {profile.updated_at or '(not set)'}")
+        print(f"  Profile fingerprint:   {profile.product_fingerprint or '(not set)'}")
+        print(f"  Profile source_idea:   {(profile.source_idea or '(not set)')[:80]}")
+    if gen_ctx.cross_product_detected:
+        print(f"  *** CROSS-PRODUCT: YES — brief-only fields suppressed ***")
+        for note in gen_ctx.coherence_notes:
+            print(f"    {note}")
+    else:
+        print(f"  Cross-product: no")
+    print("--- END CONTEXT ---\n")
+
+
+def _check_client_integrity(
+    client_slug: str,
+    gen_ctx: "GenerationContext",
+    profile: "ProductProfile | None",
+) -> None:
+    """Fail loudly if client state is inconsistent and cannot be auto-repaired.
+
+    The generation_context builder already suppresses brief-only fields when
+    cross-product is detected. This function enforces the hard invariants:
+    - Brain file must be loadable if it exists
+    - If cross-product is detected AND brain has no core data, we cannot proceed
+    """
+    client_dir = Path("clients") / client_slug
+    brain_path = client_dir / "product_profile.json"
+
+    # If client directory has a brain file but it wasn't loaded, something is wrong
+    if brain_path.exists() and not profile:
+        print(f"FATAL: Client '{client_slug}' has a brain at {brain_path} but it could not be loaded.")
+        print("Check the file for JSON errors. Aborting.")
+        sys.exit(1)
+
+    # If cross-product was detected, warn clearly (brief fields already suppressed)
+    if gen_ctx.cross_product_detected:
+        print("WARNING: Brief and brain refer to different products.")
+        print("Brief-only fields (tone, cta, examples, context) have been suppressed.")
+        print("Generation will use brain as the sole source of truth.")
+        print("To fix: update brief.json to match the current product, or re-run --mode idea.\n")
+
+    # If no product at all after merge, fail
+    if not (gen_ctx.product or "").strip():
+        print(f"FATAL: No product resolved for client '{client_slug}'.")
+        print("Run --mode idea or provide a brief with a product field. Aborting.")
+        sys.exit(1)
+
+
 def run() -> None:
-    brief, mode, client_slug, brief_path_used, idea_text = build_brief_and_mode()
+    brief, mode, client_slug, brief_path_used, idea_text, reset_brief = build_brief_and_mode()
+
+    # Client init/reset: no brief or generation needed
+    if mode == "init_client":
+        if not client_slug:
+            print("--mode init_client requires --client <name>")
+            sys.exit(1)
+        result = init_client_state(client_slug, reset_brief=reset_brief)
+        if result.get("error"):
+            print(result["error"])
+            sys.exit(1)
+        print(f"Client '{client_slug}' initialized.")
+        if result.get("brain_removed"):
+            print("  - product_profile.json removed")
+        if result.get("idea_extract_removed"):
+            print("  - idea_extract.json removed")
+        if result.get("outputs_cleared"):
+            print("  - outputs/ cleared")
+        if result.get("brief_invalidated"):
+            print("  - brief.json invalidated (renamed to brief.json.stale)")
+        print("Next: run --mode idea --idea \"...\" --client " + client_slug + " then --mode brain --brief clients/" + client_slug + "/brief.json --client " + client_slug)
+        return
 
     if mode == "idea":
         if not idea_text:
@@ -444,12 +577,33 @@ def run() -> None:
         return
 
     # Build generation context: merges brain + brief with clear priority.
-    # Overrides > Brain > Brief. This replaces the old _resolve_brief_from_profile flow.
+    # Overrides > Brain > Brief. Cross-product detection suppresses stale brief fields.
     profile = _load_profile_if_exists(client_slug)
     gen_ctx = build_generation_context(brief=brief, profile=profile)
     brain = gen_ctx.decisions if gen_ctx.decisions else None
     # Replace brief with merged version so generators get the right data
     brief = context_to_brief(gen_ctx)
+
+    # --- Debug print: always show resolved context ---
+    if client_slug:
+        brain_path = Path("clients") / client_slug / "product_profile.json"
+        brief_path_client = Path("clients") / client_slug / "brief.json"
+        _print_resolved_context(
+            client=client_slug,
+            gen_ctx=gen_ctx,
+            brain_path=brain_path if brain_path.exists() else None,
+            brief_path=brief_path_client if brief_path_client.exists() else None,
+            profile=profile,
+        )
+        _check_client_integrity(client_slug, gen_ctx, profile)
+    else:
+        _print_resolved_context(
+            client=None,
+            gen_ctx=gen_ctx,
+            brain_path=None,
+            brief_path=brief_path_used,
+            profile=profile,
+        )
 
     if brain:
         print(f"Brain loaded: clients/{client_slug}/product_profile.json")

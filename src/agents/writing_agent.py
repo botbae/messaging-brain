@@ -124,6 +124,29 @@ def _normalize_positioning_output(raw: str) -> str:
     return t.strip()
 
 
+def _positioning_sections_distinct(text: str) -> bool:
+    """Return True if CORE PROBLEM and WHY CURRENT OPTIONS FAIL are meaningfully distinct.
+
+    CORE PROBLEM = the user's lived friction.
+    WHY CURRENT OPTIONS FAIL = the structural flaw in the alternative.
+    They must not say the same thing.
+    """
+    problem_text = _section_first_line(text, "CORE PROBLEM", "CURRENT ALTERNATIVE")
+    why_text = _section_first_line(text, "WHY CURRENT OPTIONS FAIL", "DESIRED OUTCOME")
+    if not problem_text or not why_text:
+        return True  # can't compare, let other validators handle missing sections
+    # Exact match → fail
+    if problem_text.strip().lower() == why_text.strip().lower():
+        return False
+    # High word overlap → fail
+    p_words = set(problem_text.lower().split())
+    w_words = set(why_text.lower().split())
+    if not p_words or not w_words:
+        return True
+    overlap = len(p_words & w_words) / min(len(p_words), len(w_words))
+    return overlap < 0.6
+
+
 def _validate_positioning_output(text: str) -> bool:
     """Return True if positioning output has all required sections and no banned phrases."""
     if not text or len(text.strip()) < 300:
@@ -131,6 +154,8 @@ def _validate_positioning_output(text: str) -> bool:
     if not _validate_headers(text, _POSITIONING_HEADERS):
         return False
     if _contains_banned_phrases(text, _POSITIONING_BANNED):
+        return False
+    if not _positioning_sections_distinct(text):
         return False
     return True
 
@@ -162,6 +187,43 @@ def _normalize_ux_output(raw: str) -> str:
     return "\n".join(out).strip()
 
 
+def _clean_ux_context(text: str) -> str:
+    """Clean UX CONTEXT section: remove strategy labels, 'Goal:', bloated sentences.
+
+    UX CONTEXT after 'TARGET: product' must be one short, readable paragraph.
+    """
+    if not text or "UX CONTEXT" not in text:
+        return text
+    ctx_start = text.find("UX CONTEXT")
+    # Find next header
+    next_header_pos = len(text)
+    for h in ("ONBOARDING", "EMPTY STATE", "ERROR", "TOAST", "BUTTON LABELS"):
+        hp = text.find(h, ctx_start + 10)
+        if 0 < hp < next_header_pos:
+            next_header_pos = hp
+    ctx_block = text[ctx_start:next_header_pos]
+    ctx_lines = ctx_block.splitlines()
+    cleaned_lines = []
+    for line in ctx_lines:
+        s = line.strip()
+        # Keep header and TARGET line
+        if s == "UX CONTEXT" or s.startswith("TARGET:"):
+            cleaned_lines.append(line)
+            continue
+        # Remove strategy label prefixes
+        for prefix in ("Goal:", "Core problem:", "Primary problem:", "Desired outcome:", "Category:", "Differentiation:"):
+            if s.startswith(prefix):
+                s = s[len(prefix):].strip()
+                break
+        # Remove lines that are just strategy labels
+        if s.lower().startswith("to develop a clear and compelling") or s.lower().startswith("goal:"):
+            continue
+        if s:
+            cleaned_lines.append(s)
+    new_ctx = "\n".join(cleaned_lines)
+    return text[:ctx_start] + new_ctx + "\n\n" + text[next_header_pos:]
+
+
 def _ux_domain_drift_cleanup(text: str, product_name: str = "", category: str = "") -> str:
     """Post-generation pass: replace generic SaaS patterns with product-native equivalents.
 
@@ -172,9 +234,11 @@ def _ux_domain_drift_cleanup(text: str, product_name: str = "", category: str = 
     if not text:
         return text
 
-    # Determine product-native replacement nouns from category
+    # Determine product-native replacement nouns from category + product name
     cat_lower = (category or "").lower()
-    if any(w in cat_lower for w in ("messaging", "positioning", "copy", "content", "launch")):
+    prod_lower = (product_name or "").lower()
+    _drift_haystack = f"{cat_lower} {prod_lower}"
+    if any(w in _drift_haystack for w in ("messaging", "positioning", "copy", "content", "launch")):
         output_noun = "output"
         setup_noun = "messaging brain"
         action_noun = "generate"
@@ -256,6 +320,16 @@ def _section_first_line(text: str, header: str, next_header: str = "") -> str:
     return lines[0] if lines else ""
 
 
+def _strip_landing_preamble(text: str) -> str:
+    """Strip any LLM preamble that appears before the HEADLINE header."""
+    if not text:
+        return text
+    idx = text.find("HEADLINE")
+    if idx > 0 and text[:idx].strip():
+        return text[idx:]
+    return text
+
+
 def _validate_ux_output(text: str, target: Optional[str] = None) -> bool:
     """Check headers in order, counts (3,3,3,3,8), no banned phrases, no bracket placeholders. If target=='product', apply product-specific rules."""
     if not text or not text.strip():
@@ -303,6 +377,18 @@ def _validate_ux_output(text: str, target: Optional[str] = None) -> bool:
             lbl = re.sub(r"^\d+\.\s*", "", lbl_line).strip()
             if len(lbl.split()) > 4:
                 return False
+        # Reject generic shell-native button labels when target is product
+        if target == "product" and bl_lines:
+            _UX_BUTTON_SHELL_BANNED = (
+                "complete setup", "view my results", "edit profile", "save progress",
+                "start over", "try again", "see history", "get help", "update profile",
+                "view results", "get started", "see results", "view history",
+                "save changes", "confirm changes", "submit", "proceed",
+            )
+            for lbl_line in bl_lines:
+                lbl = re.sub(r"^\d+\.\s*", "", lbl_line).strip().lower()
+                if lbl in _UX_BUTTON_SHELL_BANNED:
+                    return False
 
     if target == "product":
         if _contains_banned_phrases(text, _UX_PRODUCT_BANNED):
@@ -417,6 +503,11 @@ class WritingAgent:
             "book a short working session", "paste your brief", "request a rewrite",
             "under an hour", "within minutes", "in under", "in minutes",
             "sign up today", "get started today", "step complete", "move to the next stage",
+            # Proof placeholder that bleeds across all products
+            "early users report clearer messaging",
+            # Generic vague WHY phrasing
+            "existing tools were not built specifically for this problem",
+            "not built specifically for this problem",
         )
 
         def _headline_has_question(text: str) -> bool:
@@ -430,11 +521,43 @@ class WritingAgent:
 
         def _headline_ok(text: str) -> bool:
             first = _section_first_line(text, "HEADLINE", "SUBHEAD")
-            return len(first.split()) <= 12 if first else True
+            if not first:
+                return True
+            words = first.split()
+            if len(words) > 10:
+                return False
+            lower = first.strip().lower()
+            if ":" in first:
+                return False
+            _INF_STARTS = (
+                "to help ", "to simplify ", "to develop ", "to enable ", "to make ",
+                "to build ", "to create ", "to provide ", "to give ", "to allow ",
+                "to ensure ", "to support ", "to deliver ",
+            )
+            for bad in _INF_STARTS:
+                if lower.startswith(bad):
+                    return False
+            return True
 
         def _subhead_ok(text: str) -> bool:
             first = _section_first_line(text, "SUBHEAD", "WHO ITS FOR")
-            return len(first.split()) <= 25 if first else True
+            return len(first.split()) <= 20 if first else True
+
+        def _who_its_for_ok(text: str) -> bool:
+            """WHO ITS FOR must be a noun phrase (user type only), not an action or outcome."""
+            first = _section_first_line(text, "WHO ITS FOR", "PROBLEM")
+            if not first or len(first.strip()) < 5:
+                return True
+            lower = first.strip().lower()
+            verb_starts = ("simplify", "complete", "develop", "make ", "help ", "enable ", "empower ")
+            if any(lower.startswith(v) for v in verb_starts):
+                return False
+            first_word = lower.split()[0] if lower.split() else ""
+            if first_word in ("to", "for") and len(lower.split()) > 1:
+                second = lower.split()[1]
+                if second in ("simplify", "complete", "develop", "help", "make", "enable"):
+                    return False
+            return True
 
         def _sections_distinct(text: str) -> bool:
             problem_text = _section_first_line(text, "PROBLEM", "WHY CURRENT OPTIONS FAIL")
@@ -448,6 +571,53 @@ class WritingAgent:
             overlap = len(p_words & w_words) / min(len(p_words), len(w_words))
             return overlap < 0.6
 
+        def _what_this_is_ok(text: str) -> bool:
+            """WHAT THIS IS must be: CATEGORY + MECHANISM + PRODUCT ACTION.
+
+            Must contain a mechanism verb AND read as a complete sentence.
+            Rejects vague broad descriptions and shorthand fragments.
+            """
+            content = _section_first_line(text, "WHAT THIS IS", "DIFFERENTIATION")
+            if not content or len(content.strip()) < 20:
+                return False
+            lower = content.strip().lower()
+            mechanism_verbs = ("turns", "helps", "guides", "tracks", "manages", "explains", "generates", "records", "creates", "builds", "completes", "registers")
+            if not any(v in lower for v in mechanism_verbs):
+                return False
+            # Reject vague broad category descriptions
+            _WHAT_THIS_IS_BANNED = (
+                "product development and marketing",
+                "product development",
+                "marketing for",
+                "development and marketing",
+                "solutions for",
+                "services for",
+                "platform for companies",
+                "tool for companies using",
+            )
+            if any(b in lower for b in _WHAT_THIS_IS_BANNED):
+                return False
+            # Reject shorthand parenthetical fragments like "(KYC, risk, SIP)"
+            if re.search(r"\([^)]{3,30}\)$", content.strip()):
+                return False
+            # Must be a proper sentence (≥8 words)
+            if len(content.strip().split()) < 8:
+                return False
+            return True
+
+        def _diff_ok(text: str) -> bool:
+            """DIFFERENTIATION must not be a near-duplicate of WHAT THIS IS."""
+            what = _section_first_line(text, "WHAT THIS IS", "DIFFERENTIATION")
+            diff = _section_first_line(text, "DIFFERENTIATION", "PROOF / SIGNALS")
+            if not what or not diff:
+                return True
+            w_words = set(what.lower().split())
+            d_words = set(diff.lower().split())
+            if not w_words or not d_words:
+                return True
+            overlap = len(w_words & d_words) / min(len(w_words), len(d_words))
+            return overlap < 0.6
+
         def _valid(out: str) -> bool:
             return (
                 bool(out)
@@ -456,7 +626,10 @@ class WritingAgent:
                 and not _headline_has_question(out)
                 and _headline_ok(out)
                 and _subhead_ok(out)
+                and _who_its_for_ok(out)
                 and _sections_distinct(out)
+                and _what_this_is_ok(out)
+                and _diff_ok(out)
             )
 
         # Extract positioning fields from PositioningContext if available, else from decisions
@@ -480,17 +653,24 @@ class WritingAgent:
             "Your output must read like strategic product copy — not a filled template. "
             "Every section must feel connected. The page should tell a coherent story from headline to CTA. "
             "\n"
-            "HEADLINE: ≤ 12 words. Express the PROMISE — what the user gets. "
-            "  Not a description of the ICP. Not a question. Not a slogan. "
-            "  Sharp, specific, declarative. "
-            "SUBHEAD: ≤ 25 words. One sentence. What the product IS and how it gets them there. "
-            "WHO ITS FOR: 1-2 direct sentences. Name the ICP and their situation. No emotional framing. "
+            "HEADLINE: max 10 words. Express the OUTCOME the user gets — not a description of the ICP, not a question, not a slogan. "
+            "  NO colon. NO phrases like 'to help', 'to simplify', 'to develop', 'to enable'. "
+            "  Sharp, specific, declarative. Example: 'Turn messy product ideas into clear messaging.' "
+            "SUBHEAD: max 20 words. One sentence. Product + mechanism (what it is and how it works). "
+            "WHO ITS FOR: A noun phrase only — the user type. Examples: 'First-time retail investors in India.', 'B2B SaaS founders launching new products.', 'Gaushala managers responsible for non-milking cows.' "
+            "  NO verbs like simplify / complete / develop. NO action or outcome — only who they are. "
             "PROBLEM: The user's lived experience of the friction. Write it as if describing their actual day. "
             "  Do NOT name alternatives here — focus on what the user FEELS and DOES. "
             "WHY CURRENT OPTIONS FAIL: Name the specific ENEMY (the current alternative). "
             "  Explain the structural flaw — why it was never designed for this problem. "
             "  This section advances the argument beyond PROBLEM. Never repeat the pain — explain the gap. "
-            "WHAT THIS IS: Category + core mechanism in 1-2 sentences. "
+            "WHAT THIS IS: CATEGORY + MECHANISM. One sentence naming the category and how it works. "
+            "  Examples: 'An AI messaging workspace that turns rough product thinking into positioning, landing copy, and UX drafts.' "
+            "  'A guided onboarding assistant that explains risk, completes KYC, and helps new investors start their first SIP.' "
+            "  'A welfare management tool for registering animals, tracking health checks, and managing sponsors.' "
+            "  NOT vague (e.g. 'Product development and marketing for B2B SaaS companies'). "
+            "  NOT shorthand (e.g. 'Fintech onboarding for first-time investors (KYC, risk, SIP)'). "
+            "  Must be a full sentence with ≥ 8 words. Must contain a mechanism verb (turns, helps, guides, tracks, manages, explains, generates, records, creates, builds, completes, registers). "
             "DIFFERENTIATION: Why this, not the alternative. Close with what this is NOT. "
             "  Must say something new — do not repeat WHAT THIS IS. "
             "PROOF / SIGNALS: One believable claim grounded in real product behavior. "
@@ -512,12 +692,13 @@ class WritingAgent:
         )
         system_strict = (
             "Senior product marketer. STRICT format. "
-            "HEADLINE: ≤ 12 words, the promise. SUBHEAD: ≤ 25 words, product + mechanism. "
-            "WHO ITS FOR: 1-2 sentences, direct. "
+            "HEADLINE: max 10 words, outcome only. No colon. No 'to help/simplify/develop'. "
+            "SUBHEAD: max 20 words, one sentence, product + mechanism. "
+            "WHO ITS FOR: noun phrase only (user type). No verbs like simplify/complete/develop. "
             "PROBLEM: user's lived pain, no alternatives mentioned. "
             "WHY CURRENT OPTIONS FAIL: name the enemy, explain structural flaw, do NOT repeat PROBLEM. "
-            "WHAT THIS IS: category + mechanism. DIFFERENTIATION: what's new, then what this is NOT. "
-            "PROOF: one believable claim, no stats, no time claims. CTA: one line, product verb. "
+            "WHAT THIS IS: category + mechanism (how it works). Full sentence ≥ 8 words. Must contain a mechanism verb (turns/helps/guides/tracks/manages/explains/generates/records/creates/builds/completes/registers). Not vague. Not shorthand. "
+            "DIFFERENTIATION: what's new, then what this is NOT. PROOF: one believable claim, no stats, no time claims. CTA: one line, product verb. "
             "Advance argument across sections. No repetition. Prose, not bullets. "
             "Headers: HEADLINE, SUBHEAD, WHO ITS FOR, PROBLEM, WHY CURRENT OPTIONS FAIL, WHAT THIS IS, DIFFERENTIATION, PROOF / SIGNALS, CTA. "
             "No banned phrases. Output only."
@@ -561,10 +742,10 @@ class WritingAgent:
             "=== SECTION MAPPING (use as guide, do not include in output) ===",
             f"  HEADLINE ← promise: {promise}",
             f"  PROBLEM ← problem story: {problem_story or core_problem}",
-            f"  WHY CURRENT OPTIONS FAIL ← enemy: {enemy} + anti-positioning: {anti_positioning}",
+            f"  WHY CURRENT OPTIONS FAIL ← name '{enemy}' specifically; explain why that approach structurally fails for this problem (not why the problem is hard — why THAT alternative misses it)",
             f"  WHAT THIS IS ← solution story: {solution_story or category}",
-            f"  DIFFERENTIATION ← differentiation: {differentiation}",
-            f"  PROOF / SIGNALS ← transformation: {transformation or 'Early adopter signal'}",
+            f"  DIFFERENTIATION ← differentiation: {differentiation} — must say something NEW beyond WHAT THIS IS; close with what this is NOT",
+            f"  PROOF / SIGNALS ← {transformation or f'one soft, believable adoption signal tied to the specific outcome ({promise[:60] if promise else outcome[:60]}); no time claims, no stats, no made-up data'}",
             f"  CTA ← promise: {promise}",
             "",
             "Output the document. No preamble.",
@@ -577,27 +758,93 @@ class WritingAgent:
             validator_fn=_valid,
         )
         if out:
-            return (out.rstrip("\n") + "\n")
+            return (_strip_landing_preamble(out).rstrip("\n") + "\n")
         return self._write_landing_page_fallback(brief, decisions)
 
     def _write_landing_page_fallback(self, brief: ClientBrief, decisions: dict) -> str:
         """Rule-based landing template with new headers when LLM invalid or unavailable."""
         icp = decisions.get("icp", "") or clean_phrase(brief.audience) or "Your ideal customers"
+        icp_lower = icp.lower().rstrip(".")
         problem = decisions.get("primary_problem", "") or clean_sentence(brief.pain or "Core problem not articulated.")
-        alternative_raw = decisions.get("current_alternative", "") or clean_phrase(brief.pain or "") or ""
-        alternative = alternative_raw if alternative_raw else f"Existing tools that don't address {icp.lower().rstrip('.')} specifically."
-        outcome = decisions.get("desired_outcome", "") or clean_phrase(brief.offer) or "Clear messaging that converts."
+        # WHY CURRENT OPTIONS FAIL must be structurally different from PROBLEM.
+        # PROBLEM = the user's lived pain.
+        # WHY CURRENT OPTIONS FAIL = the alternative's structural flaw.
+        # Never fall back to brief.pain here — that would duplicate the PROBLEM section.
+        alternative_raw = decisions.get("current_alternative", "")
+        if alternative_raw:
+            alt_name = alternative_raw.split(".")[0].strip()
+            if len(alt_name.split()) <= 8:
+                # Short name/label — build a WHY sentence around it
+                why_fail = (
+                    f"{alt_name} was not designed for {icp_lower}. "
+                    f"It covers the broader category but lacks the specific mechanics this problem requires, "
+                    f"forcing {icp_lower} to patch gaps with manual workarounds that slow outcomes."
+                )
+            else:
+                # Already a descriptive sentence — use directly
+                why_fail = alternative_raw
+        else:
+            why_fail = (
+                f"The tools {icp_lower} rely on today were built for general-purpose use, not this specific job. "
+                f"They miss the particular mechanics of the problem and force workarounds that add overhead."
+            )
+        outcome = decisions.get("desired_outcome", "") or clean_phrase(brief.offer) or "A clear path to the outcome that matters."
         category = decisions.get("category_frame", "") or f"{clean_phrase(brief.product) or 'Product'} for {icp}."
         diff = decisions.get("differentiation", "") or clean_phrase(brief.offer) or "Focused on this outcome."
         product = clean_phrase(brief.product) or "This product"
         cta = clean_sentence(brief.cta) if brief.cta else f"Get started with {product}."
         proof = clean_phrase(brief.examples or "") or ""
-        proof_block = f"From the brief: {proof}" if proof else "Early users complete their first step in minutes."
+        if proof:
+            proof_block = proof
+        else:
+            # Build a soft, product-specific adoption signal — category-aware, never generic
+            _proof_haystack = f"{category.lower()} {product.lower()}"
+            if any(w in _proof_haystack for w in ("messaging", "positioning", "copy", "saas", "ai ", "landing")):
+                proof_block = "Founders who complete their first brief report clearer product narratives within the session."
+            elif any(w in _proof_haystack for w in ("invest", "finance", "sip", "kyc", "wealth", "fintech")):
+                proof_block = "First-time investors who complete onboarding start their first SIP without needing external guidance."
+            elif any(w in _proof_haystack for w in ("sanctuary", "animal", "gaushala", "welfare", "cow")):
+                proof_block = "Gaushala managers who use the tool report fewer missed health check records within the first month."
+            else:
+                _prod_short = (product or "this product")[:30]
+                proof_block = f"Early users of {_prod_short} reach their first outcome without the overhead of general-purpose alternatives."
+        headline_raw = f"{outcome}" if len(outcome.split()) <= 10 else " ".join(outcome.split()[:10])
+        # Strip infinitive starts from outcome-derived headlines
+        _INF_STARTS = (
+            "to develop ", "to help ", "to simplify ", "to enable ", "to make ",
+            "to build ", "to create ", "to provide ", "to give ", "to allow ",
+            "to ensure ", "to support ", "to deliver ",
+        )
+        hl_lower = headline_raw.strip().lower()
+        headline = headline_raw
+        for inf in _INF_STARTS:
+            if hl_lower.startswith(inf):
+                # Drop the infinitive, capitalise the remainder
+                remainder = headline_raw.strip()[len(inf):].strip()
+                headline = remainder[:1].upper() + remainder[1:] if remainder else product
+                break
+        subhead = f"For {icp}. {problem}"
+        if len(subhead.split()) > 20:
+            subhead = " ".join(subhead.split()[:20])
+        # WHAT THIS IS must be category + mechanism (turns/helps/guides/tracks/manages/explains/generates/records)
+        cat_lower = category.lower()
+        _landing_haystack = f"{cat_lower} {product.lower()} {problem.lower()} {outcome.lower()}"
+        if any(w in _landing_haystack for w in ("messaging", "positioning", "copy", "content", "launch", "saas", "ai ", "landing")):
+            what_this_is = f"An AI messaging workspace that turns rough product thinking into positioning, landing copy, and UX drafts."
+        elif any(w in _landing_haystack for w in ("invest", "finance", "sip", "risk", "kyc", "wealth", "fintech")):
+            what_this_is = "A guided onboarding assistant that explains risk, completes KYC, and helps new investors start their first SIP."
+        elif any(w in _landing_haystack for w in ("sanctuary", "shelter", "animal", "care", "rescue", "cow", "gaushala", "welfare")):
+            what_this_is = "A welfare management tool that registers animals, tracks health checks, and manages sponsors."
+        else:
+            # Build a proper WHAT THIS IS with category + mechanism for unknown domains
+            _out = (outcome or "a clear result").split(".")[0].strip().lower()[:50]
+            _prob = (problem or "the core challenge").split(".")[0].strip().lower()[:50]
+            what_this_is = f"A focused tool that helps {icp_lower} move from {_prob} to {_out}."
         body = f"""HEADLINE
-{product}: {outcome}
+{headline}
 
 SUBHEAD
-For {icp}. {problem}
+{subhead}
 
 WHO ITS FOR
 {icp}
@@ -606,10 +853,10 @@ PROBLEM
 {problem}
 
 WHY CURRENT OPTIONS FAIL
-{alternative}
+{why_fail}
 
 WHAT THIS IS
-{category}
+{what_this_is}
 
 DIFFERENTIATION
 {diff}
@@ -642,6 +889,9 @@ CTA
             "book a short working session", "paste your brief", "request a rewrite",
             "under an hour", "within minutes", "in under", "in minutes",
             "sign up today", "get started today", "step complete", "move to the next stage",
+            "early users report clearer messaging",
+            "existing tools were not built specifically for this problem",
+            "not built specifically for this problem",
         )
 
         if not draft or not _validate_headers(draft, _LANDING_HEADERS):
@@ -658,7 +908,7 @@ CTA
                     f"WHY CURRENT OPTIONS FAIL\n"
                     f"Current tools {audience.lower()} rely on were not built for {offer.lower()}. "
                     f"They cover the category broadly but miss the specific friction {audience.lower()} face.\n\n"
-                    f"WHAT THIS IS\n{product} is a dedicated tool for {audience.lower()}.\n\n"
+                    f"WHAT THIS IS\n{product} helps {audience.lower()} get from {(clean_phrase(brief.pain) or 'the core problem')[:50].lower()} to {(clean_phrase(brief.offer) or 'a clear outcome')[:50].lower()}.\n\n"
                     f"DIFFERENTIATION\n{offer}.\n\n"
                     f"PROOF / SIGNALS\nEarly users reach {offer.lower()} without the overhead of general-purpose alternatives.\n\n"
                     f"CTA\n{cta}\n")
@@ -669,32 +919,110 @@ CTA
             "Do NOT replace product-specific language with generic templates. Do NOT add new content. "
             "Your job is to CUT, SHARPEN, and REMOVE REPETITION.\n"
             "RULES:\n"
-            "1. HEADLINE: ≤ 12 words. Cut to a sharp outcome statement.\n"
-            "2. SUBHEAD: ≤ 25 words. One sentence. Category + problem arc.\n"
-            "3. WHO ITS FOR: max 2 sentences. Remove emotional framing.\n"
+            "1. HEADLINE: max 10 words. Outcome only. No colon. No 'to help/simplify/develop'. Cut to a sharp outcome statement.\n"
+            "2. SUBHEAD: max 20 words. One sentence. Product + mechanism.\n"
+            "3. WHO ITS FOR: noun phrase only (user type). No verbs like simplify/complete/develop. If it's an action, rewrite as audience (e.g. 'First-time retail investors' not 'Simplify the process of starting a first SIP').\n"
             "4. PROBLEM vs WHY CURRENT OPTIONS FAIL: MUST be distinct. "
             "PROBLEM = user's lived pain. WHY CURRENT OPTIONS FAIL = the alternative's structural flaw. "
             "If they repeat, rewrite WHY to focus on the named alternative.\n"
-            "5. PROOF / SIGNALS: remove time claims, fabricated stats. Keep only believable neutral claims.\n"
-            "6. CTA: one line. Product-specific verb.\n"
-            "7. Cross-section repetition: if a phrase appears in 2+ sections, cut it from the weaker one.\n"
-            "8. DIFFERENTIATION must not repeat WHAT THIS IS.\n"
-            "9. Remove AI-sounding transitions: 'In today's world', 'That's where X comes in', 'But what if', "
+            "5. WHAT THIS IS: must be category + mechanism (how it works). Not vague.\n"
+            "6. PROOF / SIGNALS: remove time claims, fabricated stats. Keep only believable neutral claims.\n"
+            "7. CTA: one line. Product-specific verb.\n"
+            "8. Cross-section repetition: if a phrase appears in 2+ sections, cut it from the weaker one.\n"
+            "9. DIFFERENTIATION must not repeat WHAT THIS IS.\n"
+            "10. Remove AI-sounding transitions: 'In today's world', 'That's where X comes in', 'But what if', "
             "'Imagine a world', 'The truth is', 'Here's the thing', 'Let's face it'.\n"
-            "10. Remove filler adjectives: robust, comprehensive, unique, truly, simply, actually.\n"
-            "11. Keep all 9 headers. Return only the revised document. No preamble."
+            "11. Remove filler adjectives: robust, comprehensive, unique, truly, simply, actually.\n"
+            "12. Keep all 9 headers. Return only the revised document. No preamble."
         )
+        def _rewrite_headline_ok(t: str) -> bool:
+            first = _section_first_line(t, "HEADLINE", "SUBHEAD")
+            if not first:
+                return True
+            words = first.split()
+            if len(words) > 10 or ":" in first:
+                return False
+            lower = first.strip().lower()
+            _INF_STARTS = (
+                "to help ", "to simplify ", "to develop ", "to enable ", "to make ",
+                "to build ", "to create ", "to provide ", "to give ", "to allow ",
+                "to ensure ", "to support ", "to deliver ",
+            )
+            for bad in _INF_STARTS:
+                if lower.startswith(bad):
+                    return False
+            return True
+
+        def _rewrite_diff_ok(t: str) -> bool:
+            what = _section_first_line(t, "WHAT THIS IS", "DIFFERENTIATION")
+            diff = _section_first_line(t, "DIFFERENTIATION", "PROOF / SIGNALS")
+            if not what or not diff:
+                return True
+            w_words = set(what.lower().split())
+            d_words = set(diff.lower().split())
+            if not w_words or not d_words:
+                return True
+            overlap = len(w_words & d_words) / min(len(w_words), len(d_words))
+            return overlap < 0.6
+
+        def _rewrite_subhead_ok(t: str) -> bool:
+            first = _section_first_line(t, "SUBHEAD", "WHO ITS FOR")
+            return len(first.split()) <= 20 if first else True
+
+        def _rewrite_who_ok(t: str) -> bool:
+            first = _section_first_line(t, "WHO ITS FOR", "PROBLEM")
+            if not first or len(first.strip()) < 5:
+                return True
+            lower = first.strip().lower()
+            for v in ("simplify", "complete", "develop", "make ", "help ", "enable ", "empower "):
+                if lower.startswith(v):
+                    return False
+            return True
+
+        def _rewrite_what_this_is_ok(t: str) -> bool:
+            content = _section_first_line(t, "WHAT THIS IS", "DIFFERENTIATION")
+            if not content or len(content.strip()) < 20:
+                return False
+            lower = content.strip().lower()
+            mechanism_verbs = ("turns", "helps", "guides", "tracks", "manages", "explains", "generates", "records", "creates", "builds", "completes", "registers")
+            if not any(v in lower for v in mechanism_verbs):
+                return False
+            _WHAT_THIS_IS_BANNED = (
+                "product development and marketing",
+                "product development",
+                "marketing for",
+                "development and marketing",
+                "solutions for",
+                "services for",
+                "platform for companies",
+                "tool for companies using",
+            )
+            if any(b in lower for b in _WHAT_THIS_IS_BANNED):
+                return False
+            if re.search(r"\([^)]{3,30}\)$", content.strip()):
+                return False
+            if len(content.strip().split()) < 8:
+                return False
+            return True
+
         editor_user = f"Tighten and sharpen this landing page:\n\n{draft}"
         try:
             rewritten = llm_generate(system=editor_system, user=editor_user, model="llama3:8b", temperature=0.15)
+            if rewritten:
+                rewritten = _strip_landing_preamble(rewritten)
             if (rewritten
                     and _validate_headers(rewritten, _LANDING_HEADERS)
-                    and not _contains_banned_phrases(rewritten, _LANDING_BANNED)):
+                    and not _contains_banned_phrases(rewritten, _LANDING_BANNED)
+                    and _rewrite_headline_ok(rewritten)
+                    and _rewrite_subhead_ok(rewritten)
+                    and _rewrite_who_ok(rewritten)
+                    and _rewrite_what_this_is_ok(rewritten)
+                    and _rewrite_diff_ok(rewritten)):
                 return (rewritten.rstrip("\n") + "\n")
         except Exception:
             pass
 
-        # Editor pass failed — return original draft (already valid from write_landing_page)
+        # Editor pass failed or introduced violations — return original draft (already valid from write_landing_page)
         return (draft.rstrip("\n") + "\n")
 
     def write_linkedin_post(self, brief: ClientBrief) -> str:
@@ -1173,6 +1501,10 @@ APP STORE SUBTITLE
             "You are a senior product strategist writing a positioning document. "
             "Write with strategic clarity. No hype. No buzzwords. No marketing filler. "
             "Each section must be concrete, specific to this product, and grounded in the decisions provided. "
+            "CRITICAL: CORE PROBLEM and WHY CURRENT OPTIONS FAIL must be DISTINCT sections. "
+            "CORE PROBLEM = the user's lived friction (what THEY experience). "
+            "WHY CURRENT OPTIONS FAIL = the structural flaw in the ALTERNATIVE (why it was never designed for this). "
+            "If they say the same thing, the document is invalid. "
             "Use exactly these section headers in this order, each on its own line: "
             "PRODUCT, ICP, CORE PROBLEM, CURRENT ALTERNATIVE, WHY CURRENT OPTIONS FAIL, "
             "DESIRED OUTCOME, CATEGORY FRAME, DIFFERENTIATION, ANTI-POSITIONING, "
@@ -1200,9 +1532,12 @@ APP STORE SUBTITLE
             "Instructions per section:",
             "PRODUCT — One sentence starting with the product name. What it is, factually. No adjectives like powerful or innovative.",
             "ICP — Who specifically this is for. Direct and specific. One sentence.",
-            "CORE PROBLEM — The real friction. Concrete, not abstract. One to two sentences.",
+            "CORE PROBLEM — The user's lived friction. What THEY experience day-to-day. Concrete, not abstract. One to two sentences. "
+            "Do NOT mention alternatives or competitors here — focus only on the user's pain.",
             "CURRENT ALTERNATIVE — What users actually do today instead. Name it if possible. One sentence.",
-            "WHY CURRENT OPTIONS FAIL — Specific weaknesses of that alternative. One to three sentences.",
+            "WHY CURRENT OPTIONS FAIL — The STRUCTURAL FLAW in the current alternative. Why it was never designed for this. "
+            "This must be different from CORE PROBLEM: CORE PROBLEM = user's pain, WHY CURRENT OPTIONS FAIL = the alternative's deficiency. "
+            "One to three sentences.",
             "DESIRED OUTCOME — What the user actually wants. Specific. One sentence.",
             "CATEGORY FRAME — What kind of product this is. One phrase or short sentence.",
             "DIFFERENTIATION — Why this product works better. Grounded in mechanism, not claims. One to two sentences.",
@@ -1327,23 +1662,28 @@ MESSAGING NOTES
             normalized = _normalize_ux_output(out)
             return _validate_ux_output(normalized, target=target)
 
-        # Derive product-native vocabulary from category instead of hardcoding Unimind terms
+        # Derive product-native vocabulary and button examples from category
         cat_lower = (decisions.get("category_frame", "") or "").lower() if decisions else ""
         if any(w in cat_lower for w in ("messaging", "positioning", "copy", "content", "launch")):
             vocab_nouns = "messaging brain, audience, problem, positioning, landing page, ux copy, outputs, product idea, message"
             vocab_banned = "campaign, workflow, pipeline, project, stage, insight, ticket"
+            button_examples = "e.g. Build Brain, Review Positioning, Generate Landing, Generate UX, Define Audience, Save Brain"
         elif any(w in cat_lower for w in ("invest", "finance", "sip", "risk", "kyc", "wealth", "fintech")):
             vocab_nouns = "portfolio, risk profile, SIP, KYC, investment, plan, questionnaire, returns, holdings"
             vocab_banned = "campaign, workflow, pipeline, messaging brain, landing page, positioning, content"
+            button_examples = "e.g. Learn My Risk, Complete KYC, Start My SIP, View Portfolio, Update Profile, See History"
         elif any(w in cat_lower for w in ("influencer", "creator", "match", "brand")):
             vocab_nouns = "brand, creator, match, brief, audience, content, collaboration, approval"
             vocab_banned = "campaign, workflow, pipeline, messaging brain, landing page, positioning, ticket"
+            button_examples = "e.g. Add Brand, Find Creator, Create Match, Request Approval, View Collaboration"
         elif any(w in cat_lower for w in ("sanctuary", "shelter", "animal", "care", "rescue", "cow", "gaushala")):
             vocab_nouns = "animal, record, caretaker, health check, feeding, shelter, donation, sponsor"
             vocab_banned = "campaign, workflow, pipeline, messaging brain, landing page, positioning, ticket, SaaS"
+            button_examples = "e.g. Add Animal, Log Health Check, Add Sponsor, View Care Records, Record Donation, Schedule Feeding"
         else:
             vocab_nouns = "profile, setup, result, input, output, settings, account"
             vocab_banned = "campaign, workflow, pipeline, project, stage, insight, ticket"
+            button_examples = "concrete verb + product object from this domain (NOT Complete Setup, View Results, Edit Profile, Save Progress)"
 
         if target == "operator":
             system = (
@@ -1427,10 +1767,10 @@ MESSAGING NOTES
                 "\nTOAST: celebrate REAL completed actions in product-specific language. ≤ 8 words each."
                 "  NEVER write 'Step complete' or 'Move to the next stage'. "
                 "  Confirm the specific thing the user just did."
-                "\nBUTTON LABELS: 1-3 words. Concrete, domain-specific. Every label must reflect an actual action in THIS product."
-                "  Use a concrete verb + specific product object. All 8 must be grounded in this product's mechanics."
-                f"  Use nouns from: {vocab_nouns}."
-                "  NEVER use generic SaaS verbs: 'Launch', 'Plan', 'Review', 'Track', 'Manage', 'Add Insights', 'Get Started', 'Proceed', 'Confirm', 'Continue' alone."
+                "\nBUTTON LABELS: must reflect PRODUCT ACTIONS — not generic app shell (Complete Setup, View My Results, Edit Profile, Save Progress). "
+                "  Every label = concrete verb + product object from this domain. All 8 must be actions users do IN THIS product. "
+                f"  Use nouns from: {vocab_nouns}. Example buttons for THIS product type: {button_examples}. "
+                "  NEVER generic: Complete Setup, View Results, Edit Profile, Save Progress, Get Started, Proceed, Confirm, Continue alone."
                 "\nDO NOT reference CLI commands, file paths (brief.json), or internal system workflows (Generate landing, Ollama, Output saved)."
                 f"\nBANNED phrases: something went wrong, nothing here yet, your list is empty, check your connection, desired outcome:, differentiation:, instead of generating, step complete, move to the next stage, {vocab_banned}."
                 "\nExact headers: UX CONTEXT (first line TARGET: product), ONBOARDING 3, EMPTY STATE 3, ERROR 3, TOAST 3, BUTTON LABELS 8. No preamble. No markdown bold."
@@ -1456,9 +1796,10 @@ MESSAGING NOTES
                 "  Not generic system messages. "
                 "TOAST: ≤ 8 words. Confirm the SPECIFIC action just completed. NEVER write 'Step complete' or 'Move to the next stage'. "
                 "  Product-specific milestone language only. "
-                "BUTTON LABELS: 1-3 words. Domain-specific action verbs grounded in this product's mechanics. "
-                f"  Use nouns from: {vocab_nouns}. "
-                "  NEVER use generic SaaS verbs alone: 'Launch', 'Plan', 'Review', 'Track', 'Manage', 'Add Insights', 'Get Started', 'Begin', 'Proceed', 'Confirm', 'Continue'. "
+                "BUTTON LABELS: PRODUCT ACTIONS only — not generic app shell (Complete Setup, View Results, Edit Profile, Save Progress). "
+                "  Each label = verb + product object from this domain. Examples: Messaging → Build Brain, Generate Landing. "
+                "  Animal welfare → Add Animal, Log Health Check, Add Sponsor. Fintech → Learn My Risk, Complete KYC, Start My SIP. "
+                f"  Use nouns from: {vocab_nouns}. Never generic verbs alone. "
                 "DO NOT mention CLI commands, file paths (brief.json), or operator workflows. "
                 "BANNED: something went wrong, nothing here yet, your list is empty, check your connection, desired outcome:, differentiation:, instead of generating, step complete, move to the next stage, book a short working session, "
                 f"{vocab_banned}. "
@@ -1485,9 +1826,8 @@ MESSAGING NOTES
                 "EMPTY STATE: ≤ 12 words. Name what is missing in product terms. Tell the user the next action. "
                 "ERROR: ≤ 15 words. Name the failure and the fix in product terms. Not generic system errors. "
                 "TOAST: ≤ 8 words. Specific completed action — NEVER 'Step complete' or 'Move to the next stage'. "
-                "BUTTON LABELS: 1-3 words. Product-specific. "
-                f"  Use nouns from: {vocab_nouns}. "
-                "  Never 'Begin', 'Proceed', 'Confirm', 'Get Started', 'Launch', 'Plan', 'Track', 'Add Insights' alone. "
+                "BUTTON LABELS: PRODUCT ACTIONS only. Concrete verb + product object. No generic shell: Complete Setup, View Results, Edit Profile, Save Progress. "
+                f"  Use nouns from: {vocab_nouns}. Domain examples: Build Brain/Generate Landing; Add Animal/Log Health Check; Complete KYC/Start My SIP. "
                 "DO NOT mention CLI commands, file paths (brief.json), or tool-specific workflows. "
                 "BANNED: something went wrong, nothing here yet, your list is empty, check your connection, desired outcome:, differentiation:, instead of generating, step complete, move to the next stage, "
                 f"{vocab_banned}. "
@@ -1509,12 +1849,14 @@ MESSAGING NOTES
             normalized = _normalize_ux_output(out or "")
             if target == "product":
                 normalized = _ux_domain_drift_cleanup(normalized, drift_product, drift_category)
+                normalized = _clean_ux_context(normalized)
             if _validate_ux_output(normalized, target):
                 return (normalized.rstrip("\n") + "\n")
             out = llm_generate(system=system_strict, user=user, model="llama3:8b", temperature=0.2)
             normalized = _normalize_ux_output(out or "")
             if target == "product":
                 normalized = _ux_domain_drift_cleanup(normalized, drift_product, drift_category)
+                normalized = _clean_ux_context(normalized)
             if _validate_ux_output(normalized, target):
                 return (normalized.rstrip("\n") + "\n")
         except Exception:
@@ -1543,7 +1885,12 @@ MESSAGING NOTES
         decisions = decisions or {}
         if target == "operator":
             return self._ux_pack_fallback_operator()
-        return self._ux_pack_fallback_product(brief, decisions)
+        result = self._ux_pack_fallback_product(brief, decisions)
+        # Apply drift cleanup and re-validate to ensure fallback is also clean
+        drift_product = brief.product or ""
+        drift_category = decisions.get("category_frame", "") if decisions else ""
+        result = _ux_domain_drift_cleanup(result, drift_product, drift_category)
+        return result
 
     def _ux_pack_fallback_operator(self) -> str:
         """Concrete UX pack for this tool (brief, decisions, generate, save, errors)."""
@@ -1625,21 +1972,24 @@ BUTTON LABELS
         problem_copy = _short_copy(problem, 65)
         outcome_copy = _short_copy(outcome, 55)
 
-        # Derive onboarding steps and labels from category keywords, so they feel product-specific
+        # Derive onboarding steps and labels from category keywords; never use shell-native button labels
+        # Also check product name and problem/outcome for domain clues when category_frame is empty
         cat_lower = category.lower()
-        if any(w in cat_lower for w in ("messaging", "positioning", "copy", "content", "launch")):
+        _product_lower = product.lower()
+        _domain_haystack = f"{cat_lower} {_product_lower} {problem.lower()} {outcome.lower()}"
+        if any(w in _domain_haystack for w in ("messaging", "positioning", "copy", "content", "launch", "landing", "ux draft")):
             ob1 = f"Define who {product} is for and the problem it solves"
             ob2 = f"Shape your core message — the angle that makes {product} different"
             ob3 = "Generate your first piece and adjust from the result"
             es1 = f"No audience defined yet. Start by telling {product} who you're building for."
-            es2 = "No message saved yet. Complete setup to shape your positioning."
-            es3 = "No output yet. Finish setup and generate your first piece."
+            es2 = "No message saved yet. Build your brain to shape your positioning."
+            es3 = "No output yet. Generate your first piece."
             t3 = "Messaging brain saved."
             labels = [
-                "Define Audience", "Shape Message", "Generate Content",
-                "Edit Positioning", "Save Progress", "Try Again", "See History", "Get Help",
+                "Build Brain", "Review Brain", "Generate Positioning", "Generate Landing",
+                "Generate UX", "Refine Message", "Compare Outputs", "Save Brain",
             ]
-        elif any(w in cat_lower for w in ("invest", "finance", "sip", "risk", "kyc", "wealth", "fintech")):
+        elif any(w in _domain_haystack for w in ("invest", "finance", "sip", "risk", "kyc", "wealth", "fintech")):
             ob1 = "Answer a few questions to understand your financial situation"
             ob2 = f"Complete your verification so {product} can personalise your plan"
             ob3 = "Start your first investment and track your progress"
@@ -1648,10 +1998,22 @@ BUTTON LABELS
             es3 = "No transactions yet. Make your first investment to see activity."
             t3 = "Profile complete. Your plan is ready."
             labels = [
-                "Learn My Risk", "Complete KYC", "Start My SIP", "View Portfolio",
-                "Update Profile", "Try Again", "See History", "Get Help",
+                "Learn My Risk", "Complete KYC", "Start My SIP", "Review Plan",
+                "View Portfolio", "Confirm Details", "Update Risk Profile", "Track Progress",
             ]
-        elif any(w in cat_lower for w in ("influencer", "creator", "match", "brand")):
+        elif any(w in _domain_haystack for w in ("sanctuary", "shelter", "animal", "care", "rescue", "cow", "gaushala", "welfare")):
+            ob1 = f"Register your first animal in {product}"
+            ob2 = "Log a health check or feeding record"
+            ob3 = "Add a sponsor or track a donation"
+            es1 = "No animals registered yet. Add an animal to get started."
+            es2 = "No health checks logged yet. Log a health check."
+            es3 = "No sponsors or donations yet. Add a sponsor or record a donation."
+            t3 = "Animal recorded. Care record updated."
+            labels = [
+                "Add Animal", "Log Health Check", "Add Sponsor", "Record Feeding",
+                "View Care Records", "Track Donation", "Schedule Visit", "Update Shelter Info",
+            ]
+        elif any(w in _domain_haystack for w in ("influencer", "creator", "match", "brand")):
             ob1 = "Define your brand goal and the audience you want to reach"
             ob2 = "Review creator matches based on your product brief"
             ob3 = "Approve your first creator and go live"
@@ -1661,24 +2023,36 @@ BUTTON LABELS
             t3 = "Creator approved. You are live."
             labels = [
                 "Define Brand", "Review Matches", "Approve Creator", "Edit Brief",
-                "Save Progress", "Try Again", "See History", "Get Help",
+                "Save Brief", "Compare Matches", "View Collaborations", "Update Brief",
             ]
         else:
-            ob1 = f"Tell {product} about your situation — this shapes everything that follows"
-            ob2 = f"Complete your {icp_noun.lower()} profile so {product} can tailor its output"
-            ob3 = f"Review your first result and refine as you go"
-            es1 = f"No {icp_noun.lower()} profile yet. Finish setup to see your results."
-            es2 = "This section is empty — complete the previous step to continue."
-            es3 = "Nothing here. Come back once you have completed the setup."
-            t3 = f"{icp_noun} profile saved."
+            ob1 = f"Define who {product} is for and the problem it solves"
+            ob2 = f"Shape your core message so {product} can tailor output"
+            ob3 = f"Generate your first result and refine as you go"
+            es1 = f"No audience defined yet. Start by telling {product} who you're building for."
+            es2 = "No message saved yet. Build your setup to generate output."
+            es3 = "No output yet. Generate your first result."
+            t3 = "Brain saved. Output ready."
             labels = [
-                "Complete Setup", "View My Results", "Edit Profile", "Save Progress",
-                "Start Over", "Try Again", "See History", "Get Help",
+                "Build Brain", "Review Brain", "Generate Positioning", "Generate Landing",
+                "Generate UX", "Refine Message", "Compare Outputs", "Save Brain",
             ]
+
+        # Build a clean UX CONTEXT sentence — no strategy labels, no "Core problem:", no "Goal:"
+        if any(w in _domain_haystack for w in ("messaging", "positioning", "copy", "content", "launch", "landing", "ux draft")):
+            ux_context_line = f"{product} helps {icp} turn rough product ideas into a clear messaging brain, positioning, landing copy, and UX drafts."
+        elif any(w in _domain_haystack for w in ("invest", "finance", "sip", "risk", "kyc", "wealth", "fintech")):
+            ux_context_line = f"{product} helps {icp} understand risk, complete KYC, and start their first investment with confidence."
+        elif any(w in _domain_haystack for w in ("sanctuary", "shelter", "animal", "care", "rescue", "cow", "gaushala", "welfare")):
+            ux_context_line = f"{product} helps {icp} register animals, track health checks, and manage sponsors and donations."
+        elif any(w in _domain_haystack for w in ("influencer", "creator", "match", "brand")):
+            ux_context_line = f"{product} helps {icp} find the right creators, review matches, and go live with brand collaborations."
+        else:
+            ux_context_line = f"{product} helps {icp} go from {problem_copy.lower()} to {outcome_copy.lower()}."
 
         body = f"""UX CONTEXT
 TARGET: product
-{product} for {icp}. Core problem: {problem_copy}. Goal: {outcome_copy}.
+{ux_context_line}
 
 ONBOARDING
 1. {ob1}.
