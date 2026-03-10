@@ -107,7 +107,7 @@ def brief_interactive() -> ClientBrief:
     )
 
 
-def build_brief_and_mode() -> Tuple[ClientBrief, str, Optional[str], Optional[Path], Optional[str]]:
+def build_brief_and_mode() -> Tuple[ClientBrief, str, Optional[str], Optional[Path], Optional[str], bool]:
     parser = argparse.ArgumentParser(description="Run the writing agent on a client brief.")
     parser.add_argument(
         "--brief",
@@ -123,8 +123,13 @@ def build_brief_and_mode() -> Tuple[ClientBrief, str, Optional[str], Optional[Pa
         "--mode",
         type=str,
         default="landing",
-        choices=["landing", "linkedin", "ux_microcopy", "launch_pack", "audit", "positioning", "ux", "ux_operator", "ux_product", "brain", "idea"],
-        help="Output mode: landing, linkedin, ux_microcopy, launch_pack, audit, positioning, ux, ux_operator, ux_product, brain, or idea (default: landing).",
+        choices=["landing", "linkedin", "ux_microcopy", "launch_pack", "audit", "positioning", "ux", "ux_operator", "ux_product", "brain", "idea", "init_client"],
+        help="Output mode: landing, linkedin, ux_microcopy, launch_pack, audit, positioning, ux, ux_operator, ux_product, brain, idea, or init_client (default: landing).",
+    )
+    parser.add_argument(
+        "--reset-brief",
+        action="store_true",
+        help="With --mode init_client: also invalidate brief.json (rename to .stale) so no stale brief leaks.",
     )
     parser.add_argument(
         "--idea",
@@ -136,6 +141,19 @@ def build_brief_and_mode() -> Tuple[ClientBrief, str, Optional[str], Optional[Pa
 
     client_slug = clean_phrase(args.client) if args.client else None
     idea_text = getattr(args, "idea", None) or None
+    reset_brief = getattr(args, "reset_brief", False)
+
+    # init_client: only need --client; no brief needed
+    if args.mode == "init_client":
+        from agents.writing_agent import ClientBrief
+        return (
+            ClientBrief(product="", audience="", pain="", offer="", tone="", cta="", examples="", context=""),
+            "init_client",
+            client_slug,
+            None,
+            None,
+            reset_brief,
+        )
 
     # Idea mode: only need --idea; no brief file or interactive prompt.
     # client_slug is passed through so main.py can save the extract and seed the brain.
@@ -152,7 +170,7 @@ def build_brief_and_mode() -> Tuple[ClientBrief, str, Optional[str], Optional[Pa
             examples="",
             context="",
         )
-        return minimal_brief, "idea", idea_client_slug, None, idea_text.strip()
+        return minimal_brief, "idea", idea_client_slug, None, idea_text.strip(), False
 
     brief_path_used: Optional[Path] = None
 
@@ -198,5 +216,5 @@ def build_brief_and_mode() -> Tuple[ClientBrief, str, Optional[str], Optional[Pa
             else:
                 brief = brief_interactive()
 
-    return brief, args.mode, client_slug, brief_path_used, idea_text
+    return brief, args.mode, client_slug, brief_path_used, idea_text, reset_brief
 
