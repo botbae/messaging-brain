@@ -330,6 +330,46 @@ def _strip_landing_preamble(text: str) -> str:
     return text
 
 
+_TRAILING_CONJ = frozenset({"and", "or", "with", "for", "to", "the", "a", "an", "of", "in"})
+
+def _cleanup_landing_output(text: str) -> str:
+    """Post-process cleanup: fix trailing-conjunction headlines and two-sentence subheads."""
+    if not text:
+        return text
+    lines = text.splitlines(keepends=True)
+    result = []
+    prev_header = ""
+    for line in lines:
+        stripped = line.rstrip("\n").strip()
+        if stripped in ("HEADLINE", "SUBHEAD", "WHO ITS FOR", "PROBLEM",
+                        "WHY CURRENT OPTIONS FAIL", "WHAT THIS IS",
+                        "DIFFERENTIATION", "PROOF / SIGNALS", "CTA"):
+            prev_header = stripped
+            result.append(line)
+            continue
+        if prev_header == "HEADLINE" and stripped:
+            words = stripped.split()
+            while words and words[-1].lower().rstrip(".,") in _TRAILING_CONJ:
+                words.pop()
+            cleaned = " ".join(words)
+            result.append(cleaned + ("\n" if line.endswith("\n") else ""))
+            prev_header = ""
+            continue
+        if prev_header == "SUBHEAD" and stripped:
+            # "For X. Y." → "For X, y." — join two-sentence subheads into one
+            if re.search(r'\. [A-Z]', stripped):
+                parts = re.split(r'\. ', stripped, maxsplit=1)
+                if len(parts) == 2:
+                    stripped = f"{parts[0].rstrip('.')}, {lower_first(parts[1])}".rstrip(".") + "."
+            result.append(stripped + ("\n" if line.endswith("\n") else ""))
+            prev_header = ""
+            continue
+        if stripped:
+            prev_header = ""
+        result.append(line)
+    return "".join(result)
+
+
 def _validate_ux_output(text: str, target: Optional[str] = None) -> bool:
     """Check headers in order, counts (3,3,3,3,8), no banned phrases, no bracket placeholders. If target=='product', apply product-specific rules."""
     if not text or not text.strip():
@@ -758,7 +798,7 @@ class WritingAgent:
             validator_fn=_valid,
         )
         if out:
-            return (_strip_landing_preamble(out).rstrip("\n") + "\n")
+            return (_cleanup_landing_output(_strip_landing_preamble(out)).rstrip("\n") + "\n")
         return self._write_landing_page_fallback(brief, decisions)
 
     def _write_landing_page_fallback(self, brief: ClientBrief, decisions: dict) -> str:
@@ -781,8 +821,13 @@ class WritingAgent:
                     f"forcing {icp_lower} to patch gaps with manual workarounds that slow outcomes."
                 )
             else:
-                # Already a descriptive sentence — use directly
-                why_fail = alternative_raw
+                # Long descriptive alternative — compress to one WHY sentence
+                _alt_words = alt_name.split()
+                _alt_label = " ".join(_alt_words[:min(4, len(_alt_words))]).rstrip(",").strip()
+                why_fail = (
+                    f"{_alt_label} were not built for {icp_lower} and miss "
+                    f"the specific mechanics this problem requires."
+                )
         else:
             why_fail = (
                 f"The tools {icp_lower} rely on today were built for general-purpose use, not this specific job. "
@@ -790,7 +835,8 @@ class WritingAgent:
             )
         outcome = decisions.get("desired_outcome", "") or clean_phrase(brief.offer) or "A clear path to the outcome that matters."
         category = decisions.get("category_frame", "") or f"{clean_phrase(brief.product) or 'Product'} for {icp}."
-        diff = decisions.get("differentiation", "") or clean_phrase(brief.offer) or "Focused on this outcome."
+        diff_raw = decisions.get("differentiation", "")
+        diff = (diff_raw.split(".")[0].strip() + ".") if diff_raw else f"Built specifically for {icp_lower}, not adapted from general-purpose tools."
         product = clean_phrase(brief.product) or "This product"
         cta = clean_sentence(brief.cta) if brief.cta else f"Get started with {product}."
         proof = clean_phrase(brief.examples or "") or ""
@@ -823,9 +869,41 @@ class WritingAgent:
                 remainder = headline_raw.strip()[len(inf):].strip()
                 headline = remainder[:1].upper() + remainder[1:] if remainder else product
                 break
-        subhead = f"For {icp}. {problem}"
-        if len(subhead.split()) > 20:
-            subhead = " ".join(subhead.split()[:20])
+        # Strip offer-description patterns ("A simple way to X", "A better way to Y")
+        _OFFER_STARTS = (
+            "a simple way to ", "a better way to ", "a faster way to ",
+            "an easy way to ", "the easiest way to ", "a quick way to ",
+        )
+        _hl_words = headline.split()
+        _hl_lower2 = headline.strip().lower()
+        for s in _OFFER_STARTS:
+            if _hl_lower2.startswith(s):
+                _hl_words = []  # force domain fallback
+                break
+        # Strip trailing conjunctions (e.g. headline truncated mid-phrase ending with "and")
+        while _hl_words and _hl_words[-1].lower().rstrip(".,") in _TRAILING_CONJ:
+            _hl_words.pop()
+        headline = " ".join(_hl_words)
+        # Domain-aware fallback when headline is too short or was stripped entirely
+        if len(headline.split()) < 3:
+            _hl_domain = f"{product.lower()} {category.lower()} {outcome.lower()} {icp_lower}"
+            if any(w in _hl_domain for w in ("gaushala", "sanctuary", "animal", "cow", "welfare", "shelter")):
+                headline = "Manage Cow Welfare Simply"
+            elif any(w in _hl_domain for w in ("invest", "finance", "sip", "kyc", "wealth", "fintech")):
+                headline = "Start Investing with Confidence"
+            elif any(w in _hl_domain for w in ("messaging", "positioning", "copy", "saas", "landing")):
+                headline = "Turn Product Thinking into Clear Messaging"
+            else:
+                headline = f"Get More from {product}"
+        # One clean sentence subhead: audience + pain joined with comma (not two sentences)
+        _prob_first = problem.split(".")[0].rstrip(".")
+        _subhead_candidate = f"For {icp_lower}, {lower_first(_prob_first)}."
+        if len(_subhead_candidate.split()) <= 20:
+            subhead = _subhead_candidate
+        else:
+            _max_prob_words = max(4, 20 - len(f"For {icp_lower},".split()) - 1)
+            _prob_trimmed = " ".join(_prob_first.split()[:_max_prob_words]).rstrip(",.")
+            subhead = f"For {icp_lower}, {lower_first(_prob_trimmed)}."
         # WHAT THIS IS must be category + mechanism (turns/helps/guides/tracks/manages/explains/generates/records)
         cat_lower = category.lower()
         _landing_haystack = f"{cat_lower} {product.lower()} {problem.lower()} {outcome.lower()}"
@@ -867,7 +945,7 @@ PROOF / SIGNALS
 CTA
 {cta}
 """
-        return (body.rstrip("\n") + "\n")
+        return (_cleanup_landing_output(body).rstrip("\n") + "\n")
 
     def rewrite_landing_page(self, brief: ClientBrief, draft: str, critique: dict) -> str:
         """Senior editor pass: tighten headline, compress subhead, remove repetition.
