@@ -1,0 +1,49 @@
+{
+  "product": "AI-assisted cold email writer that researches prospects",
+  "audience": "venture capital-backed startup founders",
+  "problem": "can't craft personalized, high-converting emails without sacrificing time",
+  "alternatives": "template-based cold email tools",
+  "advantage": "writes emails from thorough prospect research, not templates",
+  "tone": "practical and results-driven",
+  "goal": "secure a meeting with the right investor",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "venture capital-backed startup founders",
+      "confidence": 0.7,
+      "source_notes": "detected 'founders' in idea"
+    },
+    "primary_problem": {
+      "value": "can't craft personalized, high-converting emails without sacrificing time",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "cold email writing for VCs and startups",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "differentiation": {
+      "value": "writes emails from thorough prospect research, not templates",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "template-based cold email tools",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "secure a meeting with the right investor",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-15T08:45:35.341495+00:00",
+  "source_idea": "i write cold emails for people but AI-assisted. no not another cold email writer, this one actually researches the prospect and writes it like a human who did their homework not a template",
+  "client_name": "qa-case-006",
+  "product_fingerprint": "989a4bbe49d00012",
+  "brain_version": 2,
+  "last_saved_at": "2026-03-15T08:45:35.341495+00:00"
+}

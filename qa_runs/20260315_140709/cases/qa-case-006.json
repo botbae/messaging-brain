@@ -1,0 +1,157 @@
+{
+  "case_id": 6,
+  "slug": "qa-case-006",
+  "input_idea": "i write cold emails for people but AI-assisted. no not another cold email writer, this one actually researches the prospect and writes it like a human who did their homework not a template",
+  "timings": {
+    "idea": 6.33,
+    "brain_save": 0.0,
+    "landing": 48.09,
+    "ux": 33.78,
+    "total": 91.23
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-006",
+      "idea_extract": {
+        "product": "AI-assisted cold email writer that researches prospects",
+        "icp": "venture capital-backed startup founders",
+        "problem": "can't craft personalized, high-converting emails without sacrificing time",
+        "category": "cold email writing for VCs and startups",
+        "differentiation": "writes emails from thorough prospect research, not templates",
+        "alternative": "template-based cold email tools",
+        "tone": "practical and results-driven",
+        "goal": "secure a meeting with the right investor"
+      },
+      "product_profile_path": "clients/qa-case-006/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "detected 'founders' in idea"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        }
+      },
+      "brain_suggestions": null
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "detected 'founders' in idea"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      }
+    },
+    "brain_suggestions": null,
+    "brain_save": {
+      "client": "qa-case-006",
+      "product_profile": {
+        "product": "AI-assisted cold email writer that researches prospects",
+        "audience": "venture capital-backed startup founders",
+        "problem": "can't craft personalized, high-converting emails without sacrificing time",
+        "alternatives": "template-based cold email tools",
+        "advantage": "writes emails from thorough prospect research, not templates",
+        "tone": "practical and results-driven",
+        "goal": "secure a meeting with the right investor",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "venture capital-backed startup founders",
+            "confidence": 0.7,
+            "source_notes": "detected 'founders' in idea"
+          },
+          "primary_problem": {
+            "value": "can't craft personalized, high-converting emails without sacrificing time",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "category_frame": {
+            "value": "cold email writing for VCs and startups",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "differentiation": {
+            "value": "writes emails from thorough prospect research, not templates",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "current_alternative": {
+            "value": "template-based cold email tools",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "secure a meeting with the right investor",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-15T08:45:35.341495+00:00",
+        "source_idea": "i write cold emails for people but AI-assisted. no not another cold email writer, this one actually researches the prospect and writes it like a human who did their homework not a template",
+        "client_name": "qa-case-006",
+        "product_fingerprint": "989a4bbe49d00012",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-15T08:45:35.341495+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nsecure a meeting with the right investor\n\nSUBHEADLINE\nFor venture capital-backed startup founders, can't craft personalized, high-converting emails without sacrificing time.\n\nWHAT THIS IS\nA guided onboarding assistant that explains risk, completes KYC, and helps new investors start their first SIP.\n\nWHO IT IS FOR\nventure capital-backed startup founders\n\nTHE PROBLEM\ncan't craft personalized, high-converting emails without sacrificing time\n\nWHY EXISTING TOOLS FAIL\ntemplate-based cold email tools was not designed for venture capital-backed startup founders. It covers the broader category but lacks the specific mechanics this problem requires, forcing venture capital-backed startup founders to patch gaps with manual workarounds that slow outcomes.\n\nHOW IT WORKS\nwrites emails from thorough prospect research, not templates.\n\nKEY BENEFITS\nEarly users of AI-assisted cold email writer  reach their first outcome without the overhead of general-purpose alternatives.\n\nCALL TO ACTION\nGet started with AI-assisted cold email writer that researches prospects.\n",
+      "slots": {
+        "headline": "Secure investor meetings",
+        "subhead": "Helps venture capital-backed startup founders craft personalized cold emails without sacrificing time, so they can secure",
+        "problem": "Founders struggle to write high-converting cold emails that resonate with investors, wasting valuable time",
+        "why_current_options_fail": "Template-based cold email tools fail to deliver personalized messages, resulting in low open rates and missed",
+        "what_this_is": "Unimind is a cold email writer that researches prospects and writes tailored emails from",
+        "primary_cta": "Start your trial"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\nAI-assisted cold email writer that researches prospects helps venture capital-backed startup founders understand risk, complete KYC, and start their first investment with confidence.\n\nONBOARDING\n1. Answer a few questions to understand your financial situation.\n2. Complete your verification so AI-assisted cold email writer that researches prospects can personalise your plan.\n3. Start your first investment and track your progress.\n\nEMPTY STATE\n1. No risk profile yet. Complete the questionnaire to get started.\n2. No investments set up yet. Finish setup to see your plan.\n3. No transactions yet. Make your first investment to see activity.\n\nERROR\n1. That did not save. Check your input and try again.\n2. That step did not complete. Make sure all required fields are filled in.\n3. This action failed. Reload and try again, or contact support if it continues.\n\nTOAST\n1. Saved. Your progress is recorded.\n2. Done. Continue when you are ready.\n3. Profile complete. Your plan is ready.\n\nBUTTON LABELS\n1. Learn My Risk\n2. Complete KYC\n3. Start My SIP\n4. Review Plan\n5. View Portfolio\n6. Confirm Details\n7. Update Risk Profile\n8. Track Progress\n",
+      "slots": {
+        "primary_cta": "Craft a meeting-worthy email",
+        "secondary_cta": "Try an example campaign",
+        "empty_state": "No prospect researched yet. Enter their name to start.",
+        "helper_text": "Explain your startup's value proposition and target investor.",
+        "error_message": "Email generation failed. Check that Ollama is properly configured."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "AI-assisted cold email writer that researches prospects",
+    "icp": "venture capital-backed startup founders",
+    "problem": "can't craft personalized, high-converting emails without sacrificing time",
+    "category": "cold email writing for VCs and startups",
+    "differentiation": "writes emails from thorough prospect research, not templates",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "secure a meeting with the right investor",
+    "tone": "practical and results-driven"
+  },
+  "brain_flags": [],
+  "suggestions_flags": [],
+  "landing_flags": [],
+  "ux_flags": [],
+  "score": 10,
+  "alpha_ready": true
+}

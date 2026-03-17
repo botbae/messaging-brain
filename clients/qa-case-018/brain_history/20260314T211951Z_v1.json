@@ -1,0 +1,49 @@
+{
+  "product": "customer story toolkit",
+  "audience": "PMMs in software companies",
+  "problem": "struggle to get timely customer quotes for case studies",
+  "alternatives": "Google Forms and email",
+  "advantage": "pre-populates templates with customer data, not manual input",
+  "tone": "practical and efficient",
+  "goal": "publish a high-quality case study within hours",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "PMMs in software companies",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "primary_problem": {
+      "value": "struggle to get timely customer quotes for case studies",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "customer story formatting tool",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "differentiation": {
+      "value": "pre-populates templates with customer data, not manual input",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "Google Forms and email",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "publish a high-quality case study within hours",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-14T21:19:51.447143+00:00",
+  "source_idea": "customer story toolkit \u2014 helps PMMs collect, format and publish customer case studies faster. the bottleneck is always chasing the customer for a quote and the approval process",
+  "client_name": "qa-case-018",
+  "product_fingerprint": "6c0fa46ccb219ce8",
+  "brain_version": 1,
+  "last_saved_at": "2026-03-14T21:19:51.447143+00:00"
+}

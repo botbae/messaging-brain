@@ -1,0 +1,172 @@
+{
+  "case_id": 4,
+  "slug": "qa-case-004",
+  "input_idea": "its a tool for dev agencies to track client feedback across slack, email and loom and turn it into actual task tickets. clients hate linear and jira so this keeps them out of it",
+  "timings": {
+    "idea": 4.62,
+    "brain_save": 0.01,
+    "landing": 39.54,
+    "ux": 34.02,
+    "total": 81.21
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-004",
+      "idea_extract": {
+        "icp": "Dev agency owners",
+        "problem": "Client feedback gets lost in Slack, email, and Loom",
+        "category": "Client Feedback Management",
+        "differentiation": "Automates task ticket creation from client feedback",
+        "alternative": "Linear and Jira",
+        "tone": "Practical and Efficient",
+        "goal": "Turn client feedback into actionable tasks"
+      },
+      "product_profile_path": "clients/qa-case-004/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "detected 'agencies' in idea"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "detected 'tool for' in idea"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        }
+      },
+      "brain_suggestions": [
+        {
+          "field": "audience",
+          "severity": "info",
+          "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+        }
+      ]
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "detected 'agencies' in idea"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "detected 'tool for' in idea"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      }
+    },
+    "brain_suggestions": [
+      {
+        "field": "audience",
+        "severity": "info",
+        "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+      }
+    ],
+    "brain_save": {
+      "client": "qa-case-004",
+      "product_profile": {
+        "product": "Client Feedback Management",
+        "audience": "Dev agency owners",
+        "problem": "Client feedback gets lost in Slack, email, and Loom",
+        "alternatives": "Linear and Jira",
+        "advantage": "Automates task ticket creation from client feedback",
+        "tone": "Practical and Efficient",
+        "goal": "Turn client feedback into actionable tasks",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "Dev agency owners",
+            "confidence": 0.7,
+            "source_notes": "detected 'agencies' in idea"
+          },
+          "primary_problem": {
+            "value": "Client feedback gets lost in Slack, email, and Loom",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "category_frame": {
+            "value": "Client Feedback Management",
+            "confidence": 0.7,
+            "source_notes": "detected 'tool for' in idea"
+          },
+          "differentiation": {
+            "value": "Automates task ticket creation from client feedback",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "current_alternative": {
+            "value": "Linear and Jira",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "Turn client feedback into actionable tasks",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-14T20:59:34.379815+00:00",
+        "source_idea": "its a tool for dev agencies to track client feedback across slack, email and loom and turn it into actual task tickets. clients hate linear and jira so this keeps them out of it",
+        "client_name": "qa-case-004",
+        "product_fingerprint": "7821ac1671c00aa8",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-14T20:59:34.379815+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nTurn client feedback into actionable tasks\n\nSUBHEADLINE\nFor dev agency owners, client feedback gets lost in Slack, email, and Loom.\n\nWHAT THIS IS\nA focused tool that helps dev agency owners move from client feedback gets lost in slack, email, and loo to turn client feedback into actionable tasks.\n\nWHO IT IS FOR\nDev agency owners\n\nTHE PROBLEM\nClient feedback gets lost in Slack, email, and Loom\n\nWHY EXISTING TOOLS FAIL\nLinear and Jira was not designed for dev agency owners. It covers the broader category but lacks the specific mechanics this problem requires, forcing dev agency owners to patch gaps with manual workarounds that slow outcomes.\n\nHOW IT WORKS\nAutomates task ticket creation from client feedback.\n\nKEY BENEFITS\nEarly users of Client Feedback Management reach their first outcome without the overhead of general-purpose alternatives.\n\nCALL TO ACTION\nGet started with Client Feedback Management.\n",
+      "slots": {
+        "headline": "Turn client feedback into tasks",
+        "subhead": "Helps dev agency owners manage client feedback without losing it in Slack, email, and Loom.",
+        "problem": "Dev agency owners lose client feedback because it gets stuck in communication channels.",
+        "why_current_options_fail": "Linear and Jira are project management tools that don't handle client feedback well.",
+        "what_this_is": "Client Feedback Management is a task creation tool that automates ticket creation from client",
+        "primary_cta": "Start organizing"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\nClient Feedback Management helps dev agency owners turn client feedback into actionable tasks.\n\nONBOARDING\n1. Connect your Slack account to start collecting client feedback.\n2. Set up your first client profile by adding their name and email.\n3. Start capturing client feedback in the input field.\n\nEMPTY STATE\n1. No client profiles found. Add a new one to get started.\n2. No client feedback received yet. Share some with us!\n3. Your account is empty. Invite clients or import existing ones.\n\nERROR\n1. Slack connection failed. Check your credentials and try again.\n2. Client profile not found. Verify the email address and try again.\n3. Feedback input error. Try re-entering the text without formatting.\n\nTOAST\n1. Profile set up!\n2. Feedback received!\n3. Results ready!\n\nBUTTON LABELS\n1. Save Profile\n2. Add Client\n3. Generate Report\n4. Edit Settings\n5. View Account\n6. Start My SIP\n7. Complete KYC\n8. Build Brain\n",
+      "slots": {
+        "primary_cta": "Create Task",
+        "secondary_cta": "Review Brief",
+        "empty_state": "No feedback received yet. Share your client's thoughts to start.",
+        "helper_text": "Summarize what your client wants \u2014 and why it matters.",
+        "error_message": "Task creation failed. Check that you have the latest Ollama version."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "",
+    "icp": "Dev agency owners",
+    "problem": "Client feedback gets lost in Slack, email, and Loom",
+    "category": "Client Feedback Management",
+    "differentiation": "Automates task ticket creation from client feedback",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "Turn client feedback into actionable tasks",
+    "tone": "Practical and Efficient"
+  },
+  "brain_flags": [
+    "product: empty"
+  ],
+  "suggestions_flags": [],
+  "landing_flags": [],
+  "ux_flags": [
+    "slot 'secondary_cta': internal/tooling language detected"
+  ],
+  "score": 9,
+  "alpha_ready": true
+}

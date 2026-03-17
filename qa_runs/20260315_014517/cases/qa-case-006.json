@@ -1,0 +1,171 @@
+{
+  "case_id": 6,
+  "slug": "qa-case-006",
+  "input_idea": "i write cold emails for people but AI-assisted. no not another cold email writer, this one actually researches the prospect and writes it like a human who did their homework not a template",
+  "timings": {
+    "idea": 6.64,
+    "brain_save": 0.0,
+    "landing": 54.59,
+    "ux": 43.0
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-006",
+      "idea_extract": {
+        "icp": "ambitious startup marketers",
+        "problem": "can't craft compelling cold emails without wasting time on research",
+        "category": "AI-assisted cold email writer",
+        "differentiation": "combines AI with human-written content based on prospect profiles",
+        "alternative": "email templates and generic writing tools",
+        "tone": "practical and results-driven",
+        "goal": "generate high-quality leads for early-stage startups"
+      },
+      "product_profile_path": "clients/qa-case-006/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "detected 'marketers' in idea"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        }
+      },
+      "brain_suggestions": [
+        {
+          "field": "audience",
+          "severity": "info",
+          "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+        }
+      ]
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "detected 'marketers' in idea"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      }
+    },
+    "brain_suggestions": [
+      {
+        "field": "audience",
+        "severity": "info",
+        "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+      }
+    ],
+    "brain_save": {
+      "client": "qa-case-006",
+      "product_profile": {
+        "product": "AI-assisted cold email writer",
+        "audience": "ambitious startup marketers",
+        "problem": "can't craft compelling cold emails without wasting time on research",
+        "alternatives": "email templates and generic writing tools",
+        "advantage": "combines AI with human-written content based on prospect profiles",
+        "tone": "practical and results-driven",
+        "goal": "generate high-quality leads for early-stage startups",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "ambitious startup marketers",
+            "confidence": 0.7,
+            "source_notes": "detected 'marketers' in idea"
+          },
+          "primary_problem": {
+            "value": "can't craft compelling cold emails without wasting time on research",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "category_frame": {
+            "value": "AI-assisted cold email writer",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "differentiation": {
+            "value": "combines AI with human-written content based on prospect profiles",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "current_alternative": {
+            "value": "email templates and generic writing tools",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "generate high-quality leads for early-stage startups",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-14T20:24:24.596978+00:00",
+        "source_idea": "i write cold emails for people but AI-assisted. no not another cold email writer, this one actually researches the prospect and writes it like a human who did their homework not a template",
+        "client_name": "qa-case-006",
+        "product_fingerprint": "a35d1cb5de2458e9",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-14T20:24:24.596978+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\ngenerate high-quality leads for early-stage startups\n\nSUBHEADLINE\nFor ambitious startup marketers, can't craft compelling cold emails without wasting time on research.\n\nWHAT THIS IS\nA focused tool that helps ambitious startup marketers move from can't craft compelling cold emails without wasting to generate high-quality leads for early-stage startu.\n\nWHO IT IS FOR\nambitious startup marketers\n\nTHE PROBLEM\ncan't craft compelling cold emails without wasting time on research\n\nWHY EXISTING TOOLS FAIL\nemail templates and generic writing tools was not designed for ambitious startup marketers. It covers the broader category but lacks the specific mechanics this problem requires, forcing ambitious startup marketers to patch gaps with manual workarounds that slow outcomes.\n\nHOW IT WORKS\ncombines AI with human-written content based on prospect profiles.\n\nKEY BENEFITS\nEarly users of AI-assisted cold email writer reach their first outcome without the overhead of general-purpose alternatives.\n\nCALL TO ACTION\nGet started with AI-assisted cold email writer.\n",
+      "slots": {
+        "headline": "Generate high-quality leads",
+        "subhead": "Helps ambitious startup marketers craft compelling cold emails without wasting time on research.",
+        "problem": "Marketers struggle to write effective cold emails that resonate with their target audience.",
+        "why_current_options_fail": "Email templates and generic writing tools fail to account for prospect profiles, resulting in low conversion",
+        "what_this_is": "ColdWriter is an AI-assisted cold email writer that combines AI with human-written content based",
+        "primary_cta": "Start generating leads"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\nAI-assisted cold email writer helps ambitious startup marketers go from can't craft compelling cold emails without wasting time on\u2026 to generate high-quality leads for early-stage startups.\n\nONBOARDING\n1. Define who AI-assisted cold email writer is for and the problem it solves.\n2. Shape your core message so AI-assisted cold email writer can tailor output.\n3. Generate your first result and refine as you go.\n\nEMPTY STATE\n1. No audience defined yet. Start by telling AI-assisted cold email writer who you're building for.\n2. No message saved yet. Build your setup to generate output.\n3. No output yet. Generate your first result.\n\nERROR\n1. That did not save. Check your input and try again.\n2. That step did not complete. Make sure all required fields are filled in.\n3. This action failed. Reload and try again, or contact support if it continues.\n\nTOAST\n1. Saved. Your progress is recorded.\n2. Done. Continue when you are ready.\n3. Brain saved. Output ready.\n\nBUTTON LABELS\n1. Build Brain\n2. Review Brain\n3. Generate Positioning\n4. Generate Landing\n5. Generate UX\n6. Refine Message\n7. Compare Outputs\n8. Save Brain\n",
+      "slots": {
+        "primary_cta": "Craft Campaign",
+        "secondary_cta": "Review Brief",
+        "empty_state": "No prospect profile yet. Upload CSV to start.",
+        "helper_text": "Define your target audience \u2014 job titles, industries, and more.",
+        "error_message": "Email failed to send. Check that Ollama is running."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "",
+    "icp": "ambitious startup marketers",
+    "problem": "can't craft compelling cold emails without wasting time on research",
+    "category": "AI-assisted cold email writer",
+    "differentiation": "combines AI with human-written content based on prospect profiles",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "generate high-quality leads for early-stage startups",
+    "tone": "practical and results-driven"
+  },
+  "brain_flags": [
+    "product: empty"
+  ],
+  "suggestions_flags": [],
+  "landing_flags": [],
+  "ux_flags": [
+    "slot 'secondary_cta': internal/tooling language detected"
+  ],
+  "score": 9,
+  "alpha_ready": true
+}

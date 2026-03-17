@@ -1,0 +1,49 @@
+{
+  "product": "Landing page builder that generates copy from product descriptions",
+  "audience": "indie hackers and solopreneurs",
+  "problem": "can't craft compelling copy for their landing pages",
+  "alternatives": "ChatGPT prompts, generic marketing speak, Notion notes",
+  "advantage": "generates copy directly from product descriptions, not prompts or templates",
+  "tone": "practical and straightforward",
+  "goal": "create a landing page that resonates with their audience",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "indie hackers and solopreneurs",
+      "confidence": 0.7,
+      "source_notes": "detected 'solopreneurs' in idea"
+    },
+    "primary_problem": {
+      "value": "can't craft compelling copy for their landing pages",
+      "confidence": 0.7,
+      "source_notes": "detected 'generic' in idea"
+    },
+    "category_frame": {
+      "value": "landing page builders",
+      "confidence": 0.7,
+      "source_notes": "mentions landing page and marketing"
+    },
+    "differentiation": {
+      "value": "generates copy directly from product descriptions, not prompts or templates",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "ChatGPT prompts, generic marketing speak, Notion notes",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "create a landing page that resonates with their audience",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-17T10:44:38.480396+00:00",
+  "source_idea": "im working on a thing for indie hackers and solopreneurs who need to figure out what to put on their landing page. most of them just stare at a blank page or paste something into ChatGPT and get gener",
+  "client_name": "qa-smoke-3",
+  "product_fingerprint": "20b99d2b78c48707",
+  "brain_version": 1,
+  "last_saved_at": "2026-03-17T10:44:38.480396+00:00"
+}

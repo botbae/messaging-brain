@@ -1,0 +1,49 @@
+{
+  "product": "meeting summary software",
+  "audience": "busy startup CEOs",
+  "problem": "meetings are too long, decisions unclear",
+  "alternatives": "human summarizers or note-taking apps",
+  "advantage": "identifies key takeaways and action items",
+  "tone": "practical and concise",
+  "goal": "make strategic decisions faster",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "busy startup CEOs",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "primary_problem": {
+      "value": "meetings are too long, decisions unclear",
+      "confidence": 0.7,
+      "source_notes": "detected 'unclear' in idea"
+    },
+    "category_frame": {
+      "value": "meeting summary software",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "differentiation": {
+      "value": "identifies key takeaways and action items",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "human summarizers or note-taking apps",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "make strategic decisions faster",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-14T21:05:25.523069+00:00",
+  "source_idea": "built a thing that turns long meeting recordings into short opinionated summaries. like it doesnt just transcribe \u2014 it tells you what decisions were made and who owns what",
+  "client_name": "qa-case-008",
+  "product_fingerprint": "e4fc90bf9925e680",
+  "brain_version": 2,
+  "last_saved_at": "2026-03-14T21:05:25.523069+00:00"
+}

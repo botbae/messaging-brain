@@ -1,0 +1,49 @@
+{
+  "product": "Notion templates",
+  "audience": "Notion consulting practitioners",
+  "problem": "struggle to standardize their workflow and deliver consistent results",
+  "alternatives": "spreadsheets or email",
+  "advantage": "builds customized templates from a structured brief, not generic ones",
+  "tone": "practical and organized",
+  "goal": "streamline their consulting process",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "Notion consulting practitioners",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "primary_problem": {
+      "value": "struggle to standardize their workflow and deliver consistent results",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "Notion templates for consultants",
+      "confidence": 0.7,
+      "source_notes": "detected 'landing page' in idea"
+    },
+    "differentiation": {
+      "value": "builds customized templates from a structured brief, not generic ones",
+      "confidence": 0.7,
+      "source_notes": "detected 'structured' in idea"
+    },
+    "current_alternative": {
+      "value": "spreadsheets or email",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "streamline their consulting process",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-15T08:51:43.220877+00:00",
+  "source_idea": "i'm trying to turn my notion consulting practice into a productized service but i dont know how to say what the outcome is on a landing page without it sounding like every other notion consultant",
+  "client_name": "qa-case-010",
+  "product_fingerprint": "5724ef80d0abdfac",
+  "brain_version": 1,
+  "last_saved_at": "2026-03-15T08:51:43.220877+00:00"
+}

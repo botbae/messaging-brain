@@ -1,0 +1,49 @@
+{
+  "product": "SaaS",
+  "audience": "property managers",
+  "problem": "tenants' maintenance requests are lost in a sea of unorganized emails and phone calls",
+  "alternatives": "phone calls and email threads",
+  "advantage": "automatically categorizes urgency and assigns tasks to the right vendors",
+  "tone": "practical and efficient",
+  "goal": "streamline maintenance request resolution process",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "property managers",
+      "confidence": 0.7,
+      "source_notes": "detected 'saas' in idea"
+    },
+    "primary_problem": {
+      "value": "tenants' maintenance requests are lost in a sea of unorganized emails and phone calls",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "maintenance request management",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "differentiation": {
+      "value": "automatically categorizes urgency and assigns tasks to the right vendors",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "phone calls and email threads",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "streamline maintenance request resolution process",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-14T22:06:54.991057+00:00",
+  "source_idea": "SaaS for property managers to handle maintenance request triage. tenants submit via text or app, AI categorizes urgency, assigns to the right vendor, tracks resolution. the current process is a mess",
+  "client_name": "qa-case-050",
+  "product_fingerprint": "75ecca081b78185e",
+  "brain_version": 1,
+  "last_saved_at": "2026-03-14T22:06:54.991057+00:00"
+}

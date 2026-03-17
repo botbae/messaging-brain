@@ -1,0 +1,49 @@
+{
+  "product": "AI-assisted cold email writer",
+  "audience": "ambitious startup marketers",
+  "problem": "can't craft compelling cold emails without wasting time on research",
+  "alternatives": "email templates and generic writing tools",
+  "advantage": "combines AI with human-written content based on prospect profiles",
+  "tone": "practical and results-driven",
+  "goal": "generate high-quality leads for early-stage startups",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "ambitious startup marketers",
+      "confidence": 0.7,
+      "source_notes": "detected 'marketers' in idea"
+    },
+    "primary_problem": {
+      "value": "can't craft compelling cold emails without wasting time on research",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "AI-assisted cold email writer",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "differentiation": {
+      "value": "combines AI with human-written content based on prospect profiles",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "email templates and generic writing tools",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "generate high-quality leads for early-stage startups",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-14T20:24:24.596978+00:00",
+  "source_idea": "i write cold emails for people but AI-assisted. no not another cold email writer, this one actually researches the prospect and writes it like a human who did their homework not a template",
+  "client_name": "qa-case-006",
+  "product_fingerprint": "a35d1cb5de2458e9",
+  "brain_version": 2,
+  "last_saved_at": "2026-03-14T20:24:24.596978+00:00"
+}

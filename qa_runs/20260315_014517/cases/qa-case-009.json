@@ -1,0 +1,171 @@
+{
+  "case_id": 9,
+  "slug": "qa-case-009",
+  "input_idea": "newsletter ghostwriting for founders who have the ideas but cant sit down and write. i use AI but heavily edited. package is 4 posts per month for like $800",
+  "timings": {
+    "idea": 6.69,
+    "brain_save": 0.01,
+    "landing": 67.98,
+    "ux": 42.35
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-009",
+      "idea_extract": {
+        "icp": "founder-entrepreneurs with ideas",
+        "problem": "struggle to articulate their vision into engaging content",
+        "category": "newsletter ghostwriting for founders",
+        "differentiation": "combines AI-generated content with human editing expertise",
+        "alternative": "hiring a freelance writer or using templates",
+        "tone": "practical and results-driven",
+        "goal": "establish thought leadership and drive website traffic"
+      },
+      "product_profile_path": "clients/qa-case-009/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "detected 'founders' in idea"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        }
+      },
+      "brain_suggestions": [
+        {
+          "field": "audience",
+          "severity": "info",
+          "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+        }
+      ]
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "detected 'founders' in idea"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      }
+    },
+    "brain_suggestions": [
+      {
+        "field": "audience",
+        "severity": "info",
+        "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+      }
+    ],
+    "brain_save": {
+      "client": "qa-case-009",
+      "product_profile": {
+        "product": "newsletter ghostwriting",
+        "audience": "founder-entrepreneurs with ideas",
+        "problem": "struggle to articulate their vision into engaging content",
+        "alternatives": "hiring a freelance writer or using templates",
+        "advantage": "combines AI-generated content with human editing expertise",
+        "tone": "practical and results-driven",
+        "goal": "establish thought leadership and drive website traffic",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "founder-entrepreneurs with ideas",
+            "confidence": 0.7,
+            "source_notes": "detected 'founders' in idea"
+          },
+          "primary_problem": {
+            "value": "struggle to articulate their vision into engaging content",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "category_frame": {
+            "value": "newsletter ghostwriting for founders",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "differentiation": {
+            "value": "combines AI-generated content with human editing expertise",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "current_alternative": {
+            "value": "hiring a freelance writer or using templates",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "establish thought leadership and drive website traffic",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-14T20:29:12.817764+00:00",
+        "source_idea": "newsletter ghostwriting for founders who have the ideas but cant sit down and write. i use AI but heavily edited. package is 4 posts per month for like $800",
+        "client_name": "qa-case-009",
+        "product_fingerprint": "74df8b5ff21326a6",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-14T20:29:12.817764+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nDrive website traffic\n\nSUBHEADLINE\nFor founder-entrepreneurs, turn ideas into engaging content.\n\nWHAT THIS IS\nAn AI messaging workspace that turns rough product thinking into positioning, landing copy, and UX drafts.\n\nWHO IT IS FOR\nFounder-entrepreneurs with ideas\n\nTHE PROBLEM\nStruggling to articulate vision into engaging content\n\nWHY EXISTING TOOLS FAIL\nFreelance writers and templates were not designed for founder-entrepreneurs. They lack the specific mechanics this problem requires, forcing manual workarounds that slow outcomes.\n\nHOW IT WORKS\nCombines AI-generated content with human editing expertise.\n\nKEY BENEFITS\nReach first outcome without general-purpose alternatives' overhead.\n\nCALL TO ACTION\nStart writing your newsletter today.\n",
+      "slots": {
+        "headline": "Drive website traffic",
+        "subhead": "Helps founder-entrepreneurs with ideas establish thought leadership without struggling to articulate their vision.",
+        "problem": "Founders lose visitors because their copy explains the tool, not the outcome.",
+        "why_current_options_fail": "Freelance writers require too much direction and ChatGPT writes for everyone so the output positions nothing.",
+        "what_this_is": "Unimind is a newsletter ghostwriting service that combines AI-generated content with human editing expertise.",
+        "primary_cta": "Start positioning"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\nnewsletter ghostwriting helps founder-entrepreneurs with ideas turn rough product ideas into a clear messaging brain, positioning, landing copy, and UX drafts.\n\nONBOARDING\n1. Define who newsletter ghostwriting is for and the problem it solves.\n2. Shape your core message \u2014 the angle that makes newsletter ghostwriting different.\n3. Generate your first piece and adjust from the result.\n\nEMPTY STATE\n1. No audience defined yet. Start by telling newsletter ghostwriting who you're building for.\n2. No message saved yet. Build your brain to shape your positioning.\n3. No output yet. Generate your first piece.\n\nERROR\n1. That did not save. Check your input and try again.\n2. That step did not complete. Make sure all required fields are filled in.\n3. This action failed. Reload and try again, or contact support if it continues.\n\nTOAST\n1. Saved. Your progress is recorded.\n2. Done. Continue when you are ready.\n3. Messaging brain saved.\n\nBUTTON LABELS\n1. Build Brain\n2. Review Brain\n3. Generate Positioning\n4. Generate Landing\n5. Generate UX\n6. Refine Message\n7. Compare Outputs\n8. Save Brain\n",
+      "slots": {
+        "primary_cta": "Craft Newsletter",
+        "secondary_cta": "Review Brief",
+        "empty_state": "No newsletter written yet. Share your vision to start.",
+        "helper_text": "Explain what your product does and who it helps.",
+        "error_message": "Writing failed. Check that Ollama is running."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "",
+    "icp": "founder-entrepreneurs with ideas",
+    "problem": "struggle to articulate their vision into engaging content",
+    "category": "newsletter ghostwriting for founders",
+    "differentiation": "combines AI-generated content with human editing expertise",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "establish thought leadership and drive website traffic",
+    "tone": "practical and results-driven"
+  },
+  "brain_flags": [
+    "product: empty"
+  ],
+  "suggestions_flags": [],
+  "landing_flags": [],
+  "ux_flags": [
+    "slot 'secondary_cta': internal/tooling language detected"
+  ],
+  "score": 9,
+  "alpha_ready": true
+}

@@ -1,0 +1,168 @@
+{
+  "case_id": 2,
+  "slug": "qa-case-002",
+  "input_idea": "we help fintech startups that just raised series A get their compliance docs in order before regulators come knocking. its not legal software exactly its more like a structured process with some AI help",
+  "timings": {
+    "idea": 7.76,
+    "brain_save": 0.01,
+    "landing": 54.01,
+    "ux": 38.14,
+    "total": 102.94
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-002",
+      "idea_extract": {
+        "product": "Compliance document organizer for fintech startups",
+        "icp": "Fintech startup founders who just raised series A funding",
+        "problem": "Regulators' surprise audits put compliance in disarray, causing delays and fines",
+        "category": "Financial Compliance Support",
+        "differentiation": "Streamlines the process with AI-assisted templates and expert guidance",
+        "alternative": "Spreadsheets and manual document management",
+        "tone": "Practical and Proactive",
+        "goal": "Ensure regulatory compliance without disrupting business operations"
+      },
+      "product_profile_path": "clients/qa-case-002/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "mentions founders and startups"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "detected 'structured' in idea"
+        }
+      },
+      "brain_suggestions": [
+        {
+          "field": "goal",
+          "severity": "warning",
+          "message": "Goal is missing. Add the outcome the user achieves after using the product."
+        }
+      ]
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "mentions founders and startups"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "detected 'structured' in idea"
+      }
+    },
+    "brain_suggestions": [
+      {
+        "field": "goal",
+        "severity": "warning",
+        "message": "Goal is missing. Add the outcome the user achieves after using the product."
+      }
+    ],
+    "brain_save": {
+      "client": "qa-case-002",
+      "product_profile": {
+        "product": "Compliance document organizer for fintech startups",
+        "audience": "Fintech startup founders who just raised series A funding",
+        "problem": "Regulators' surprise audits put compliance in disarray, causing delays and fines",
+        "alternatives": "Spreadsheets and manual document management",
+        "advantage": "Streamlines the process with AI-assisted templates and expert guidance",
+        "tone": "Practical and Proactive",
+        "goal": "",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "Fintech startup founders who just raised series A funding",
+            "confidence": 0.7,
+            "source_notes": "mentions founders and startups"
+          },
+          "primary_problem": {
+            "value": "Regulators' surprise audits put compliance in disarray, causing delays and fines",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "category_frame": {
+            "value": "Financial Compliance Support",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "differentiation": {
+            "value": "Streamlines the process with AI-assisted templates and expert guidance",
+            "confidence": 0.7,
+            "source_notes": "detected 'structured' in idea"
+          },
+          "current_alternative": {
+            "value": "Spreadsheets and manual document management",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": "",
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-15T07:32:00.864274+00:00",
+        "source_idea": "we help fintech startups that just raised series A get their compliance docs in order before regulators come knocking. its not legal software exactly its more like a structured process with some AI he",
+        "client_name": "qa-case-002",
+        "product_fingerprint": "4ac9df7e0a8eb7f6",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-15T07:32:00.864274+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nStreamlines the process with AI-assisted templates and expert guidance\n\nSUBHEADLINE\nFor fintech startup founders who just raised series a funding, regulators' surprise audits put compliance in disarray, causing delays.\n\nWHAT THIS IS\nA guided onboarding assistant that explains risk, completes KYC, and helps new investors start their first SIP.\n\nWHO IT IS FOR\nFintech startup founders who just raised series A funding\n\nTHE PROBLEM\nRegulators' surprise audits put compliance in disarray, causing delays and fines\n\nWHY EXISTING TOOLS FAIL\nSpreadsheets and manual document management was not designed for fintech startup founders who just raised series a funding. It covers the broader category but lacks the specific mechanics this problem requires, forcing fintech startup founders who just raised series a funding to patch gaps with manual workarounds that slow outcomes.\n\nHOW IT WORKS\nStreamlines the process with AI-assisted templates and expert guidance.\n\nKEY BENEFITS\nFirst-time investors who complete onboarding start their first SIP without needing external guidance.\n\nCALL TO ACTION\nGet started with Compliance document organizer for fintech startups.\n",
+      "slots": {
+        "headline": "Organize compliance documents",
+        "subhead": "Helps fintech startup founders maintain regulatory readiness without manual spreadsheets.",
+        "problem": "Fintech startups lose time and money due to surprise audits caused by disorganized compliance",
+        "why_current_options_fail": "Manual document management and spreadsheets can't keep up with changing regulations, leading to delays and fines.",
+        "what_this_is": "CompliancePal is a financial compliance support tool that streamlines the process with AI-assisted templates",
+        "primary_cta": "Start maintaining regulatory readiness"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\nCompliance document organizer for fintech startups helps fintech startup founders who just raised series a funding understand risk, complete KYC, and start their first investment with confidence.\n\nONBOARDING\n1. Answer a few questions to understand your financial situation.\n2. Complete your verification so Compliance document organizer for fintech startups can personalise your plan.\n3. Start your first investment and track your progress.\n\nEMPTY STATE\n1. No risk profile yet. Complete the questionnaire to get started.\n2. No investments set up yet. Finish setup to see your plan.\n3. No transactions yet. Make your first investment to see activity.\n\nERROR\n1. That did not save. Check your input and try again.\n2. That step did not complete. Make sure all required fields are filled in.\n3. This action failed. Reload and try again, or contact support if it continues.\n\nTOAST\n1. Saved. Your progress is recorded.\n2. Done. Continue when you are ready.\n3. Profile complete. Your plan is ready.\n\nBUTTON LABELS\n1. Learn My Risk\n2. Complete KYC\n3. Start My SIP\n4. Review Plan\n5. View Portfolio\n6. Confirm Details\n7. Update Risk Profile\n8. Track Progress\n",
+      "slots": {
+        "primary_cta": "Define ICP",
+        "secondary_cta": "Review brief",
+        "empty_state": "No compliance plan built yet. Upload your Series A docs to start.",
+        "helper_text": "Explain how your fintech startup helps customers and what it does.",
+        "error_message": "Plan failed to generate. Ensure all required fields are filled."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "Compliance document organizer for fintech startups",
+    "icp": "Fintech startup founders who just raised series A funding",
+    "problem": "Regulators' surprise audits put compliance in disarray, causing delays and fines",
+    "category": "Financial Compliance Support",
+    "differentiation": "Streamlines the process with AI-assisted templates and expert guidance",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "Ensure regulatory compliance without disrupting business operations",
+    "tone": "Practical and Proactive"
+  },
+  "brain_flags": [],
+  "suggestions_flags": [],
+  "landing_flags": [],
+  "ux_flags": [
+    "slot 'primary_cta': internal/tooling language detected",
+    "slot 'secondary_cta': internal/tooling language detected"
+  ],
+  "score": 9,
+  "alpha_ready": true
+}

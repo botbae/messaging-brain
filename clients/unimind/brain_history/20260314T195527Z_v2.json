@@ -1,0 +1,49 @@
+{
+  "product": "Messaging system that asks founders structured questions and turns their product notes into a messaging brain for landing pages and UX copy.",
+  "audience": "founders of early-stage startups",
+  "problem": "struggle to craft unique product messaging without sounding generic or marketing-y",
+  "alternatives": "ChatGPT and freelance copywriters",
+  "advantage": "uses structured questioning approach to generate tailored messaging",
+  "tone": "practical and concise",
+  "goal": "ship a clear and effective landing page quickly",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "founders of early-stage startups",
+      "confidence": 0.7,
+      "source_notes": "mentions founders, startups, and teams"
+    },
+    "primary_problem": {
+      "value": "struggle to craft unique product messaging without sounding generic or marketing-y",
+      "confidence": 0.7,
+      "source_notes": "detected 'generic' in idea"
+    },
+    "category_frame": {
+      "value": "product positioning tool for founders",
+      "confidence": 0.7,
+      "source_notes": "mentions messaging, positioning, and landing page"
+    },
+    "differentiation": {
+      "value": "uses structured questioning approach to generate tailored messaging",
+      "confidence": 0.7,
+      "source_notes": "mentions structured and tailored"
+    },
+    "current_alternative": {
+      "value": "ChatGPT and freelance copywriters",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "ship a clear and effective landing page quickly",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-14T19:55:27.952435+00:00",
+  "source_idea": "so basically i\u2019ve been thinking about this thing for founders and small teams where like they struggle to explain their product properly on their website or landing page and they keep rewriting the sa",
+  "client_name": "unimind",
+  "product_fingerprint": "95e1eb8fcd6a4fd9",
+  "brain_version": 2,
+  "last_saved_at": "2026-03-14T19:55:27.952435+00:00"
+}

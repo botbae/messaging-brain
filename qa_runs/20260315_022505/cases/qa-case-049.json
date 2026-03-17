@@ -1,0 +1,173 @@
+{
+  "case_id": 49,
+  "slug": "qa-case-049",
+  "input_idea": "we help D2C brands figure out their CAC problem. not ads agency, not attribution tool \u2014 we do a diagnostic and then build them a 90-day playbook. mostly brands doing $1M-$10M revenue",
+  "timings": {
+    "idea": 4.56,
+    "brain_save": 0.0,
+    "landing": 44.91,
+    "ux": 31.6,
+    "total": 84.1
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-049",
+      "idea_extract": {
+        "icp": "D2C brand marketers",
+        "problem": "can't optimize customer acquisition costs effectively",
+        "category": "customer acquisition strategy",
+        "differentiation": "provides actionable 90-day playbook, not just diagnostic report",
+        "alternative": "ads agencies",
+        "tone": "practical and consultative",
+        "goal": "achieve sustainable revenue growth"
+      },
+      "product_profile_path": "clients/qa-case-049/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "detected 'marketers' in idea"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        }
+      },
+      "brain_suggestions": [
+        {
+          "field": "audience",
+          "severity": "info",
+          "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+        }
+      ]
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "detected 'marketers' in idea"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      }
+    },
+    "brain_suggestions": [
+      {
+        "field": "audience",
+        "severity": "info",
+        "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+      }
+    ],
+    "brain_save": {
+      "client": "qa-case-049",
+      "product_profile": {
+        "product": "customer acquisition strategy",
+        "audience": "D2C brand marketers",
+        "problem": "can't optimize customer acquisition costs effectively",
+        "alternatives": "ads agencies",
+        "advantage": "provides actionable 90-day playbook, not just diagnostic report",
+        "tone": "practical and consultative",
+        "goal": "achieve sustainable revenue growth",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "D2C brand marketers",
+            "confidence": 0.7,
+            "source_notes": "detected 'marketers' in idea"
+          },
+          "primary_problem": {
+            "value": "can't optimize customer acquisition costs effectively",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "category_frame": {
+            "value": "customer acquisition strategy",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "differentiation": {
+            "value": "provides actionable 90-day playbook, not just diagnostic report",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "current_alternative": {
+            "value": "ads agencies",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "achieve sustainable revenue growth",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-14T22:05:26.533043+00:00",
+        "source_idea": "we help D2C brands figure out their CAC problem. not ads agency, not attribution tool \u2014 we do a diagnostic and then build them a 90-day playbook. mostly brands doing $1M-$10M revenue",
+        "client_name": "qa-case-049",
+        "product_fingerprint": "6c0cd45258c273a0",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-14T22:05:26.533043+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nachieve sustainable revenue growth\n\nSUBHEADLINE\nFor d2c brand marketers, can't optimize customer acquisition costs effectively.\n\nWHAT THIS IS\nA focused tool that helps d2c brand marketers move from can't optimize customer acquisition costs effectiv to achieve sustainable revenue growth.\n\nWHO IT IS FOR\nD2C brand marketers\n\nTHE PROBLEM\ncan't optimize customer acquisition costs effectively\n\nWHY EXISTING TOOLS FAIL\nads agencies was not designed for d2c brand marketers. It covers the broader category but lacks the specific mechanics this problem requires, forcing d2c brand marketers to patch gaps with manual workarounds that slow outcomes.\n\nHOW IT WORKS\nprovides actionable 90-day playbook, not just diagnostic report.\n\nKEY BENEFITS\nEarly users of customer acquisition strategy reach their first outcome without the overhead of general-purpose alternatives.\n\nCALL TO ACTION\nGet started with customer acquisition strategy.\n",
+      "slots": {
+        "headline": "Optimize customer acquisition costs",
+        "subhead": "Helps D2C brand marketers achieve sustainable revenue growth without overpaying for ads agencies.",
+        "problem": "Marketers struggle to optimize customer acquisition costs because their messaging explains the ad, not",
+        "why_current_options_fail": "Ads agencies focus on impressions and clicks, not actual conversions or cost savings.",
+        "what_this_is": "Customer Acquisition Strategy is a playbook that provides actionable 90-day plan for optimizing customer",
+        "primary_cta": "Start optimizing"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\ncustomer acquisition strategy helps d2c brand marketers go from can't optimize customer acquisition costs effectively to achieve sustainable revenue growth.\n\nONBOARDING\n1. Define who customer acquisition strategy is for and the problem it solves.\n2. Shape your core message so customer acquisition strategy can tailor output.\n3. Generate your first result and refine as you go.\n\nEMPTY STATE\n1. No audience defined yet. Start by telling customer acquisition strategy who you're building for.\n2. No message saved yet. Build your setup to generate output.\n3. No output yet. Generate your first result.\n\nERROR\n1. That did not save. Check your input and try again.\n2. That step did not complete. Make sure all required fields are filled in.\n3. This action failed. Reload and try again, or contact support if it continues.\n\nTOAST\n1. Saved. Your progress is recorded.\n2. Done. Continue when you are ready.\n3. Brain saved. Output ready.\n\nBUTTON LABELS\n1. Build Brain\n2. Review Brain\n3. Generate Positioning\n4. Generate Landing\n5. Generate UX\n6. Refine Message\n7. Compare Outputs\n8. Save Brain\n",
+      "slots": {
+        "primary_cta": "Define ICP",
+        "secondary_cta": "Review brief",
+        "empty_state": "No ideal customer profile defined yet. Upload your CSV to start.",
+        "helper_text": "Identify your target audience \u2014 demographics, pain points, and goals.",
+        "error_message": "Segmentation failed. Check that data is correctly formatted."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "",
+    "icp": "D2C brand marketers",
+    "problem": "can't optimize customer acquisition costs effectively",
+    "category": "customer acquisition strategy",
+    "differentiation": "provides actionable 90-day playbook, not just diagnostic report",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "achieve sustainable revenue growth",
+    "tone": "practical and consultative"
+  },
+  "brain_flags": [
+    "product: empty"
+  ],
+  "suggestions_flags": [],
+  "landing_flags": [],
+  "ux_flags": [
+    "slot 'primary_cta': internal/tooling language detected",
+    "slot 'secondary_cta': internal/tooling language detected"
+  ],
+  "score": 8,
+  "alpha_ready": true
+}

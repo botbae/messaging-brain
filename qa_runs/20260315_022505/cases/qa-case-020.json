@@ -1,0 +1,173 @@
+{
+  "case_id": 20,
+  "slug": "qa-case-020",
+  "input_idea": "we make pitch deck teardowns as a service. you send us your deck we come back with a written audit in 48 hours. $299 flat. thinking about how to position this for post-seed founders",
+  "timings": {
+    "idea": 4.63,
+    "brain_save": 0.01,
+    "landing": 40.73,
+    "ux": 33.72,
+    "total": 82.12
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-020",
+      "idea_extract": {
+        "icp": "post-seed startup founders",
+        "problem": "struggle to articulate their unique value proposition",
+        "category": "pitch deck teardowns",
+        "differentiation": "provides actionable feedback in 48 hours, not vague insights",
+        "alternative": "friends and family feedback",
+        "tone": "practical and constructive",
+        "goal": "secure funding with confidence"
+      },
+      "product_profile_path": "clients/qa-case-020/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "detected 'founders' in idea"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        }
+      },
+      "brain_suggestions": [
+        {
+          "field": "audience",
+          "severity": "info",
+          "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+        }
+      ]
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "detected 'founders' in idea"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      }
+    },
+    "brain_suggestions": [
+      {
+        "field": "audience",
+        "severity": "info",
+        "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+      }
+    ],
+    "brain_save": {
+      "client": "qa-case-020",
+      "product_profile": {
+        "product": "pitch deck teardowns",
+        "audience": "post-seed startup founders",
+        "problem": "struggle to articulate their unique value proposition",
+        "alternatives": "friends and family feedback",
+        "advantage": "provides actionable feedback in 48 hours, not vague insights",
+        "tone": "practical and constructive",
+        "goal": "secure funding with confidence",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "post-seed startup founders",
+            "confidence": 0.7,
+            "source_notes": "detected 'founders' in idea"
+          },
+          "primary_problem": {
+            "value": "struggle to articulate their unique value proposition",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "category_frame": {
+            "value": "pitch deck teardowns",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "differentiation": {
+            "value": "provides actionable feedback in 48 hours, not vague insights",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "current_alternative": {
+            "value": "friends and family feedback",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "secure funding with confidence",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-14T21:22:41.598833+00:00",
+        "source_idea": "we make pitch deck teardowns as a service. you send us your deck we come back with a written audit in 48 hours. $299 flat. thinking about how to position this for post-seed founders",
+        "client_name": "qa-case-020",
+        "product_fingerprint": "48bc9470f597125e",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-14T21:22:41.598833+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nSecure funding\n\nSUBHEADLINE\nFor post-seed startup founders, a focused tool to articulate unique value proposition.\n\nWHAT THIS IS\nA tool that helps post-seed startup founders move from struggle to secure funding with confidence.\n\nWHO IT IS FOR\nPost-seed startup founders\n\nTHE PROBLEM\nStruggle to articulate unique value proposition\n\nWHY EXISTING TOOLS FAIL\nFriends and family feedback lacks specific mechanics, forcing manual workarounds that slow outcomes.\n\nHOW IT WORKS\nProvides actionable feedback in 48 hours.\n\nKEY BENEFITS\nEarly users reach their first outcome without overhead of general-purpose alternatives.\n\nCALL TO ACTION\nGet started\n",
+      "slots": {
+        "headline": "Craft compelling messaging",
+        "subhead": "Helps post-seed startup founders articulate unique value proposition without friends and family feedback.",
+        "problem": "Founders struggle to secure funding due to unclear pitch deck messaging.",
+        "why_current_options_fail": "Friends and family feedback lacks actionable insights, leaving founders uncertain about their message.",
+        "what_this_is": "Pitch Deck Teardowns is a structured brief writer that provides actionable feedback in 48",
+        "primary_cta": "Start refining your message"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\npitch deck teardowns helps post-seed startup founders go from struggle to articulate their unique value proposition to secure funding with confidence.\n\nONBOARDING\n1. Define who pitch deck teardowns is for and the problem it solves.\n2. Shape your core message so pitch deck teardowns can tailor output.\n3. Generate your first result and refine as you go.\n\nEMPTY STATE\n1. No audience defined yet. Start by telling pitch deck teardowns who you're building for.\n2. No message saved yet. Build your setup to generate output.\n3. No output yet. Generate your first result.\n\nERROR\n1. That did not save. Check your input and try again.\n2. That step did not complete. Make sure all required fields are filled in.\n3. This action failed. Reload and try again, or contact support if it continues.\n\nTOAST\n1. Saved. Your progress is recorded.\n2. Done. Continue when you are ready.\n3. Brain saved. Output ready.\n\nBUTTON LABELS\n1. Build Brain\n2. Review Brain\n3. Generate Positioning\n4. Generate Landing\n5. Generate UX\n6. Refine Message\n7. Compare Outputs\n8. Save Brain\n",
+      "slots": {
+        "primary_cta": "Define ICP",
+        "secondary_cta": "Review brief",
+        "empty_state": "No value proposition defined yet. Clarify your customer to start.",
+        "helper_text": "Explain who your ideal customer problem is and how you solve it.",
+        "error_message": "Validation failed. Check that your customer description is clear."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "",
+    "icp": "post-seed startup founders",
+    "problem": "struggle to articulate their unique value proposition",
+    "category": "pitch deck teardowns",
+    "differentiation": "provides actionable feedback in 48 hours, not vague insights",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "secure funding with confidence",
+    "tone": "practical and constructive"
+  },
+  "brain_flags": [
+    "product: empty"
+  ],
+  "suggestions_flags": [],
+  "landing_flags": [],
+  "ux_flags": [
+    "slot 'primary_cta': internal/tooling language detected",
+    "slot 'secondary_cta': internal/tooling language detected"
+  ],
+  "score": 8,
+  "alpha_ready": true
+}

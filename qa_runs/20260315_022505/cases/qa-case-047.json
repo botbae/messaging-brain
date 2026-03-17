@@ -1,0 +1,175 @@
+{
+  "case_id": 47,
+  "slug": "qa-case-047",
+  "input_idea": "podcast production service for B2B companies. we do everything \u2014 editing, show notes, chapters, clips for social. the pain point is consistent output without having to manage a VA",
+  "timings": {
+    "idea": 5.65,
+    "brain_save": 0.01,
+    "landing": 46.22,
+    "ux": 32.54,
+    "total": 87.45
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-047",
+      "idea_extract": {
+        "icp": "B2B marketing managers",
+        "problem": "struggle to maintain consistent podcast output without overburdening their teams",
+        "category": "podcast production service for B2B",
+        "differentiation": "provides turnkey solutions, handling all aspects of podcast creation from editing to show notes and clips",
+        "alternative": "outsourcing individual tasks to virtual assistants or freelancers",
+        "tone": "practical and supportive",
+        "goal": "deliver a professional-sounding podcast that drives business results"
+      },
+      "product_profile_path": "clients/qa-case-047/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "detected 'b2b' in idea"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        }
+      },
+      "brain_suggestions": [
+        {
+          "field": "audience",
+          "severity": "info",
+          "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+        }
+      ]
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "detected 'b2b' in idea"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      }
+    },
+    "brain_suggestions": [
+      {
+        "field": "audience",
+        "severity": "info",
+        "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+      }
+    ],
+    "brain_save": {
+      "client": "qa-case-047",
+      "product_profile": {
+        "product": "podcast production service",
+        "audience": "B2B marketing managers",
+        "problem": "struggle to maintain consistent podcast output without overburdening their teams",
+        "alternatives": "outsourcing individual tasks to virtual assistants or freelancers",
+        "advantage": "provides turnkey solutions, handling all aspects of podcast creation from editing to show notes and clips",
+        "tone": "practical and supportive",
+        "goal": "deliver a professional-sounding podcast that drives business results",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "B2B marketing managers",
+            "confidence": 0.7,
+            "source_notes": "detected 'b2b' in idea"
+          },
+          "primary_problem": {
+            "value": "struggle to maintain consistent podcast output without overburdening their teams",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "category_frame": {
+            "value": "podcast production service for B2B",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "differentiation": {
+            "value": "provides turnkey solutions, handling all aspects of podcast creation from editing to show notes and clips",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "current_alternative": {
+            "value": "outsourcing individual tasks to virtual assistants or freelancers",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "deliver a professional-sounding podcast that drives business results",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-14T22:02:28.320161+00:00",
+        "source_idea": "podcast production service for B2B companies. we do everything \u2014 editing, show notes, chapters, clips for social. the pain point is consistent output without having to manage a VA",
+        "client_name": "qa-case-047",
+        "product_fingerprint": "87754a90f9e2729e",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-14T22:02:28.320161+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\ndeliver a professional-sounding podcast that drives business results\n\nSUBHEADLINE\nFor b2b marketing managers, struggle to maintain consistent podcast output without overburdening their teams.\n\nWHAT THIS IS\nA focused tool that helps b2b marketing managers move from struggle to maintain consistent podcast output wit to deliver a professional-sounding podcast that drive.\n\nWHO IT IS FOR\nB2B marketing managers\n\nTHE PROBLEM\nstruggle to maintain consistent podcast output without overburdening their teams\n\nWHY EXISTING TOOLS FAIL\noutsourcing individual tasks to virtual assistants or freelancers was not designed for b2b marketing managers. It covers the broader category but lacks the specific mechanics this problem requires, forcing b2b marketing managers to patch gaps with manual workarounds that slow outcomes.\n\nHOW IT WORKS\nprovides turnkey solutions, handling all aspects of podcast creation from editing to show notes and clips.\n\nKEY BENEFITS\nEarly users of podcast production service reach their first outcome without the overhead of general-purpose alternatives.\n\nCALL TO ACTION\nGet started with podcast production service.\n",
+      "slots": {
+        "headline": "Produce podcasts that drive results",
+        "subhead": "Helps B2B marketing managers deliver consistent podcast output without overburdening their teams.",
+        "problem": "Marketing managers struggle to maintain consistent podcast production without sacrificing quality or team morale.",
+        "why_current_options_fail": "Outsourcing individual tasks to virtual assistants fails to provide a cohesive, professional-sounding podcast experience.",
+        "what_this_is": "Podcastify is a turnkey podcast production service that handles all aspects of creation from",
+        "primary_cta": "Start producing"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\npodcast production service helps b2b marketing managers go from struggle to maintain consistent podcast output without\u2026 to deliver a professional-sounding podcast that drives\u2026.\n\nONBOARDING\n1. Define who podcast production service is for and the problem it solves.\n2. Shape your core message so podcast production service can tailor output.\n3. Generate your first result and refine as you go.\n\nEMPTY STATE\n1. No audience defined yet. Start by telling podcast production service who you're building for.\n2. No message saved yet. Build your setup to generate output.\n3. No output yet. Generate your first result.\n\nERROR\n1. That did not save. Check your input and try again.\n2. That step did not complete. Make sure all required fields are filled in.\n3. This action failed. Reload and try again, or contact support if it continues.\n\nTOAST\n1. Saved. Your progress is recorded.\n2. Done. Continue when you are ready.\n3. Brain saved. Output ready.\n\nBUTTON LABELS\n1. Build Brain\n2. Review Brain\n3. Generate Positioning\n4. Generate Landing\n5. Generate UX\n6. Refine Message\n7. Compare Outputs\n8. Save Brain\n",
+      "slots": {
+        "primary_cta": "Craft Episode",
+        "secondary_cta": "Review Brief",
+        "empty_state": "No episode created yet. Upload your script to start.",
+        "helper_text": "Tell us about your podcast \u2014 what it's about and who it's for.",
+        "error_message": "Episode failed to render. Check that audio files are correct."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "",
+    "icp": "B2B marketing managers",
+    "problem": "struggle to maintain consistent podcast output without overburdening their teams",
+    "category": "podcast production service for B2B",
+    "differentiation": "provides turnkey solutions, handling all aspects of podcast creation from editing to show notes and clips",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "deliver a professional-sounding podcast that drives business results",
+    "tone": "practical and supportive"
+  },
+  "brain_flags": [
+    "product: empty",
+    "advantage: generic phrases detected ([' solution'])"
+  ],
+  "suggestions_flags": [],
+  "landing_flags": [
+    "landing text: generic phrases [' solution']"
+  ],
+  "ux_flags": [
+    "slot 'secondary_cta': internal/tooling language detected"
+  ],
+  "score": 8,
+  "alpha_ready": true
+}

@@ -1,0 +1,49 @@
+{
+  "product": "newsletter ghostwriting",
+  "audience": "founder-entrepreneurs with ideas to share",
+  "problem": "struggle to articulate their vision in engaging newsletters",
+  "alternatives": "hiring a freelance writer or using templates",
+  "advantage": "combines AI-generated content with human editing expertise",
+  "tone": "practical and supportive",
+  "goal": "establish thought leadership through consistent newsletter publishing",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "founder-entrepreneurs with ideas to share",
+      "confidence": 0.7,
+      "source_notes": "detected 'founders' in idea"
+    },
+    "primary_problem": {
+      "value": "struggle to articulate their vision in engaging newsletters",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "newsletter ghostwriting for founders",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "differentiation": {
+      "value": "combines AI-generated content with human editing expertise",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "hiring a freelance writer or using templates",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "establish thought leadership through consistent newsletter publishing",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-14T21:06:50.478512+00:00",
+  "source_idea": "newsletter ghostwriting for founders who have the ideas but cant sit down and write. i use AI but heavily edited. package is 4 posts per month for like $800",
+  "client_name": "qa-case-009",
+  "product_fingerprint": "3e1b5a2f1fe1ab08",
+  "brain_version": 1,
+  "last_saved_at": "2026-03-14T21:06:50.478512+00:00"
+}

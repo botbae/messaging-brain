@@ -1,0 +1,171 @@
+{
+  "case_id": 6,
+  "slug": "qa-case-006",
+  "input_idea": "i write cold emails for people but AI-assisted. no not another cold email writer, this one actually researches the prospect and writes it like a human who did their homework not a template",
+  "timings": {
+    "idea": 6.0,
+    "brain_save": 0.0,
+    "landing": 45.14,
+    "ux": 33.22,
+    "total": 87.38
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-006",
+      "idea_extract": {
+        "product": "AI-assisted cold email writer that researches prospects",
+        "icp": "venture-backed startup founders",
+        "problem": "cold emails lack personalization and relevance",
+        "category": "research-driven cold outreach",
+        "differentiation": "writes personalized emails based on prospect research, not templates",
+        "alternative": "template-based cold email tools",
+        "tone": "practical and results-oriented",
+        "goal": "generate a high-converting cold email campaign"
+      },
+      "product_profile_path": "clients/qa-case-006/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "detected 'founders' in idea"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        }
+      },
+      "brain_suggestions": [
+        {
+          "field": "audience",
+          "severity": "info",
+          "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+        }
+      ]
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "detected 'founders' in idea"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      }
+    },
+    "brain_suggestions": [
+      {
+        "field": "audience",
+        "severity": "info",
+        "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+      }
+    ],
+    "brain_save": {
+      "client": "qa-case-006",
+      "product_profile": {
+        "product": "AI-assisted cold email writer that researches prospects",
+        "audience": "venture-backed startup founders",
+        "problem": "cold emails lack personalization and relevance",
+        "alternatives": "template-based cold email tools",
+        "advantage": "writes personalized emails based on prospect research, not templates",
+        "tone": "practical and results-oriented",
+        "goal": "generate a high-converting cold email campaign",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "venture-backed startup founders",
+            "confidence": 0.7,
+            "source_notes": "detected 'founders' in idea"
+          },
+          "primary_problem": {
+            "value": "cold emails lack personalization and relevance",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "category_frame": {
+            "value": "research-driven cold outreach",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "differentiation": {
+            "value": "writes personalized emails based on prospect research, not templates",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "current_alternative": {
+            "value": "template-based cold email tools",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "generate a high-converting cold email campaign",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-15T07:38:50.541735+00:00",
+        "source_idea": "i write cold emails for people but AI-assisted. no not another cold email writer, this one actually researches the prospect and writes it like a human who did their homework not a template",
+        "client_name": "qa-case-006",
+        "product_fingerprint": "7dbb216ee4d63ff0",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-15T07:38:50.541735+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\ngenerate a high-converting cold email campaign\n\nSUBHEADLINE\nFor venture-backed startup founders, cold emails lack personalization and relevance.\n\nWHAT THIS IS\nA focused tool that helps venture-backed startup founders move from cold emails lack personalization and relevance to generate a high-converting cold email campaign.\n\nWHO IT IS FOR\nventure-backed startup founders\n\nTHE PROBLEM\ncold emails lack personalization and relevance\n\nWHY EXISTING TOOLS FAIL\ntemplate-based cold email tools was not designed for venture-backed startup founders. It covers the broader category but lacks the specific mechanics this problem requires, forcing venture-backed startup founders to patch gaps with manual workarounds that slow outcomes.\n\nHOW IT WORKS\nwrites personalized emails based on prospect research, not templates.\n\nKEY BENEFITS\nEarly users of AI-assisted cold email writer  reach their first outcome without the overhead of general-purpose alternatives.\n\nCALL TO ACTION\nGet started with AI-assisted cold email writer that researches prospects.\n",
+      "slots": {
+        "headline": "Convert cold emails",
+        "subhead": "Helps venture-backed startup founders generate high-converting campaigns without templates.",
+        "problem": "Cold emails lack personalization and relevance, resulting in low open rates.",
+        "why_current_options_fail": "Template-based tools write for everyone, not specific prospects.",
+        "what_this_is": "Prospectify is a research-driven cold outreach writer that crafts personalized emails based on prospect",
+        "primary_cta": "Build messaging"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\nAI-assisted cold email writer that researches prospects helps venture-backed startup founders go from cold emails lack personalization and relevance to generate a high-converting cold email campaign.\n\nONBOARDING\n1. Define who AI-assisted cold email writer that researches prospects is for and the problem it solves.\n2. Shape your core message so AI-assisted cold email writer that researches prospects can tailor output.\n3. Generate your first result and refine as you go.\n\nEMPTY STATE\n1. No audience defined yet. Start by telling AI-assisted cold email writer that researches prospects who you're building for.\n2. No message saved yet. Build your setup to generate output.\n3. No output yet. Generate your first result.\n\nERROR\n1. That did not save. Check your input and try again.\n2. That step did not complete. Make sure all required fields are filled in.\n3. This action failed. Reload and try again, or contact support if it continues.\n\nTOAST\n1. Saved. Your progress is recorded.\n2. Done. Continue when you are ready.\n3. Brain saved. Output ready.\n\nBUTTON LABELS\n1. Build Brain\n2. Review Brain\n3. Generate Positioning\n4. Generate Landing\n5. Generate UX\n6. Refine Message\n7. Compare Outputs\n8. Save Brain\n",
+      "slots": {
+        "primary_cta": "Craft Campaign",
+        "secondary_cta": "Review Brief",
+        "empty_state": "No prospects researched yet. Search for your ideal customer to start.",
+        "helper_text": "Define your target audience \u2014 who they are and what they care about.",
+        "error_message": "Campaign failed. Check that prospect data is accurate."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "AI-assisted cold email writer that researches prospects",
+    "icp": "venture-backed startup founders",
+    "problem": "cold emails lack personalization and relevance",
+    "category": "research-driven cold outreach",
+    "differentiation": "writes personalized emails based on prospect research, not templates",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "generate a high-converting cold email campaign",
+    "tone": "practical and results-oriented"
+  },
+  "brain_flags": [],
+  "suggestions_flags": [],
+  "landing_flags": [],
+  "ux_flags": [
+    "slot 'secondary_cta': internal/tooling language detected"
+  ],
+  "score": 10,
+  "alpha_ready": true
+}

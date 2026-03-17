@@ -1,0 +1,157 @@
+{
+  "case_id": 9,
+  "slug": "qa-case-009",
+  "input_idea": "newsletter ghostwriting for founders who have the ideas but cant sit down and write. i use AI but heavily edited. package is 4 posts per month for like $800",
+  "timings": {
+    "idea": 6.27,
+    "brain_save": 0.01,
+    "landing": 46.15,
+    "ux": 33.43,
+    "total": 88.88
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-009",
+      "idea_extract": {
+        "product": "Newsletter ghostwriter that crafts engaging articles from founder ideas",
+        "icp": "founders of early-stage startups",
+        "problem": "struggle to find time to write compelling newsletters",
+        "category": "newsletter writing services for founders",
+        "differentiation": "heavily edited AI-generated content tailored to founder's voice",
+        "alternative": "hiring a freelance writer or doing it themselves",
+        "tone": "practical and supportive",
+        "goal": "establish thought leadership through consistent and high-quality newsletters"
+      },
+      "product_profile_path": "clients/qa-case-009/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "mentions founders and startups"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "detected 'tailored' in idea"
+        }
+      },
+      "brain_suggestions": null
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "mentions founders and startups"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "detected 'tailored' in idea"
+      }
+    },
+    "brain_suggestions": null,
+    "brain_save": {
+      "client": "qa-case-009",
+      "product_profile": {
+        "product": "Newsletter ghostwriter that crafts engaging articles from founder ideas",
+        "audience": "founders of early-stage startups",
+        "problem": "struggle to find time to write compelling newsletters",
+        "alternatives": "hiring a freelance writer or doing it themselves",
+        "advantage": "heavily edited AI-generated content tailored to founder's voice",
+        "tone": "practical and supportive",
+        "goal": "establish thought leadership through consistent and high-quality newsletters",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "founders of early-stage startups",
+            "confidence": 0.7,
+            "source_notes": "mentions founders and startups"
+          },
+          "primary_problem": {
+            "value": "struggle to find time to write compelling newsletters",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "category_frame": {
+            "value": "newsletter writing services for founders",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "differentiation": {
+            "value": "heavily edited AI-generated content tailored to founder's voice",
+            "confidence": 0.7,
+            "source_notes": "detected 'tailored' in idea"
+          },
+          "current_alternative": {
+            "value": "hiring a freelance writer or doing it themselves",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "establish thought leadership through consistent and high-quality newsletters",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-15T08:50:12.912447+00:00",
+        "source_idea": "newsletter ghostwriting for founders who have the ideas but cant sit down and write. i use AI but heavily edited. package is 4 posts per month for like $800",
+        "client_name": "qa-case-009",
+        "product_fingerprint": "fbac5d3f9e902478",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-15T08:50:12.912447+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nestablish thought leadership through consistent and high-quality newsletters\n\nSUBHEADLINE\nFor founders of early-stage startups, struggle to find time to write compelling newsletters.\n\nWHAT THIS IS\nA focused tool that helps founders of early-stage startups move from struggle to find time to write compelling newslett to establish thought leadership through consistent an.\n\nWHO IT IS FOR\nfounders of early-stage startups\n\nTHE PROBLEM\nstruggle to find time to write compelling newsletters\n\nWHY EXISTING TOOLS FAIL\nhiring a freelance writer or doing it themselves was not designed for founders of early-stage startups. It covers the broader category but lacks the specific mechanics this problem requires, forcing founders of early-stage startups to patch gaps with manual workarounds that slow outcomes.\n\nHOW IT WORKS\nheavily edited AI-generated content tailored to founder's voice.\n\nKEY BENEFITS\nEarly users of Newsletter ghostwriter that cr reach their first outcome without the overhead of general-purpose alternatives.\n\nCALL TO ACTION\nGet started with Newsletter ghostwriter that crafts engaging articles from founder ideas.\n",
+      "slots": {
+        "headline": "Write engaging newsletters",
+        "subhead": "Helps early-stage founders craft compelling articles without hiring a freelancer.",
+        "problem": "Founders struggle to find time to write consistent and high-quality newsletters.",
+        "why_current_options_fail": "Freelance writers don't understand startup founders' voices, resulting in generic content.",
+        "what_this_is": "Newsletter Ghostwriter is a newsletter writing service that crafts engaging articles from founder ideas.",
+        "primary_cta": "Start your trial"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\nNewsletter ghostwriter that crafts engaging articles from founder ideas helps founders of early-stage startups go from struggle to find time to write compelling newsletters to establish thought leadership through consistent and\u2026.\n\nONBOARDING\n1. Define who Newsletter ghostwriter that crafts engaging articles from founder ideas is for and the problem it solves.\n2. Shape your core message so Newsletter ghostwriter that crafts engaging articles from founder ideas can tailor output.\n3. Generate your first result and refine as you go.\n\nEMPTY STATE\n1. No audience defined yet. Start by telling Newsletter ghostwriter that crafts engaging articles from founder ideas who you're building for.\n2. No message saved yet. Build your setup to generate output.\n3. No output yet. Generate your first result.\n\nERROR\n1. That did not save. Check your input and try again.\n2. That step did not complete. Make sure all required fields are filled in.\n3. This action failed. Reload and try again, or contact support if it continues.\n\nTOAST\n1. Saved. Your progress is recorded.\n2. Done. Continue when you are ready.\n3. Brain saved. Output ready.\n\nBUTTON LABELS\n1. Build Brain\n2. Review Brain\n3. Generate Positioning\n4. Generate Landing\n5. Generate UX\n6. Refine Message\n7. Compare Outputs\n8. Save Brain\n",
+      "slots": {
+        "primary_cta": "Write your first message",
+        "secondary_cta": "See how it works",
+        "empty_state": "No newsletter written yet. Share your idea to start.",
+        "helper_text": "Tell us about your startup \u2014 what problem you're solving and who's involved.",
+        "error_message": "Generation failed. Check that your product description is accurate."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "Newsletter ghostwriter that crafts engaging articles from founder ideas",
+    "icp": "founders of early-stage startups",
+    "problem": "struggle to find time to write compelling newsletters",
+    "category": "newsletter writing services for founders",
+    "differentiation": "heavily edited AI-generated content tailored to founder's voice",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "establish thought leadership through consistent and high-quality newsletters",
+    "tone": "practical and supportive"
+  },
+  "brain_flags": [],
+  "suggestions_flags": [],
+  "landing_flags": [],
+  "ux_flags": [],
+  "score": 10,
+  "alpha_ready": true
+}

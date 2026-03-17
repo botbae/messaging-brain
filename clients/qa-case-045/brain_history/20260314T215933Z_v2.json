@@ -1,0 +1,49 @@
+{
+  "product": "a marketplace for fractional execs",
+  "audience": "ambitious startup CEOs",
+  "problem": "can't find the right CFO to scale their business",
+  "alternatives": "cold emailing or LinkedIn outreach",
+  "advantage": "vets all executives through rigorous assessments and references",
+  "tone": "practical and professional",
+  "goal": "secure a high-caliber CFO for a successful project",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "ambitious startup CEOs",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "primary_problem": {
+      "value": "can't find the right CFO to scale their business",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "fractional executive marketplace",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "differentiation": {
+      "value": "vets all executives through rigorous assessments and references",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "cold emailing or LinkedIn outreach",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "secure a high-caliber CFO for a successful project",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-14T21:59:33.750398+00:00",
+  "source_idea": "a marketplace for fractional execs \u2014 CFOs, CTOs, CMOs. the problem is both sides of the marketplace have to trust each other and that's hard when the engagements are high stakes",
+  "client_name": "qa-case-045",
+  "product_fingerprint": "f03ff10bcd6ad1ff",
+  "brain_version": 2,
+  "last_saved_at": "2026-03-14T21:59:33.750398+00:00"
+}

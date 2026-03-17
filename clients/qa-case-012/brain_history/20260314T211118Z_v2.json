@@ -1,0 +1,49 @@
+{
+  "product": "brand strategy for early stage startups",
+  "audience": "first-time SaaS founders",
+  "problem": "struggle to articulate their unique value proposition",
+  "alternatives": "Google Docs templates",
+  "advantage": "uses proprietary framework for clarity and focus",
+  "tone": "practical and consultative",
+  "goal": "define a compelling brand story",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "first-time SaaS founders",
+      "confidence": 0.7,
+      "source_notes": "mentions founders, startups, and saas"
+    },
+    "primary_problem": {
+      "value": "struggle to articulate their unique value proposition",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "startup positioning services",
+      "confidence": 0.7,
+      "source_notes": "detected 'positioning' in idea"
+    },
+    "differentiation": {
+      "value": "uses proprietary framework for clarity and focus",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "Google Docs templates",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "define a compelling brand story",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-14T21:11:18.761672+00:00",
+  "source_idea": "brand strategy for early stage startups \u2014 mostly helping founders who just got funded figure out their positioning before they build their website. 6 week engagement",
+  "client_name": "qa-case-012",
+  "product_fingerprint": "4374929137fff9d9",
+  "brain_version": 2,
+  "last_saved_at": "2026-03-14T21:11:18.761672+00:00"
+}

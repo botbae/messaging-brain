@@ -1,0 +1,161 @@
+{
+  "case_id": 10,
+  "slug": "qa-case-010",
+  "input_idea": "i'm trying to turn my notion consulting practice into a productized service but i dont know how to say what the outcome is on a landing page without it sounding like every other notion consultant",
+  "timings": {
+    "idea": 4.87,
+    "brain_save": 0.0,
+    "landing": 43.87,
+    "ux": 31.73,
+    "total": 83.49
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-010",
+      "idea_extract": {
+        "icp": "Notion consultants seeking productization",
+        "problem": "struggle to articulate their service's value proposition",
+        "category": "Notion-based consulting services",
+        "differentiation": "structures Notion templates for clarity, not just notes",
+        "alternative": "spreadsheets or email updates",
+        "tone": "practical and consultative",
+        "goal": "deliver a productized service that resonates"
+      },
+      "product_profile_path": "clients/qa-case-010/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "detected 'landing page' in idea"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        }
+      },
+      "brain_suggestions": null
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "detected 'landing page' in idea"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      }
+    },
+    "brain_suggestions": null,
+    "brain_save": {
+      "client": "qa-case-010",
+      "product_profile": {
+        "product": "Notion-based consulting services",
+        "audience": "Notion consultants seeking productization",
+        "problem": "struggle to articulate their service's value proposition",
+        "alternatives": "spreadsheets or email updates",
+        "advantage": "structures Notion templates for clarity, not just notes",
+        "tone": "practical and consultative",
+        "goal": "deliver a productized service that resonates",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "Notion consultants seeking productization",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "primary_problem": {
+            "value": "struggle to articulate their service's value proposition",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "category_frame": {
+            "value": "Notion-based consulting services",
+            "confidence": 0.7,
+            "source_notes": "detected 'landing page' in idea"
+          },
+          "differentiation": {
+            "value": "structures Notion templates for clarity, not just notes",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "current_alternative": {
+            "value": "spreadsheets or email updates",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "deliver a productized service that resonates",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-14T21:08:24.361057+00:00",
+        "source_idea": "i'm trying to turn my notion consulting practice into a productized service but i dont know how to say what the outcome is on a landing page without it sounding like every other notion consultant",
+        "client_name": "qa-case-010",
+        "product_fingerprint": "a453674c0ecc2c2c",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-14T21:08:24.361057+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\ndeliver a productized service that resonates\n\nSUBHEADLINE\nFor notion consultants seeking productization, struggle to articulate their service's value proposition.\n\nWHAT THIS IS\nA focused tool that helps notion consultants seeking productization move from struggle to articulate their service's value propo to deliver a productized service that resonates.\n\nWHO IT IS FOR\nNotion consultants seeking productization\n\nTHE PROBLEM\nstruggle to articulate their service's value proposition\n\nWHY EXISTING TOOLS FAIL\nspreadsheets or email updates was not designed for notion consultants seeking productization. It covers the broader category but lacks the specific mechanics this problem requires, forcing notion consultants seeking productization to patch gaps with manual workarounds that slow outcomes.\n\nHOW IT WORKS\nstructures Notion templates for clarity, not just notes.\n\nKEY BENEFITS\nEarly users of Notion-based consulting servic reach their first outcome without the overhead of general-purpose alternatives.\n\nCALL TO ACTION\nGet started with Notion-based consulting services.\n",
+      "slots": {
+        "headline": "Deliver value with clarity",
+        "subhead": "Helps Notion consultants productize their services without confusing clients.",
+        "problem": "Consultants struggle to articulate their service's value proposition, losing potential clients.",
+        "why_current_options_fail": "Spreadsheets and email updates fail to convey the unique benefits of consulting services.",
+        "what_this_is": "Notionized is a structured consulting template that clarifies your offering for clients.",
+        "primary_cta": "Start defining your message"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\nNotion-based consulting services helps notion consultants seeking productization go from struggle to articulate their service's value proposition to deliver a productized service that resonates.\n\nONBOARDING\n1. Define who Notion-based consulting services is for and the problem it solves.\n2. Shape your core message so Notion-based consulting services can tailor output.\n3. Generate your first result and refine as you go.\n\nEMPTY STATE\n1. No audience defined yet. Start by telling Notion-based consulting services who you're building for.\n2. No message saved yet. Build your setup to generate output.\n3. No output yet. Generate your first result.\n\nERROR\n1. That did not save. Check your input and try again.\n2. That step did not complete. Make sure all required fields are filled in.\n3. This action failed. Reload and try again, or contact support if it continues.\n\nTOAST\n1. Saved. Your progress is recorded.\n2. Done. Continue when you are ready.\n3. Brain saved. Output ready.\n\nBUTTON LABELS\n1. Build Brain\n2. Review Brain\n3. Generate Positioning\n4. Generate Landing\n5. Generate UX\n6. Refine Message\n7. Compare Outputs\n8. Save Brain\n",
+      "slots": {
+        "primary_cta": "Define ICP",
+        "secondary_cta": "Review brief",
+        "empty_state": "No ICP defined yet. Start with your ideal client profile to begin.",
+        "helper_text": "Identify your target audience \u2014 who they are, what they struggle with, and how",
+        "error_message": "ICP failed to generate. Check that your inputs are complete and consistent."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "",
+    "icp": "Notion consultants seeking productization",
+    "problem": "struggle to articulate their service's value proposition",
+    "category": "Notion-based consulting services",
+    "differentiation": "structures Notion templates for clarity, not just notes",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "deliver a productized service that resonates",
+    "tone": "practical and consultative"
+  },
+  "brain_flags": [
+    "product: empty"
+  ],
+  "suggestions_flags": [],
+  "landing_flags": [],
+  "ux_flags": [
+    "slot 'primary_cta': internal/tooling language detected",
+    "slot 'secondary_cta': internal/tooling language detected"
+  ],
+  "score": 8,
+  "alpha_ready": true
+}

@@ -1,0 +1,49 @@
+{
+  "product": "checkout optimization services",
+  "audience": "ecommerce store owners",
+  "problem": "struggle to optimize the checkout process for abandoned carts",
+  "alternatives": "generic CRO agencies",
+  "advantage": "specializes in post-purchase experience improvement",
+  "tone": "practical and analytical",
+  "goal": "minimize cart abandonment and increase revenue",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "ecommerce store owners",
+      "confidence": 0.7,
+      "source_notes": "detected 'agencies' in idea"
+    },
+    "primary_problem": {
+      "value": "struggle to optimize the checkout process for abandoned carts",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "checkout optimization services",
+      "confidence": 0.7,
+      "source_notes": "mentions landing page and conversion"
+    },
+    "differentiation": {
+      "value": "specializes in post-purchase experience improvement",
+      "confidence": 0.7,
+      "source_notes": "mentions specific and focused"
+    },
+    "current_alternative": {
+      "value": "generic CRO agencies",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "minimize cart abandonment and increase revenue",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-14T21:14:18.288116+00:00",
+  "source_idea": "we do conversion rate optimization for ecom brands. specifically focused on the checkout and post-purchase experience. most CRO agencies do the landing page we do the bottom of funnel",
+  "client_name": "qa-case-014",
+  "product_fingerprint": "3da83dd8bdced8ea",
+  "brain_version": 1,
+  "last_saved_at": "2026-03-14T21:14:18.288116+00:00"
+}

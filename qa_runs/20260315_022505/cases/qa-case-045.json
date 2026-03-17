@@ -1,0 +1,172 @@
+{
+  "case_id": 45,
+  "slug": "qa-case-045",
+  "input_idea": "a marketplace for fractional execs \u2014 CFOs, CTOs, CMOs. the problem is both sides of the marketplace have to trust each other and that's hard when the engagements are high stakes",
+  "timings": {
+    "idea": 4.85,
+    "brain_save": 0.0,
+    "landing": 45.02,
+    "ux": 33.23,
+    "total": 86.14
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-045",
+      "idea_extract": {
+        "icp": "ambitious startup CEOs",
+        "problem": "can't find the right CFO to scale their business",
+        "category": "fractional executive marketplace",
+        "differentiation": "vets all executives through rigorous assessments and references",
+        "alternative": "cold emailing or LinkedIn outreach",
+        "tone": "practical and professional",
+        "goal": "secure a high-caliber CFO for a successful project"
+      },
+      "product_profile_path": "clients/qa-case-045/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        }
+      },
+      "brain_suggestions": [
+        {
+          "field": "audience",
+          "severity": "info",
+          "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+        }
+      ]
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      }
+    },
+    "brain_suggestions": [
+      {
+        "field": "audience",
+        "severity": "info",
+        "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+      }
+    ],
+    "brain_save": {
+      "client": "qa-case-045",
+      "product_profile": {
+        "product": "a marketplace for fractional execs",
+        "audience": "ambitious startup CEOs",
+        "problem": "can't find the right CFO to scale their business",
+        "alternatives": "cold emailing or LinkedIn outreach",
+        "advantage": "vets all executives through rigorous assessments and references",
+        "tone": "practical and professional",
+        "goal": "secure a high-caliber CFO for a successful project",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "ambitious startup CEOs",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "primary_problem": {
+            "value": "can't find the right CFO to scale their business",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "category_frame": {
+            "value": "fractional executive marketplace",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "differentiation": {
+            "value": "vets all executives through rigorous assessments and references",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "current_alternative": {
+            "value": "cold emailing or LinkedIn outreach",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "secure a high-caliber CFO for a successful project",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-14T21:59:33.750398+00:00",
+        "source_idea": "a marketplace for fractional execs \u2014 CFOs, CTOs, CMOs. the problem is both sides of the marketplace have to trust each other and that's hard when the engagements are high stakes",
+        "client_name": "qa-case-045",
+        "product_fingerprint": "f03ff10bcd6ad1ff",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-14T21:59:33.750398+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nSecure high-caliber CFOs\n\nSUBHEADLINE\nFor ambitious startup CEOs, find the right CFO to scale their business.\n\nWHAT THIS IS\nA focused tool that helps ambitious startup CEOs secure high-caliber CFOs for successful projects.\n\nWHO IT IS FOR\nAmbitious startup CEOs\n\nTHE PROBLEM\nCan't find the right CFO to scale their business.\n\nWHY EXISTING TOOLS FAIL\nCold emailing or LinkedIn outreach was designed for broader categories, not specific needs of ambitious startup CEOs. This forces manual workarounds that slow outcomes.\n\nHOW IT WORKS\nWe vet all executives through rigorous assessments and references.\n\nKEY BENEFITS\nEarly users reach first outcomes without general-purpose alternatives' overhead.\n\nCALL TO ACTION\nGet started with a marketplace for fractional execs.\n\nI removed repetition, cut unnecessary words, and sharpened the language to make it more concise and impactful. I also removed AI-sounding transitions and filler adjectives. Let me know if you need any further adjustments!\n",
+      "slots": {
+        "headline": "Find CFOs for your startup",
+        "subhead": "Helps ambitious startup CEOs secure high-caliber CFOs without cold emailing or LinkedIn outreach.",
+        "problem": "CEOs waste time and resources searching for the right CFO, only to settle for",
+        "why_current_options_fail": "Cold emailing and LinkedIn outreach fail because they don't vet executives through rigorous assessments and references.",
+        "what_this_is": "CFO Connect is a fractional executive marketplace that vets all executives through rigorous assessments",
+        "primary_cta": "Start searching"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\na marketplace for fractional execs helps ambitious startup ceos go from can't find the right cfo to scale their business to secure a high-caliber cfo for a successful project.\n\nONBOARDING\n1. Define who a marketplace for fractional execs is for and the problem it solves.\n2. Shape your core message so a marketplace for fractional execs can tailor output.\n3. Generate your first result and refine as you go.\n\nEMPTY STATE\n1. No audience defined yet. Start by telling a marketplace for fractional execs who you're building for.\n2. No message saved yet. Build your setup to generate output.\n3. No output yet. Generate your first result.\n\nERROR\n1. That did not save. Check your input and try again.\n2. That step did not complete. Make sure all required fields are filled in.\n3. This action failed. Reload and try again, or contact support if it continues.\n\nTOAST\n1. Saved. Your progress is recorded.\n2. Done. Continue when you are ready.\n3. Brain saved. Output ready.\n\nBUTTON LABELS\n1. Build Brain\n2. Review Brain\n3. Generate Positioning\n4. Generate Landing\n5. Generate UX\n6. Refine Message\n7. Compare Outputs\n8. Save Brain\n",
+      "slots": {
+        "primary_cta": "Find CFO",
+        "secondary_cta": "Review brief",
+        "empty_state": "No project defined yet. Define your ICP to start.",
+        "helper_text": "Describe your startup's goals and challenges.",
+        "error_message": "Matching failed. Check that your requirements are clear."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "",
+    "icp": "ambitious startup CEOs",
+    "problem": "can't find the right CFO to scale their business",
+    "category": "fractional executive marketplace",
+    "differentiation": "vets all executives through rigorous assessments and references",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "secure a high-caliber CFO for a successful project",
+    "tone": "practical and professional"
+  },
+  "brain_flags": [
+    "product: empty"
+  ],
+  "suggestions_flags": [],
+  "landing_flags": [],
+  "ux_flags": [
+    "slot 'secondary_cta': internal/tooling language detected"
+  ],
+  "score": 9,
+  "alpha_ready": true
+}

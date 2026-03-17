@@ -1,0 +1,161 @@
+{
+  "case_id": 38,
+  "slug": "qa-case-038",
+  "input_idea": "we rebranded from a dev-first tool to a no-code platform but the product UI still has all the old technical copy everywhere. users keep getting confused by terms meant for developers",
+  "timings": {
+    "idea": 4.67,
+    "brain_save": 0.01,
+    "landing": 45.78,
+    "ux": 32.69,
+    "total": 86.19
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-038",
+      "idea_extract": {
+        "icp": "founder-CEO of early-stage startups",
+        "problem": "struggle to articulate their unique value proposition",
+        "category": "product positioning platform",
+        "differentiation": "uses proprietary semantic analysis for accurate messaging",
+        "alternative": "Word documents and spreadsheets",
+        "tone": "practical and consultative",
+        "goal": "secure funding or attract strategic partners"
+      },
+      "product_profile_path": "clients/qa-case-038/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "mentions startups and developers"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "detected 'confused' in idea"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "mentions positioning and platform"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        }
+      },
+      "brain_suggestions": null
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "mentions startups and developers"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "detected 'confused' in idea"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "mentions positioning and platform"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      }
+    },
+    "brain_suggestions": null,
+    "brain_save": {
+      "client": "qa-case-038",
+      "product_profile": {
+        "product": "product positioning platform",
+        "audience": "founder-CEO of early-stage startups",
+        "problem": "struggle to articulate their unique value proposition",
+        "alternatives": "Word documents and spreadsheets",
+        "advantage": "uses proprietary semantic analysis for accurate messaging",
+        "tone": "practical and consultative",
+        "goal": "secure funding or attract strategic partners",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "founder-CEO of early-stage startups",
+            "confidence": 0.7,
+            "source_notes": "mentions startups and developers"
+          },
+          "primary_problem": {
+            "value": "struggle to articulate their unique value proposition",
+            "confidence": 0.7,
+            "source_notes": "detected 'confused' in idea"
+          },
+          "category_frame": {
+            "value": "product positioning platform",
+            "confidence": 0.7,
+            "source_notes": "mentions positioning and platform"
+          },
+          "differentiation": {
+            "value": "uses proprietary semantic analysis for accurate messaging",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "current_alternative": {
+            "value": "Word documents and spreadsheets",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "secure funding or attract strategic partners",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-14T21:49:10.663621+00:00",
+        "source_idea": "we rebranded from a dev-first tool to a no-code platform but the product UI still has all the old technical copy everywhere. users keep getting confused by terms meant for developers",
+        "client_name": "qa-case-038",
+        "product_fingerprint": "8c1d7b7cacc5991e",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-14T21:49:10.663621+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nSecure funding or attract strategic partners\n\nSUBHEADLINE\nFor founder-CEO of early-stage startups, struggling to articulate unique value proposition.\n\nWHAT THIS IS\nAn AI messaging workspace that turns rough product thinking into positioning, landing copy, and UX drafts for founder-CEO of early-stage startups.\n\nWHO IT IS FOR\nFounder-CEO of early-stage startups\n\nTHE PROBLEM\nLack of clarity in articulating unique value proposition\n\nWHY EXISTING TOOLS FAIL\nWord documents and spreadsheets were not designed to address the specific needs of founder-CEO of early-stage startups, forcing manual workarounds that slow outcomes.\n\nHOW IT WORKS\nUses proprietary semantic analysis for accurate messaging.\n\nKEY BENEFITS\nFounders report clearer product narratives within a single session.\n\nCALL TO ACTION\nStart positioning your product today.\n",
+      "slots": {
+        "headline": "Craft messaging that funds your startup",
+        "subhead": "Helps early-stage founders ship landing pages without staring at a blank doc.",
+        "problem": "Founders lose visitors because their copy explains the tool, not the outcome.",
+        "why_current_options_fail": "Word documents and spreadsheets can't capture unique value propositions.",
+        "what_this_is": "Unimind is a positioning writer that uses semantic analysis for accurate messaging.",
+        "primary_cta": "Define your message"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\nproduct positioning platform helps founder-ceo of early-stage startups turn rough product ideas into a clear messaging brain, positioning, landing copy, and UX drafts.\n\nONBOARDING\n1. Define who product positioning platform is for and the problem it solves.\n2. Shape your core message \u2014 the angle that makes product positioning platform different.\n3. Generate your first piece and adjust from the result.\n\nEMPTY STATE\n1. No audience defined yet. Start by telling product positioning platform who you're building for.\n2. No message saved yet. Build your brain to shape your positioning.\n3. No output yet. Generate your first piece.\n\nERROR\n1. That did not save. Check your input and try again.\n2. That step did not complete. Make sure all required fields are filled in.\n3. This action failed. Reload and try again, or contact support if it continues.\n\nTOAST\n1. Saved. Your progress is recorded.\n2. Done. Continue when you are ready.\n3. Messaging brain saved.\n\nBUTTON LABELS\n1. Build Brain\n2. Review Brain\n3. Generate Positioning\n4. Generate Landing\n5. Generate UX\n6. Refine Message\n7. Compare Outputs\n8. Save Brain\n",
+      "slots": {
+        "primary_cta": "Define ICP",
+        "secondary_cta": "Review brief",
+        "empty_state": "No ideal customer profile built yet. Start with your target audience to begin.",
+        "helper_text": "Identify who your product helps and what it does for them.",
+        "error_message": "Profile failed to generate. Ensure you've added a clear value proposition."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "",
+    "icp": "founder-CEO of early-stage startups",
+    "problem": "struggle to articulate their unique value proposition",
+    "category": "product positioning platform",
+    "differentiation": "uses proprietary semantic analysis for accurate messaging",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "secure funding or attract strategic partners",
+    "tone": "practical and consultative"
+  },
+  "brain_flags": [
+    "product: empty"
+  ],
+  "suggestions_flags": [],
+  "landing_flags": [],
+  "ux_flags": [
+    "slot 'primary_cta': internal/tooling language detected",
+    "slot 'secondary_cta': internal/tooling language detected"
+  ],
+  "score": 8,
+  "alpha_ready": true
+}

@@ -1,0 +1,170 @@
+{
+  "case_id": 39,
+  "slug": "qa-case-039",
+  "input_idea": "our checkout flow has 12 steps and the copy on each step was written by a different person at a different time. it's a mess and we know it's killing conversion",
+  "timings": {
+    "idea": 4.62,
+    "brain_save": 0.01,
+    "landing": 42.1,
+    "ux": 36.1,
+    "total": 85.86
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-039",
+      "idea_extract": {
+        "icp": "eCommerce store owners",
+        "problem": "confusing checkout process with inconsistent messaging",
+        "category": "checkout flow writer",
+        "differentiation": "writes step-by-step copy from a unified brand voice",
+        "alternative": "Word documents shared among team members",
+        "tone": "practical and concise",
+        "goal": "maximize conversion rates through streamlined checkout"
+      },
+      "product_profile_path": "clients/qa-case-039/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "detected 'inconsistent' in idea"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "detected 'conversion' in idea"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        }
+      },
+      "brain_suggestions": [
+        {
+          "field": "audience",
+          "severity": "info",
+          "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+        }
+      ]
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "detected 'inconsistent' in idea"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "detected 'conversion' in idea"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      }
+    },
+    "brain_suggestions": [
+      {
+        "field": "audience",
+        "severity": "info",
+        "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+      }
+    ],
+    "brain_save": {
+      "client": "qa-case-039",
+      "product_profile": {
+        "product": "checkout flow writer",
+        "audience": "eCommerce store owners",
+        "problem": "confusing checkout process with inconsistent messaging",
+        "alternatives": "Word documents shared among team members",
+        "advantage": "writes step-by-step copy from a unified brand voice",
+        "tone": "practical and concise",
+        "goal": "maximize conversion rates through streamlined checkout",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "eCommerce store owners",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "primary_problem": {
+            "value": "confusing checkout process with inconsistent messaging",
+            "confidence": 0.7,
+            "source_notes": "detected 'inconsistent' in idea"
+          },
+          "category_frame": {
+            "value": "checkout flow writer",
+            "confidence": 0.7,
+            "source_notes": "detected 'conversion' in idea"
+          },
+          "differentiation": {
+            "value": "writes step-by-step copy from a unified brand voice",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "current_alternative": {
+            "value": "Word documents shared among team members",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "maximize conversion rates through streamlined checkout",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-14T21:50:41.815135+00:00",
+        "source_idea": "our checkout flow has 12 steps and the copy on each step was written by a different person at a different time. it's a mess and we know it's killing conversion",
+        "client_name": "qa-case-039",
+        "product_fingerprint": "f797b85d3f4a429a",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-14T21:50:41.815135+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nmaximize conversion rates through streamlined checkout\n\nSUBHEADLINE\nFor ecommerce store owners, confusing checkout process with inconsistent messaging.\n\nWHAT THIS IS\nAn AI messaging workspace that turns rough product thinking into positioning, landing copy, and UX drafts.\n\nWHO IT IS FOR\neCommerce store owners\n\nTHE PROBLEM\nconfusing checkout process with inconsistent messaging\n\nWHY EXISTING TOOLS FAIL\nWord documents shared among team members was not designed for ecommerce store owners. It covers the broader category but lacks the specific mechanics this problem requires, forcing ecommerce store owners to patch gaps with manual workarounds that slow outcomes.\n\nHOW IT WORKS\nwrites step-by-step copy from a unified brand voice.\n\nKEY BENEFITS\nEarly users of checkout flow writer reach their first outcome without the overhead of general-purpose alternatives.\n\nCALL TO ACTION\nGet started with checkout flow writer.\n",
+      "slots": {
+        "headline": "Streamline checkout flow",
+        "subhead": "Helps eCommerce store owners simplify their checkout process without inconsistent messaging.",
+        "problem": "Store owners lose conversions because their checkout copy is unclear and confusing.",
+        "why_current_options_fail": "Word documents shared among team members can't ensure a unified brand voice.",
+        "what_this_is": "Checkout Flow Writer is a step-by-step writer that creates consistent messaging from a single",
+        "primary_cta": "Build messaging"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\ncheckout flow writer helps ecommerce store owners turn rough product ideas into a clear messaging brain, positioning, landing copy, and UX drafts.\n\nONBOARDING\n1. Define who checkout flow writer is for and the problem it solves.\n2. Shape your core message \u2014 the angle that makes checkout flow writer different.\n3. Generate your first piece and adjust from the result.\n\nEMPTY STATE\n1. No audience defined yet. Start by telling checkout flow writer who you're building for.\n2. No message saved yet. Build your brain to shape your positioning.\n3. No output yet. Generate your first piece.\n\nERROR\n1. That did not save. Check your input and try again.\n2. That step did not complete. Make sure all required fields are filled in.\n3. This action failed. Reload and try again, or contact support if it continues.\n\nTOAST\n1. Saved. Your progress is recorded.\n2. Done. Continue when you are ready.\n3. Messaging brain saved.\n\nBUTTON LABELS\n1. Build Brain\n2. Review Brain\n3. Generate Positioning\n4. Generate Landing\n5. Generate UX\n6. Refine Message\n7. Compare Outputs\n8. Save Brain\n",
+      "slots": {
+        "primary_cta": "Configure Store",
+        "secondary_cta": "Review settings",
+        "empty_state": "No store configured yet. Set up your products to start.",
+        "helper_text": "Define your product categories and variations.",
+        "error_message": "Configuration failed. Check that all fields are filled."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "",
+    "icp": "eCommerce store owners",
+    "problem": "confusing checkout process with inconsistent messaging",
+    "category": "checkout flow writer",
+    "differentiation": "writes step-by-step copy from a unified brand voice",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "maximize conversion rates through streamlined checkout",
+    "tone": "practical and concise"
+  },
+  "brain_flags": [
+    "product: empty"
+  ],
+  "suggestions_flags": [],
+  "landing_flags": [],
+  "ux_flags": [],
+  "score": 10,
+  "alpha_ready": true
+}

@@ -1,0 +1,176 @@
+{
+  "case_id": 22,
+  "slug": "qa-case-022",
+  "input_idea": "fitness app but specifically for people who travel a lot for work and can only work out in hotel rooms or airports. the plans adjust automatically based on what you have available",
+  "timings": {
+    "idea": 4.63,
+    "brain_save": 0.0,
+    "landing": 41.8,
+    "ux": 35.65,
+    "total": 85.12
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-022",
+      "idea_extract": {
+        "icp": "frequent business travelers",
+        "problem": "can't fit in workouts due to limited space and equipment",
+        "category": "hotel room workout app",
+        "differentiation": "adapts to available space with AI-powered exercises",
+        "alternative": "YouTube fitness videos",
+        "tone": "practical and motivational",
+        "goal": "stay healthy on the road"
+      },
+      "product_profile_path": "clients/qa-case-022/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "mentions only and specific"
+        }
+      },
+      "brain_suggestions": [
+        {
+          "field": "audience",
+          "severity": "info",
+          "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+        }
+      ]
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "mentions only and specific"
+      }
+    },
+    "brain_suggestions": [
+      {
+        "field": "audience",
+        "severity": "info",
+        "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+      }
+    ],
+    "brain_save": {
+      "client": "qa-case-022",
+      "product_profile": {
+        "product": "hotel room workout app",
+        "audience": "frequent business travelers",
+        "problem": "can't fit in workouts due to limited space and equipment",
+        "alternatives": "YouTube fitness videos",
+        "advantage": "adapts to available space with AI-powered exercises",
+        "tone": "practical and motivational",
+        "goal": "stay healthy on the road",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "frequent business travelers",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "primary_problem": {
+            "value": "can't fit in workouts due to limited space and equipment",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "category_frame": {
+            "value": "hotel room workout app",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "differentiation": {
+            "value": "adapts to available space with AI-powered exercises",
+            "confidence": 0.7,
+            "source_notes": "mentions only and specific"
+          },
+          "current_alternative": {
+            "value": "YouTube fitness videos",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "stay healthy on the road",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-14T21:25:33.196768+00:00",
+        "source_idea": "fitness app but specifically for people who travel a lot for work and can only work out in hotel rooms or airports. the plans adjust automatically based on what you have available",
+        "client_name": "qa-case-022",
+        "product_fingerprint": "20fc562da6ecef5a",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-14T21:25:33.196768+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nStay healthy on the road\n\nSUBHEADLINE\nFor frequent business travelers, adapts to available space with AI-powered exercises.\n\nWHAT THIS IS\nA focused tool that helps frequent business travelers stay healthy on the road by adapting to limited space and equipment.\n\nWHO IT IS FOR\nFrequent business travelers\n\nTHE PROBLEM\nLimited space and equipment make it hard for frequent business travelers to fit in workouts.\n\nWHY EXISTING TOOLS FAIL\nYouTube fitness videos were not designed for frequent business travelers, forcing manual workarounds that slow outcomes.\n\nHOW IT WORKS\nAdapts to available space with AI-powered exercises, no need for extra equipment or space.\n\nKEY BENEFITS\nEarly users reach their first outcome without the overhead of general-purpose alternatives.\n\nCALL TO ACTION\nStart your hotel room workout today.\n",
+      "slots": {
+        "headline": "Stay healthy on the road",
+        "subhead": "Helps frequent business travelers fit workouts into hotel rooms without equipment",
+        "problem": "Travelers can't find exercises that adapt to limited space and equipment",
+        "why_current_options_fail": "YouTube fitness videos require a lot of space and equipment, not suitable for hotel rooms",
+        "what_this_is": "Hotel Room Workout is an app that uses AI-powered exercises to fit workouts into",
+        "primary_cta": "Start exercising"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\nHotel room workout app helps frequent business travelers stay healthy on the road.\n\nONBOARDING\n1. Create your profile to get started.\n2. Set up your account to track progress.\n3. Input your goals and preferences to customize workouts.\n\nEMPTY STATE\n1. No exercises found. Add a new routine to start working out.\n2. Your workout schedule is empty. Start planning today!\n3. You haven't set any goals yet. Define what you want to achieve.\n\nERROR\n1. Exercise not found: Try searching again or add a new one.\n2. Workout schedule conflict: Reschedule or delete the conflicting session.\n3. Goal not met: Adjust your routine or increase intensity to reach target.\n\nTOAST\n1. Profile created!\n2. Account set up and ready to track progress.\n3. Goals defined! Start working towards them today.\n4. Exercise added! Get started with your new routine.\n5. Workout scheduled! Don't forget to do it.\n6. Result saved! Track your progress over time.\n7. Settings updated! Your preferences are now reflected in workouts.\n8. Account linked! Access all features and track progress.\n\nBUTTON LABELS\n1. Create Profile\n2. Set Up Account\n3. Add Exercise\n4. Schedule Workout\n5. Define Goals\n6. Save Result\n7. Update Settings\n8. Link Account\n",
+      "slots": {
+        "primary_cta": "Stay Fit",
+        "secondary_cta": "Review Brief",
+        "empty_state": "No workout planned yet. Choose a room to start.",
+        "helper_text": "Define your goals \u2014 what you want to achieve on the road.",
+        "error_message": "Workout failed. Check that space is available."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "",
+    "icp": "frequent business travelers",
+    "problem": "can't fit in workouts due to limited space and equipment",
+    "category": "hotel room workout app",
+    "differentiation": "adapts to available space with AI-powered exercises",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "stay healthy on the road",
+    "tone": "practical and motivational"
+  },
+  "brain_flags": [
+    "product: empty",
+    "advantage: generic phrases detected (['ai-powered'])"
+  ],
+  "suggestions_flags": [],
+  "landing_flags": [
+    "slot 'what_this_is': generic phrase detected",
+    "landing text: generic phrases ['ai-powered']"
+  ],
+  "ux_flags": [
+    "slot 'secondary_cta': internal/tooling language detected"
+  ],
+  "score": 8,
+  "alpha_ready": true
+}

@@ -1,0 +1,49 @@
+{
+  "product": "internal wiki tool",
+  "audience": "remote customer success managers",
+  "problem": "manually updating knowledge bases causes delays",
+  "alternatives": "spreadsheets",
+  "advantage": "pre-built templates streamline workflow optimization",
+  "tone": "practical and organized",
+  "goal": "quickly access relevant information to resolve customer issues",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "remote customer success managers",
+      "confidence": 0.7,
+      "source_notes": "detected 'teams' in idea"
+    },
+    "primary_problem": {
+      "value": "manually updating knowledge bases causes delays",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "internal wiki tool for CSMs",
+      "confidence": 0.7,
+      "source_notes": "mentions workflow and tool for"
+    },
+    "differentiation": {
+      "value": "pre-built templates streamline workflow optimization",
+      "confidence": 0.7,
+      "source_notes": "detected 'specific' in idea"
+    },
+    "current_alternative": {
+      "value": "spreadsheets",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "quickly access relevant information to resolve customer issues",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-14T21:21:19.869580+00:00",
+  "source_idea": "i built an internal wiki tool specifically for remote customer success teams. not confluence, not notion \u2014 designed specifically for the CSM workflow with templates built in",
+  "client_name": "qa-case-019",
+  "product_fingerprint": "abb3e38539d9f4f3",
+  "brain_version": 2,
+  "last_saved_at": "2026-03-14T21:21:19.869580+00:00"
+}

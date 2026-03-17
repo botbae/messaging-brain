@@ -1,0 +1,169 @@
+{
+  "case_id": 3,
+  "slug": "qa-case-003",
+  "input_idea": "i made a slack bot that notices when your team is stuck on a decision for too long and gently nudges them to either decide or escalate. honestly hard to explain without showing it",
+  "timings": {
+    "idea": 6.14,
+    "brain_save": 0.01,
+    "landing": 47.37,
+    "ux": 41.55,
+    "total": 98.09
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-003",
+      "idea_extract": {
+        "product": "Slack bot that detects stuck team decisions",
+        "icp": "mid-sized project managers",
+        "problem": "team members get stuck in indecision, causing delays",
+        "category": "decision facilitation software",
+        "differentiation": "proactively nudges teams to decide or escalate",
+        "alternative": "email reminders",
+        "tone": "helpful and timely",
+        "goal": "keep projects on track by making timely decisions"
+      },
+      "product_profile_path": "clients/qa-case-003/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "detected 'hard to' in idea"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        }
+      },
+      "brain_suggestions": [
+        {
+          "field": "audience",
+          "severity": "info",
+          "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+        }
+      ]
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "detected 'hard to' in idea"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      }
+    },
+    "brain_suggestions": [
+      {
+        "field": "audience",
+        "severity": "info",
+        "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+      }
+    ],
+    "brain_save": {
+      "client": "qa-case-003",
+      "product_profile": {
+        "product": "Slack bot that detects stuck team decisions",
+        "audience": "mid-sized project managers",
+        "problem": "team members get stuck in indecision, causing delays",
+        "alternatives": "email reminders",
+        "advantage": "proactively nudges teams to decide or escalate",
+        "tone": "helpful and timely",
+        "goal": "keep projects on track by making timely decisions",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "mid-sized project managers",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "primary_problem": {
+            "value": "team members get stuck in indecision, causing delays",
+            "confidence": 0.7,
+            "source_notes": "detected 'hard to' in idea"
+          },
+          "category_frame": {
+            "value": "decision facilitation software",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "differentiation": {
+            "value": "proactively nudges teams to decide or escalate",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "current_alternative": {
+            "value": "email reminders",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "keep projects on track by making timely decisions",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-15T08:40:37.883667+00:00",
+        "source_idea": "i made a slack bot that notices when your team is stuck on a decision for too long and gently nudges them to either decide or escalate. honestly hard to explain without showing it",
+        "client_name": "qa-case-003",
+        "product_fingerprint": "776039322ed17e82",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-15T08:40:37.883667+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nKeep projects on track\n\nSUBHEADLINE\nFor mid-sized project managers, our tool helps move from indecision to timely decisions.\n\nWHAT THIS IS\nA focused tool for mid-sized project managers that helps keep projects on track by making timely decisions.\n\nWHO IT IS FOR\nMid-sized project managers\n\nTHE PROBLEM\nTeam members get stuck in indecision, causing delays.\n\nWHY EXISTING TOOLS FAIL\nEmail reminders were not designed for mid-sized project managers, forcing manual workarounds that slow outcomes.\n\nHOW IT WORKS\nProactively nudges teams to decide or escalate.\n\nKEY BENEFITS\nEarly users reach their first outcome without overhead.\n\nCALL TO ACTION\nStart with our Slack bot.\n",
+      "slots": {
+        "headline": "Make timely decisions",
+        "subhead": "Helps mid-sized project managers keep projects on track without stuck team decisions.",
+        "problem": "Team members get stuck in indecision, causing delays and project delays.",
+        "why_current_options_fail": "Email reminders only react to problems after they've occurred.",
+        "what_this_is": "Decision Buddy is a Slack bot that proactively nudges teams to decide or escalate.",
+        "primary_cta": "Start your trial"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\nSlack bot that detects stuck team decisions helps mid-sized project managers go from team members get stuck in indecision, causing delays to keep projects on track by making timely decisions.\n\nONBOARDING\n1. Define who Slack bot that detects stuck team decisions is for and the problem it solves.\n2. Shape your core message so Slack bot that detects stuck team decisions can tailor output.\n3. Generate your first result and refine as you go.\n\nEMPTY STATE\n1. No audience defined yet. Start by telling Slack bot that detects stuck team decisions who you're building for.\n2. No message saved yet. Build your setup to generate output.\n3. No output yet. Generate your first result.\n\nERROR\n1. That did not save. Check your input and try again.\n2. That step did not complete. Make sure all required fields are filled in.\n3. This action failed. Reload and try again, or contact support if it continues.\n\nTOAST\n1. Saved. Your progress is recorded.\n2. Done. Continue when you are ready.\n3. Brain saved. Output ready.\n\nBUTTON LABELS\n1. Build Brain\n2. Review Brain\n3. Generate Positioning\n4. Generate Landing\n5. Generate UX\n6. Refine Message\n7. Compare Outputs\n8. Save Brain\n",
+      "slots": {
+        "primary_cta": "Make a decision today",
+        "secondary_cta": "View sample results",
+        "empty_state": "No stuck decisions detected yet. Share your project to start.",
+        "helper_text": "Explain what's holding up your team \u2014 and how you've tried to move forward.",
+        "error_message": "Decision not generated. Ensure all required fields are filled."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "Slack bot that detects stuck team decisions",
+    "icp": "mid-sized project managers",
+    "problem": "team members get stuck in indecision, causing delays",
+    "category": "decision facilitation software",
+    "differentiation": "proactively nudges teams to decide or escalate",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "keep projects on track by making timely decisions",
+    "tone": "helpful and timely"
+  },
+  "brain_flags": [],
+  "suggestions_flags": [],
+  "landing_flags": [],
+  "ux_flags": [],
+  "score": 10,
+  "alpha_ready": true
+}

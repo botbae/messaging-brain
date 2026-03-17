@@ -1,0 +1,170 @@
+{
+  "case_id": 21,
+  "slug": "qa-case-021",
+  "input_idea": "an app for people who want to invest in index funds but are anxious about timing \u2014 it helps them stick to a DCA plan by hiding the noise and just showing them what to do next",
+  "timings": {
+    "idea": 4.82,
+    "brain_save": 0.0,
+    "landing": 41.35,
+    "ux": 30.25,
+    "total": 79.45
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-021",
+      "idea_extract": {
+        "icp": "retail investors",
+        "problem": "constantly checking market fluctuations, second-guessing investment decisions",
+        "category": "index fund investment tracker",
+        "differentiation": "simplifies the process with clear next steps, eliminating emotional decision-making",
+        "alternative": "spreadsheets",
+        "tone": "calm and reassuring",
+        "goal": "achieve long-term financial stability"
+      },
+      "product_profile_path": "clients/qa-case-021/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        }
+      },
+      "brain_suggestions": [
+        {
+          "field": "audience",
+          "severity": "warning",
+          "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+        }
+      ]
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      }
+    },
+    "brain_suggestions": [
+      {
+        "field": "audience",
+        "severity": "warning",
+        "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+      }
+    ],
+    "brain_save": {
+      "client": "qa-case-021",
+      "product_profile": {
+        "product": "index fund investment tracker",
+        "audience": "retail investors",
+        "problem": "constantly checking market fluctuations, second-guessing investment decisions",
+        "alternatives": "spreadsheets",
+        "advantage": "simplifies the process with clear next steps, eliminating emotional decision-making",
+        "tone": "calm and reassuring",
+        "goal": "achieve long-term financial stability",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "retail investors",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "primary_problem": {
+            "value": "constantly checking market fluctuations, second-guessing investment decisions",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "category_frame": {
+            "value": "index fund investment tracker",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "differentiation": {
+            "value": "simplifies the process with clear next steps, eliminating emotional decision-making",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "current_alternative": {
+            "value": "spreadsheets",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "achieve long-term financial stability",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-14T21:24:08.917456+00:00",
+        "source_idea": "an app for people who want to invest in index funds but are anxious about timing \u2014 it helps them stick to a DCA plan by hiding the noise and just showing them what to do next",
+        "client_name": "qa-case-021",
+        "product_fingerprint": "7b01a48818feedb0",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-14T21:24:08.917456+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nAchieve long-term financial stability\n\nSUBHEADLINE\nFor retail investors, constantly checking market fluctuations, second-guessing investment decisions.\n\nWHAT THIS IS\nA guided onboarding assistant that explains risk, completes KYC, and helps new investors start their first SIP.\n\nWHO IT IS FOR\nRetail investors\n\nTHE PROBLEM\nConstantly checking market fluctuations, second-guessing investment decisions\n\nWHY EXISTING TOOLS FAIL\nSpreadsheets were not designed for retail investors, forcing manual workarounds that slow outcomes.\n\nHOW IT WORKS\nClear next steps eliminate emotional decision-making.\n\nKEY BENEFITS\nFirst-time investors start their first SIP without needing external guidance.\n\nCALL TO ACTION\nStart your index fund investment tracker\n",
+      "slots": {
+        "headline": "Track investments with confidence",
+        "subhead": "Helps retail investors achieve long-term financial stability without constantly checking market fluctuations.",
+        "problem": "Retail investors second-guess investment decisions due to emotional decision-making and lack of clear next",
+        "why_current_options_fail": "Spreadsheets require manual updates, leading to emotional decision-making and poor investment outcomes.",
+        "what_this_is": "Index Tracker is an index fund investment tracker that simplifies the process with clear",
+        "primary_cta": "Start tracking"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\nindex fund investment tracker helps retail investors understand risk, complete KYC, and start their first investment with confidence.\n\nONBOARDING\n1. Answer a few questions to understand your financial situation.\n2. Complete your verification so index fund investment tracker can personalise your plan.\n3. Start your first investment and track your progress.\n\nEMPTY STATE\n1. No risk profile yet. Complete the questionnaire to get started.\n2. No investments set up yet. Finish setup to see your plan.\n3. No transactions yet. Make your first investment to see activity.\n\nERROR\n1. That did not save. Check your input and try again.\n2. That step did not complete. Make sure all required fields are filled in.\n3. This action failed. Reload and try again, or contact support if it continues.\n\nTOAST\n1. Saved. Your progress is recorded.\n2. Done. Continue when you are ready.\n3. Profile complete. Your plan is ready.\n\nBUTTON LABELS\n1. Learn My Risk\n2. Complete KYC\n3. Start My SIP\n4. Review Plan\n5. View Portfolio\n6. Confirm Details\n7. Update Risk Profile\n8. Track Progress\n",
+      "slots": {
+        "primary_cta": "Track Portfolio",
+        "secondary_cta": "View Results",
+        "empty_state": "No portfolio tracked yet. Add your funds to start.",
+        "helper_text": "Enter your index fund details \u2014 what you own and why.",
+        "error_message": "Update failed. Check that all funds are correctly listed."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "",
+    "icp": "retail investors",
+    "problem": "constantly checking market fluctuations, second-guessing investment decisions",
+    "category": "index fund investment tracker",
+    "differentiation": "simplifies the process with clear next steps, eliminating emotional decision-making",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "achieve long-term financial stability",
+    "tone": "calm and reassuring"
+  },
+  "brain_flags": [
+    "product: empty"
+  ],
+  "suggestions_flags": [],
+  "landing_flags": [],
+  "ux_flags": [],
+  "score": 10,
+  "alpha_ready": true
+}

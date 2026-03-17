@@ -1,0 +1,49 @@
+{
+  "product": "Landing page messaging tool that generates UX copy from founder input",
+  "audience": "founders of small startups",
+  "problem": "struggle to write clear, non-marketing-y product descriptions",
+  "alternatives": "chatgpt, figma, gpt",
+  "advantage": "uses structured questions to generate messaging, not open prompts or generic templates",
+  "tone": "direct and strategic",
+  "goal": "ship a landing page that converts without weeks of rewriting",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "founders of small startups",
+      "confidence": 0.7,
+      "source_notes": "mentions founders, startups, and teams"
+    },
+    "primary_problem": {
+      "value": "struggle to write clear, non-marketing-y product descriptions",
+      "confidence": 0.7,
+      "source_notes": "detected 'generic' in idea"
+    },
+    "category_frame": {
+      "value": "positioning writer for founders",
+      "confidence": 0.7,
+      "source_notes": "mentions messaging, positioning, and landing page"
+    },
+    "differentiation": {
+      "value": "uses structured questions to generate messaging, not open prompts or generic templates",
+      "confidence": 0.7,
+      "source_notes": "detected 'structured' in idea"
+    },
+    "current_alternative": {
+      "value": "chatgpt, figma, gpt",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "ship a landing page that converts without weeks of rewriting",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-17T11:02:35.745424+00:00",
+  "source_idea": "so basically i\u2019ve been thinking about this thing for founders and small teams where like they struggle to explain their product properly on their website or landing page and they keep rewriting the sa",
+  "client_name": "so-basically-ive",
+  "product_fingerprint": "8dcf77bb40101646",
+  "brain_version": 1,
+  "last_saved_at": "2026-03-17T11:02:35.745424+00:00"
+}

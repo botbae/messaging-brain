@@ -1,0 +1,49 @@
+{
+  "product": "Compliance Document Organizer",
+  "audience": "Series A fintech startup founders",
+  "problem": "Regulators' surprise audits put compliance at risk",
+  "alternatives": "Spreadsheets and manual documentation",
+  "advantage": "Streamlines process with AI-assisted templates",
+  "tone": "Practical and reassuring",
+  "goal": "Ensure regulatory readiness before audit",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "Series A fintech startup founders",
+      "confidence": 0.7,
+      "source_notes": "mentions founders and startups"
+    },
+    "primary_problem": {
+      "value": "Regulators' surprise audits put compliance at risk",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "Compliance Document Organizer",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "differentiation": {
+      "value": "Streamlines process with AI-assisted templates",
+      "confidence": 0.7,
+      "source_notes": "detected 'structured' in idea"
+    },
+    "current_alternative": {
+      "value": "Spreadsheets and manual documentation",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "Ensure regulatory readiness before audit",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-14T20:17:46.844346+00:00",
+  "source_idea": "we help fintech startups that just raised series A get their compliance docs in order before regulators come knocking. its not legal software exactly its more like a structured process with some AI he",
+  "client_name": "qa-case-002",
+  "product_fingerprint": "c831d6f949879466",
+  "brain_version": 2,
+  "last_saved_at": "2026-03-14T20:17:46.844346+00:00"
+}

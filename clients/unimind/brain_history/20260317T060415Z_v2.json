@@ -1,0 +1,49 @@
+{
+  "product": "Landing page messaging system that generates copy from founder answers",
+  "audience": "founders of early-stage SaaS products",
+  "problem": "struggle to create clear, non-generic product explanations",
+  "alternatives": "chatgpt, gpt",
+  "advantage": "uses structured questions for accurate messaging",
+  "tone": "direct and strategic",
+  "goal": "create a landing page that effectively communicates the product value",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "founders of early-stage SaaS products",
+      "confidence": 0.7,
+      "source_notes": "mentions founders and saas"
+    },
+    "primary_problem": {
+      "value": "struggle to create clear, non-generic product explanations",
+      "confidence": 0.7,
+      "source_notes": "detected 'generic' in idea"
+    },
+    "category_frame": {
+      "value": "landing page messaging tools",
+      "confidence": 0.7,
+      "source_notes": "mentions messaging and landing page"
+    },
+    "differentiation": {
+      "value": "uses structured questions for accurate messaging",
+      "confidence": 0.7,
+      "source_notes": "detected 'structured' in idea"
+    },
+    "current_alternative": {
+      "value": "chatgpt, gpt",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "create a landing page that effectively communicates the product value",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-17T06:04:15.899553+00:00",
+  "source_idea": "Founders struggle to explain their product clearly on landing pages. \nThey keep rewriting copy or using ChatGPT prompts but still end up \nwith generic messaging. This tool asks structured questions an",
+  "client_name": "unimind",
+  "product_fingerprint": "ea503715ac57f324",
+  "brain_version": 2,
+  "last_saved_at": "2026-03-17T06:04:15.899553+00:00"
+}

@@ -1,0 +1,49 @@
+{
+  "product": "QBR deck builder",
+  "audience": "customer success managers",
+  "problem": "rely on generic templates for quarterly business reviews",
+  "alternatives": "Microsoft Word",
+  "advantage": "pulls usage data to inform insights, not just prompts",
+  "tone": "practical and consultative",
+  "goal": "deliver a compelling review that drives growth",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "customer success managers",
+      "confidence": 0.7,
+      "source_notes": "detected 'teams' in idea"
+    },
+    "primary_problem": {
+      "value": "rely on generic templates for quarterly business reviews",
+      "confidence": 0.7,
+      "source_notes": "detected 'generic' in idea"
+    },
+    "category_frame": {
+      "value": "QBR deck builder",
+      "confidence": 0.7,
+      "source_notes": "detected 'tool for' in idea"
+    },
+    "differentiation": {
+      "value": "pulls usage data to inform insights, not just prompts",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "Microsoft Word",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "deliver a compelling review that drives growth",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-14T22:03:59.756376+00:00",
+  "source_idea": "a tool for customer success teams to write better QBR decks. they always leave it to the last minute and the decks are always the same template every time. this actually pulls the usage data in",
+  "client_name": "qa-case-048",
+  "product_fingerprint": "ca87379efadbb756",
+  "brain_version": 2,
+  "last_saved_at": "2026-03-14T22:03:59.756376+00:00"
+}

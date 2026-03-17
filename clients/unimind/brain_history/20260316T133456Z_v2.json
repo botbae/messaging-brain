@@ -1,0 +1,49 @@
+{
+  "product": "Landing page messaging generator from founder's answers",
+  "audience": "founders of early-stage SaaS companies",
+  "problem": "struggle to create clear, non-generic product explanations",
+  "alternatives": "chatgpt, gpt",
+  "advantage": "uses structured questions for accurate messaging",
+  "tone": "practical and concise",
+  "goal": "craft a compelling landing page that resonates",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "founders of early-stage SaaS companies",
+      "confidence": 0.7,
+      "source_notes": "mentions founders and saas"
+    },
+    "primary_problem": {
+      "value": "struggle to create clear, non-generic product explanations",
+      "confidence": 0.7,
+      "source_notes": "detected 'generic' in idea"
+    },
+    "category_frame": {
+      "value": "landing page positioning tool",
+      "confidence": 0.7,
+      "source_notes": "mentions messaging, positioning, and landing page"
+    },
+    "differentiation": {
+      "value": "uses structured questions for accurate messaging",
+      "confidence": 0.7,
+      "source_notes": "detected 'structured' in idea"
+    },
+    "current_alternative": {
+      "value": "chatgpt, gpt",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "craft a compelling landing page that resonates",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-16T13:34:56.018609+00:00",
+  "source_idea": "Founders struggle to explain their product clearly on landing pages. \nThey keep rewriting copy or using ChatGPT prompts but still end up \nwith generic messaging. This tool asks structured questions an",
+  "client_name": "unimind",
+  "product_fingerprint": "df0520549aff7710",
+  "brain_version": 2,
+  "last_saved_at": "2026-03-16T13:34:56.018609+00:00"
+}

@@ -1,0 +1,173 @@
+{
+  "case_id": 43,
+  "slug": "qa-case-043",
+  "input_idea": "i dont know what category i'm in. we do research sprints for startups that need to validate a new market fast. its not consulting its not a survey tool its like a structured 2 week engagement",
+  "timings": {
+    "idea": 4.67,
+    "brain_save": 0.0,
+    "landing": 41.31,
+    "ux": 32.46,
+    "total": 81.47
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-043",
+      "idea_extract": {
+        "icp": "Startup Founders",
+        "problem": "Validate market potential in 2 weeks or less",
+        "category": "Research Sprint Service",
+        "differentiation": "Structured 2-week engagement, not consulting or survey tools",
+        "alternative": "Spreadsheets and Email",
+        "tone": "Practical and Results-Focused",
+        "goal": "Gain Market Validation for Funding"
+      },
+      "product_profile_path": "clients/qa-case-043/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "mentions founders and startups"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "detected 'structured' in idea"
+        }
+      },
+      "brain_suggestions": [
+        {
+          "field": "audience",
+          "severity": "info",
+          "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+        }
+      ]
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "mentions founders and startups"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "detected 'structured' in idea"
+      }
+    },
+    "brain_suggestions": [
+      {
+        "field": "audience",
+        "severity": "info",
+        "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+      }
+    ],
+    "brain_save": {
+      "client": "qa-case-043",
+      "product_profile": {
+        "product": "Research Sprint Service",
+        "audience": "Startup Founders",
+        "problem": "Validate market potential in 2 weeks or less",
+        "alternatives": "Spreadsheets and Email",
+        "advantage": "Structured 2-week engagement, not consulting or survey tools",
+        "tone": "Practical and Results-Focused",
+        "goal": "Gain Market Validation for Funding",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "Startup Founders",
+            "confidence": 0.7,
+            "source_notes": "mentions founders and startups"
+          },
+          "primary_problem": {
+            "value": "Validate market potential in 2 weeks or less",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "category_frame": {
+            "value": "Research Sprint Service",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "differentiation": {
+            "value": "Structured 2-week engagement, not consulting or survey tools",
+            "confidence": 0.7,
+            "source_notes": "detected 'structured' in idea"
+          },
+          "current_alternative": {
+            "value": "Spreadsheets and Email",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "Gain Market Validation for Funding",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-14T21:56:40.284419+00:00",
+        "source_idea": "i dont know what category i'm in. we do research sprints for startups that need to validate a new market fast. its not consulting its not a survey tool its like a structured 2 week engagement",
+        "client_name": "qa-case-043",
+        "product_fingerprint": "c92cdff050314ddf",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-14T21:56:40.284419+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nGain Market Validation for Funding\n\nSUBHEADLINE\nStartup founders validate market potential in 2 weeks or less.\n\nWHAT THIS IS\nA focused tool that helps startup founders gain market validation for funding by validating market potential in 2 weeks or less.\n\nWHO IT IS FOR\nStartup Founders\n\nTHE PROBLEM\nMarket uncertainty holds up funding.\n\nWHY EXISTING TOOLS FAIL\nSpreadsheets and Email are manual workarounds, slowing outcomes.\n\nHOW IT WORKS\nStructured 2-week engagement, not consulting or survey tools.\n\nKEY BENEFITS\nEarly users reach their first outcome without overhead.\n\nCALL TO ACTION\nGet started with Research Sprint Service.\n",
+      "slots": {
+        "headline": "Gain market validation",
+        "subhead": "Helps startup founders validate market potential in 2 weeks or less without staring at spreadsheets and",
+        "problem": "Founders lose funding because their copy doesn't demonstrate market understanding.",
+        "why_current_options_fail": "Spreadsheets and email can't provide structured insights, only scattered data.",
+        "what_this_is": "Research Sprint Service is a 2-week research sprint that works from your brief to",
+        "primary_cta": "Start validating"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\nResearch Sprint Service helps startup founders go from validate market potential in 2 weeks or less to gain market validation for funding.\n\nONBOARDING\n1. Define who Research Sprint Service is for and the problem it solves.\n2. Shape your core message so Research Sprint Service can tailor output.\n3. Generate your first result and refine as you go.\n\nEMPTY STATE\n1. No audience defined yet. Start by telling Research Sprint Service who you're building for.\n2. No message saved yet. Build your setup to generate output.\n3. No output yet. Generate your first result.\n\nERROR\n1. That did not save. Check your input and try again.\n2. That step did not complete. Make sure all required fields are filled in.\n3. This action failed. Reload and try again, or contact support if it continues.\n\nTOAST\n1. Saved. Your progress is recorded.\n2. Done. Continue when you are ready.\n3. Brain saved. Output ready.\n\nBUTTON LABELS\n1. Build Brain\n2. Review Brain\n3. Generate Positioning\n4. Generate Landing\n5. Generate UX\n6. Refine Message\n7. Compare Outputs\n8. Save Brain\n",
+      "slots": {
+        "primary_cta": "Define ICP",
+        "secondary_cta": "Review brief",
+        "empty_state": "No ideal customer profile built yet. Upload your data to start.",
+        "helper_text": "Identify your target audience \u2014 who they are and what they need.",
+        "error_message": "Validation failed. Check that your data is accurate."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "",
+    "icp": "Startup Founders",
+    "problem": "Validate market potential in 2 weeks or less",
+    "category": "Research Sprint Service",
+    "differentiation": "Structured 2-week engagement, not consulting or survey tools",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "Gain Market Validation for Funding",
+    "tone": "Practical and Results-Focused"
+  },
+  "brain_flags": [
+    "product: empty"
+  ],
+  "suggestions_flags": [],
+  "landing_flags": [],
+  "ux_flags": [
+    "slot 'primary_cta': internal/tooling language detected",
+    "slot 'secondary_cta': internal/tooling language detected"
+  ],
+  "score": 8,
+  "alpha_ready": true
+}

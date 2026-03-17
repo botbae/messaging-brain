@@ -1,0 +1,49 @@
+{
+  "product": "hotel room workout app",
+  "audience": "frequent business travelers",
+  "problem": "can't fit in workouts due to limited space and equipment",
+  "alternatives": "YouTube fitness videos",
+  "advantage": "adapts to available space with AI-powered exercises",
+  "tone": "practical and motivational",
+  "goal": "stay healthy on the road",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "frequent business travelers",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "primary_problem": {
+      "value": "can't fit in workouts due to limited space and equipment",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "hotel room workout app",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "differentiation": {
+      "value": "adapts to available space with AI-powered exercises",
+      "confidence": 0.7,
+      "source_notes": "mentions only and specific"
+    },
+    "current_alternative": {
+      "value": "YouTube fitness videos",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "stay healthy on the road",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-14T21:25:32.183553+00:00",
+  "source_idea": "fitness app but specifically for people who travel a lot for work and can only work out in hotel rooms or airports. the plans adjust automatically based on what you have available",
+  "client_name": "qa-case-022",
+  "product_fingerprint": "20fc562da6ecef5a",
+  "brain_version": 1,
+  "last_saved_at": "2026-03-14T21:25:32.183553+00:00"
+}

@@ -1,0 +1,161 @@
+{
+  "case_id": 36,
+  "slug": "qa-case-036",
+  "input_idea": "our website promises enterprise-grade reliability and security but then when users get inside the app it sounds like a college hackathon project. need help making the product copy match the brand",
+  "timings": {
+    "idea": 4.48,
+    "brain_save": 0.0,
+    "landing": 40.98,
+    "ux": 33.04,
+    "total": 81.52
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-036",
+      "idea_extract": {
+        "icp": "Enterprise SaaS product managers",
+        "problem": "confusing app experience undermines brand reputation",
+        "category": "Enterprise-grade productivity apps",
+        "differentiation": "transforms raw technical language into clear, concise messaging",
+        "alternative": "Microsoft Word templates",
+        "tone": "professional and approachable",
+        "goal": "establish credibility with potential customers"
+      },
+      "product_profile_path": "clients/qa-case-036/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "detected 'saas' in idea"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        }
+      },
+      "brain_suggestions": null
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "detected 'saas' in idea"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      }
+    },
+    "brain_suggestions": null,
+    "brain_save": {
+      "client": "qa-case-036",
+      "product_profile": {
+        "product": "Enterprise-grade productivity apps",
+        "audience": "Enterprise SaaS product managers",
+        "problem": "confusing app experience undermines brand reputation",
+        "alternatives": "Microsoft Word templates",
+        "advantage": "transforms raw technical language into clear, concise messaging",
+        "tone": "professional and approachable",
+        "goal": "establish credibility with potential customers",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "Enterprise SaaS product managers",
+            "confidence": 0.7,
+            "source_notes": "detected 'saas' in idea"
+          },
+          "primary_problem": {
+            "value": "confusing app experience undermines brand reputation",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "category_frame": {
+            "value": "Enterprise-grade productivity apps",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "differentiation": {
+            "value": "transforms raw technical language into clear, concise messaging",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "current_alternative": {
+            "value": "Microsoft Word templates",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "establish credibility with potential customers",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-14T21:46:13.522659+00:00",
+        "source_idea": "our website promises enterprise-grade reliability and security but then when users get inside the app it sounds like a college hackathon project. need help making the product copy match the brand",
+        "client_name": "qa-case-036",
+        "product_fingerprint": "0b5d35af49ee2c9a",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-14T21:46:13.522659+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nestablish credibility with potential customers\n\nSUBHEADLINE\nFor enterprise saas product managers, confusing app experience undermines brand reputation.\n\nWHAT THIS IS\nA focused tool that helps enterprise saas product managers move from confusing app experience undermines brand reputati to establish credibility with potential customers.\n\nWHO IT IS FOR\nEnterprise SaaS product managers\n\nTHE PROBLEM\nconfusing app experience undermines brand reputation\n\nWHY EXISTING TOOLS FAIL\nMicrosoft Word templates was not designed for enterprise saas product managers. It covers the broader category but lacks the specific mechanics this problem requires, forcing enterprise saas product managers to patch gaps with manual workarounds that slow outcomes.\n\nHOW IT WORKS\ntransforms raw technical language into clear, concise messaging.\n\nKEY BENEFITS\nEarly users of Enterprise-grade productivity  reach their first outcome without the overhead of general-purpose alternatives.\n\nCALL TO ACTION\nGet started with Enterprise-grade productivity apps.\n",
+      "slots": {
+        "headline": "Establish credibility with customers",
+        "subhead": "Helps Enterprise SaaS product managers create clear messaging without Microsoft Word templates.",
+        "problem": "Confusing app experience undermines brand reputation by failing to explain value.",
+        "why_current_options_fail": "Microsoft Word templates require manual rewriting, losing technical nuance.",
+        "what_this_is": "Enterprise-grade productivity apps is a structured positioning writer for raw technical language.",
+        "primary_cta": "Define your message"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\nEnterprise-grade productivity apps helps enterprise saas product managers find the right creators, review matches, and go live with brand collaborations.\n\nONBOARDING\n1. Define your brand goal and the audience you want to reach.\n2. Review creator matches based on your product brief.\n3. Approve your first creator and go live.\n\nEMPTY STATE\n1. No brand brief yet. Define your goal to see creator matches.\n2. No creators matched yet. Complete your brief to see results.\n3. No creators live yet. Approve a creator to get started.\n\nERROR\n1. That did not save. Check your input and try again.\n2. That step did not complete. Make sure all required fields are filled in.\n3. This action failed. Reload and try again, or contact support if it continues.\n\nTOAST\n1. Saved. Your progress is recorded.\n2. Done. Continue when you are ready.\n3. Creator approved. You are live.\n\nBUTTON LABELS\n1. Define Brand\n2. Review Matches\n3. Approve Creator\n4. Edit Brief\n5. Save Brief\n6. Compare Matches\n7. View Collaborations\n8. Update Brief\n",
+      "slots": {
+        "primary_cta": "Define ICP",
+        "secondary_cta": "Review brief",
+        "empty_state": "No ideal customer profile defined yet. Start with industry to begin.",
+        "helper_text": "Identify your target audience \u2014 what they need and how you help.",
+        "error_message": "Profile failed to generate. Ensure all fields are filled."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "",
+    "icp": "Enterprise SaaS product managers",
+    "problem": "confusing app experience undermines brand reputation",
+    "category": "Enterprise-grade productivity apps",
+    "differentiation": "transforms raw technical language into clear, concise messaging",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "establish credibility with potential customers",
+    "tone": "professional and approachable"
+  },
+  "brain_flags": [
+    "product: empty"
+  ],
+  "suggestions_flags": [],
+  "landing_flags": [],
+  "ux_flags": [
+    "slot 'primary_cta': internal/tooling language detected",
+    "slot 'secondary_cta': internal/tooling language detected"
+  ],
+  "score": 8,
+  "alpha_ready": true
+}

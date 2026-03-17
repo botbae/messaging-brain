@@ -1,0 +1,49 @@
+{
+  "product": "onboarding flow copywriting",
+  "audience": "SaaS founders seeking clarity",
+  "problem": "struggle to articulate their value proposition",
+  "alternatives": "Word documents and generic marketing templates",
+  "advantage": "uses design studio expertise to craft compelling narratives",
+  "tone": "confident and consultative",
+  "goal": "launch a website that resonates with target audience",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "SaaS founders seeking clarity",
+      "confidence": 0.7,
+      "source_notes": "mentions founders and saas"
+    },
+    "primary_problem": {
+      "value": "struggle to articulate their value proposition",
+      "confidence": 0.7,
+      "source_notes": "detected 'generic' in idea"
+    },
+    "category_frame": {
+      "value": "onboarding flow copywriting",
+      "confidence": 0.7,
+      "source_notes": "detected 'copywriting' in idea"
+    },
+    "differentiation": {
+      "value": "uses design studio expertise to craft compelling narratives",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "Word documents and generic marketing templates",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "launch a website that resonates with target audience",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-14T21:09:52.731352+00:00",
+  "source_idea": "we're a small design studio that specializes in SaaS onboarding flows. we've shipped 30+ products and we know what works but our website looks like a generic design agency",
+  "client_name": "qa-case-011",
+  "product_fingerprint": "a579243a3a12fdec",
+  "brain_version": 2,
+  "last_saved_at": "2026-03-14T21:09:52.731352+00:00"
+}

@@ -1,0 +1,49 @@
+{
+  "product": "video testimonial collection software",
+  "audience": "Marketing VPs at mid-sized B2B companies",
+  "problem": "can't get authentic customer stories to fuel their marketing campaigns",
+  "alternatives": "manual video recording and editing",
+  "advantage": "uses AI-powered conversation starters, not scripted questions",
+  "tone": "practical and encouraging",
+  "goal": "get a 3x increase in conversion rates from new customer testimonials",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "Marketing VPs at mid-sized B2B companies",
+      "confidence": 0.7,
+      "source_notes": "detected 'b2b' in idea"
+    },
+    "primary_problem": {
+      "value": "can't get authentic customer stories to fuel their marketing campaigns",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "video testimonial collection software",
+      "confidence": 0.7,
+      "source_notes": "detected 'positioning' in idea"
+    },
+    "differentiation": {
+      "value": "uses AI-powered conversation starters, not scripted questions",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "manual video recording and editing",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "get a 3x increase in conversion rates from new customer testimonials",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-14T21:44:37.855517+00:00",
+  "source_idea": "need to rewrite the positioning for a B2B video testimonial collection tool. we got beta users but they all describe it differently so we dont know what the real value prop is",
+  "client_name": "qa-case-035",
+  "product_fingerprint": "9037b4fb7b0426a8",
+  "brain_version": 1,
+  "last_saved_at": "2026-03-14T21:44:37.855517+00:00"
+}

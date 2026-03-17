@@ -1,0 +1,158 @@
+{
+  "case_id": 23,
+  "slug": "qa-case-023",
+  "input_idea": "a journaling app that actually helps you process anxiety not just dump thoughts. it prompts you based on CBT patterns but doesnt feel clinical or like therapy homework",
+  "timings": {
+    "idea": 4.89,
+    "brain_save": 0.01,
+    "landing": 43.57,
+    "ux": 31.5,
+    "total": 83.0
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-023",
+      "idea_extract": {
+        "icp": "anxious individuals seeking mental clarity",
+        "problem": "struggle to organize and make sense of racing thoughts",
+        "category": "digital journaling apps",
+        "differentiation": "employs CBT-based prompts for anxiety processing, not just note-taking",
+        "alternative": "mind maps or free-form writing",
+        "tone": "warm and practical",
+        "goal": "achieve a sense of calm and control"
+      },
+      "product_profile_path": "clients/qa-case-023/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        }
+      },
+      "brain_suggestions": null
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      }
+    },
+    "brain_suggestions": null,
+    "brain_save": {
+      "client": "qa-case-023",
+      "product_profile": {
+        "product": "digital journaling apps",
+        "audience": "anxious individuals seeking mental clarity",
+        "problem": "struggle to organize and make sense of racing thoughts",
+        "alternatives": "mind maps or free-form writing",
+        "advantage": "employs CBT-based prompts for anxiety processing, not just note-taking",
+        "tone": "warm and practical",
+        "goal": "achieve a sense of calm and control",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "anxious individuals seeking mental clarity",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "primary_problem": {
+            "value": "struggle to organize and make sense of racing thoughts",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "category_frame": {
+            "value": "digital journaling apps",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "differentiation": {
+            "value": "employs CBT-based prompts for anxiety processing, not just note-taking",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "current_alternative": {
+            "value": "mind maps or free-form writing",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "achieve a sense of calm and control",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-14T21:27:03.589964+00:00",
+        "source_idea": "a journaling app that actually helps you process anxiety not just dump thoughts. it prompts you based on CBT patterns but doesnt feel clinical or like therapy homework",
+        "client_name": "qa-case-023",
+        "product_fingerprint": "3a4d0f5f3a98bfc6",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-14T21:27:03.589964+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nachieve a sense of calm and control\n\nSUBHEADLINE\nFor anxious individuals seeking mental clarity, struggle to organize and make sense of racing thoughts.\n\nWHAT THIS IS\nA focused tool that helps anxious individuals seeking mental clarity move from struggle to organize and make sense of racing thou to achieve a sense of calm and control.\n\nWHO IT IS FOR\nanxious individuals seeking mental clarity\n\nTHE PROBLEM\nstruggle to organize and make sense of racing thoughts\n\nWHY EXISTING TOOLS FAIL\nmind maps or free-form writing was not designed for anxious individuals seeking mental clarity. It covers the broader category but lacks the specific mechanics this problem requires, forcing anxious individuals seeking mental clarity to patch gaps with manual workarounds that slow outcomes.\n\nHOW IT WORKS\nemploys CBT-based prompts for anxiety processing, not just note-taking.\n\nKEY BENEFITS\nEarly users of digital journaling apps reach their first outcome without the overhead of general-purpose alternatives.\n\nCALL TO ACTION\nGet started with digital journaling apps.\n",
+      "slots": {
+        "headline": "Calm your racing thoughts",
+        "subhead": "Helps anxious individuals organize their thoughts without getting overwhelmed, so they can achieve a sense of",
+        "problem": "Anxious individuals struggle to make sense of their racing thoughts, leading to feelings of",
+        "why_current_options_fail": "Mind maps and free-form writing don't provide the structured prompts needed to process anxiety effectively.",
+        "what_this_is": "Digital Journal is a digital journaling app that uses CBT-based prompts for anxiety processing,",
+        "primary_cta": "Start journaling"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\ndigital journaling apps helps anxious individuals seeking mental clarity go from struggle to organize and make sense of racing thoughts to achieve a sense of calm and control.\n\nONBOARDING\n1. Define who digital journaling apps is for and the problem it solves.\n2. Shape your core message so digital journaling apps can tailor output.\n3. Generate your first result and refine as you go.\n\nEMPTY STATE\n1. No audience defined yet. Start by telling digital journaling apps who you're building for.\n2. No message saved yet. Build your setup to generate output.\n3. No output yet. Generate your first result.\n\nERROR\n1. That did not save. Check your input and try again.\n2. That step did not complete. Make sure all required fields are filled in.\n3. This action failed. Reload and try again, or contact support if it continues.\n\nTOAST\n1. Saved. Your progress is recorded.\n2. Done. Continue when you are ready.\n3. Brain saved. Output ready.\n\nBUTTON LABELS\n1. Build Brain\n2. Review Brain\n3. Generate Positioning\n4. Generate Landing\n5. Generate UX\n6. Refine Message\n7. Compare Outputs\n8. Save Brain\n",
+      "slots": {
+        "primary_cta": "Calm Down",
+        "secondary_cta": "View results",
+        "empty_state": "No thoughts organized yet. Start with your worries to calm down.",
+        "helper_text": "What's been racing through your mind? Describe it here.",
+        "error_message": "Processing failed. Check that you've entered a thought to process."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "",
+    "icp": "anxious individuals seeking mental clarity",
+    "problem": "struggle to organize and make sense of racing thoughts",
+    "category": "digital journaling apps",
+    "differentiation": "employs CBT-based prompts for anxiety processing, not just note-taking",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "achieve a sense of calm and control",
+    "tone": "warm and practical"
+  },
+  "brain_flags": [
+    "product: empty"
+  ],
+  "suggestions_flags": [],
+  "landing_flags": [],
+  "ux_flags": [],
+  "score": 10,
+  "alpha_ready": true
+}

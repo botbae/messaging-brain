@@ -1,0 +1,49 @@
+{
+  "product": "Ecommerce customer retention analytics",
+  "audience": "Small ecommerce brand founders",
+  "problem": "Can't pinpoint why repeat customers are quietly disappearing from their online store",
+  "alternatives": "agencies, consultant, crm, dashboard",
+  "advantage": "Provides actionable insights and personalized messaging recommendations",
+  "tone": "Practical and data-driven",
+  "goal": "Stop guessing and send sharper customer communication to retain repeat customers",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "Small ecommerce brand founders",
+      "confidence": 0.7,
+      "source_notes": "mentions founders and agencies"
+    },
+    "primary_problem": {
+      "value": "Can't pinpoint why repeat customers are quietly disappearing from their online store",
+      "confidence": 0.7,
+      "source_notes": "detected 'generic' in idea"
+    },
+    "category_frame": {
+      "value": "Ecommerce customer retention analytics",
+      "confidence": 0.7,
+      "source_notes": "detected 'analytics' in idea"
+    },
+    "differentiation": {
+      "value": "Provides actionable insights and personalized messaging recommendations",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "agencies, consultant, crm, dashboard",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "Stop guessing and send sharper customer communication to retain repeat customers",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-16T13:44:11.826070+00:00",
+  "source_idea": "i\u2019m building something for small ecommerce brands because founders keep guessing why repeat customers quietly disappear. they look at dashboards, crm tools, spreadsheets, and email tools but still can",
+  "client_name": "unimind",
+  "product_fingerprint": "b88fe575fc9ca226",
+  "brain_version": 1,
+  "last_saved_at": "2026-03-16T13:44:11.826070+00:00"
+}

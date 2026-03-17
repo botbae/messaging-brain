@@ -1,0 +1,170 @@
+{
+  "case_id": 2,
+  "slug": "qa-case-002",
+  "input_idea": "we help fintech startups that just raised series A get their compliance docs in order before regulators come knocking. its not legal software exactly its more like a structured process with some AI help",
+  "timings": {
+    "idea": 6.47,
+    "brain_save": 0.01,
+    "landing": 52.14,
+    "ux": 36.8,
+    "total": 98.43
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-002",
+      "idea_extract": {
+        "product": "Compliance document organizer for fintech startups",
+        "icp": "Fintech founders who just raised series A funding",
+        "problem": "Regulators' unexpected audits cause costly delays in product launches",
+        "category": "Financial Compliance Support",
+        "differentiation": "Streamlines the process with AI-powered templates and checklists",
+        "alternative": "Spreadsheets or manual document tracking",
+        "tone": "Practical and Proactive",
+        "goal": "Ensure regulatory compliance without disrupting product development"
+      },
+      "product_profile_path": "clients/qa-case-002/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "mentions founders and startups"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "detected 'structured' in idea"
+        }
+      },
+      "brain_suggestions": [
+        {
+          "field": "goal",
+          "severity": "warning",
+          "message": "Goal is missing. Add the outcome the user achieves after using the product."
+        }
+      ]
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "mentions founders and startups"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "detected 'structured' in idea"
+      }
+    },
+    "brain_suggestions": [
+      {
+        "field": "goal",
+        "severity": "warning",
+        "message": "Goal is missing. Add the outcome the user achieves after using the product."
+      }
+    ],
+    "brain_save": {
+      "client": "qa-case-002",
+      "product_profile": {
+        "product": "Compliance document organizer for fintech startups",
+        "audience": "Fintech founders who just raised series A funding",
+        "problem": "Regulators' unexpected audits cause costly delays in product launches",
+        "alternatives": "Spreadsheets or manual document tracking",
+        "advantage": "Streamlines the process with AI-powered templates and checklists",
+        "tone": "Practical and Proactive",
+        "goal": "",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "Fintech founders who just raised series A funding",
+            "confidence": 0.7,
+            "source_notes": "mentions founders and startups"
+          },
+          "primary_problem": {
+            "value": "Regulators' unexpected audits cause costly delays in product launches",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "category_frame": {
+            "value": "Financial Compliance Support",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "differentiation": {
+            "value": "Streamlines the process with AI-powered templates and checklists",
+            "confidence": 0.7,
+            "source_notes": "detected 'structured' in idea"
+          },
+          "current_alternative": {
+            "value": "Spreadsheets or manual document tracking",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": "",
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-15T08:38:56.777905+00:00",
+        "source_idea": "we help fintech startups that just raised series A get their compliance docs in order before regulators come knocking. its not legal software exactly its more like a structured process with some AI he",
+        "client_name": "qa-case-002",
+        "product_fingerprint": "5d876acb20215d51",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-15T08:38:56.777905+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nStreamlines the process with AI-powered templates and checklists\n\nSUBHEADLINE\nFor fintech founders who just raised series a funding, regulators' unexpected audits cause costly delays in product launches.\n\nWHAT THIS IS\nAn AI messaging workspace that turns rough product thinking into positioning, landing copy, and UX drafts.\n\nWHO IT IS FOR\nFintech founders who just raised series A funding\n\nTHE PROBLEM\nRegulators' unexpected audits cause costly delays in product launches\n\nWHY EXISTING TOOLS FAIL\nSpreadsheets or manual document tracking was not designed for fintech founders who just raised series a funding. It covers the broader category but lacks the specific mechanics this problem requires, forcing fintech founders who just raised series a funding to patch gaps with manual workarounds that slow outcomes.\n\nHOW IT WORKS\nStreamlines the process with AI-powered templates and checklists.\n\nKEY BENEFITS\nFirst-time investors who complete onboarding start their first SIP without needing external guidance.\n\nCALL TO ACTION\nGet started with Compliance document organizer for fintech startups.\n",
+      "slots": {
+        "headline": "Launch regulatory compliance on time",
+        "subhead": "Helps fintech founders who just raised series A funding ship documents without costly delays.",
+        "problem": "Fintech founders lose control over audits because their document organization breaks under scrutiny.",
+        "why_current_options_fail": "Spreadsheets and manual tracking can't keep up with regulators' changing requirements.",
+        "what_this_is": "CompliancePal is a financial compliance organizer that streamlines the process with AI-powered templates and",
+        "primary_cta": "Start your trial"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\nCompliance document organizer for fintech startups helps fintech founders who just raised series a funding turn rough product ideas into a clear messaging brain, positioning, landing copy, and UX drafts.\n\nONBOARDING\n1. Define who Compliance document organizer for fintech startups is for and the problem it solves.\n2. Shape your core message \u2014 the angle that makes Compliance document organizer for fintech startups different.\n3. Generate your first piece and adjust from the result.\n\nEMPTY STATE\n1. No audience defined yet. Start by telling Compliance document organizer for fintech startups who you're building for.\n2. No message saved yet. Build your brain to shape your positioning.\n3. No output yet. Generate your first piece.\n\nERROR\n1. That did not save. Check your input and try again.\n2. That step did not complete. Make sure all required fields are filled in.\n3. This action failed. Reload and try again, or contact support if it continues.\n\nTOAST\n1. Saved. Your progress is recorded.\n2. Done. Continue when you are ready.\n3. Messaging brain saved.\n\nBUTTON LABELS\n1. Build Brain\n2. Review Brain\n3. Generate Positioning\n4. Generate Landing\n5. Generate UX\n6. Refine Message\n7. Compare Outputs\n8. Save Brain\n",
+      "slots": {
+        "primary_cta": "Launch your compliance plan",
+        "secondary_cta": "View sample results",
+        "empty_state": "No document organized yet. Upload your first file to start.",
+        "helper_text": "Explain how your fintech startup helps customers and what it does.",
+        "error_message": "Upload failed. Check that all files are correctly formatted."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "Compliance document organizer for fintech startups",
+    "icp": "Fintech founders who just raised series A funding",
+    "problem": "Regulators' unexpected audits cause costly delays in product launches",
+    "category": "Financial Compliance Support",
+    "differentiation": "Streamlines the process with AI-powered templates and checklists",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "Ensure regulatory compliance without disrupting product development",
+    "tone": "Practical and Proactive"
+  },
+  "brain_flags": [
+    "advantage: generic phrases detected (['ai-powered'])"
+  ],
+  "suggestions_flags": [],
+  "landing_flags": [
+    "slot 'what_this_is': generic phrase detected",
+    "landing text: generic phrases ['ai-powered']"
+  ],
+  "ux_flags": [],
+  "score": 8,
+  "alpha_ready": true
+}

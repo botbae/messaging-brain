@@ -1,0 +1,49 @@
+{
+  "product": "I'm",
+  "audience": "indie SaaS founders",
+  "problem": "struggle to write compelling copy that resonates with visitors",
+  "alternatives": "freelance writers, ChatGPT prompts, Notion docs, email templates",
+  "advantage": "uses founder's expertise and market insights to craft unique copy",
+  "tone": "practical and results-focused",
+  "goal": "create a landing page that drives conversions",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "indie SaaS founders",
+      "confidence": 0.7,
+      "source_notes": "mentions founders and saas"
+    },
+    "primary_problem": {
+      "value": "struggle to write compelling copy that resonates with visitors",
+      "confidence": 0.7,
+      "source_notes": "detected 'generic' in idea"
+    },
+    "category_frame": {
+      "value": "landing page copywriting tools",
+      "confidence": 0.7,
+      "source_notes": "mentions landing page and copywriting"
+    },
+    "differentiation": {
+      "value": "uses founder's expertise and market insights to craft unique copy",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "freelance writers, ChatGPT prompts, Notion docs, email templates",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "create a landing page that drives conversions",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-17T09:11:57.575505+00:00",
+  "source_idea": "basically I'm trying to create something for indie SaaS founders who can't write their landing page copy. they stare at a blank page for hours and end up with generic stuff that doesn't convert.",
+  "client_name": "qa-smoke-2",
+  "product_fingerprint": "f280c8601e08b152",
+  "brain_version": 1,
+  "last_saved_at": "2026-03-17T09:11:57.575505+00:00"
+}

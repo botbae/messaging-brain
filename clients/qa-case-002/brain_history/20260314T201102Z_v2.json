@@ -1,0 +1,49 @@
+{
+  "product": "Compliance Document Organizer",
+  "audience": "Fintech startup founders",
+  "problem": "Regulators' demands overwhelm compliance processes",
+  "alternatives": "Spreadsheets and manual document management",
+  "advantage": "Streamlines regulatory documentation with AI-assisted templates",
+  "tone": "Practical and authoritative",
+  "goal": "Ensure regulatory readiness for Series A fintech startups",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "Fintech startup founders",
+      "confidence": 0.7,
+      "source_notes": "mentions founders and startups"
+    },
+    "primary_problem": {
+      "value": "Regulators' demands overwhelm compliance processes",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "Compliance Document Organizer",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "differentiation": {
+      "value": "Streamlines regulatory documentation with AI-assisted templates",
+      "confidence": 0.7,
+      "source_notes": "detected 'structured' in idea"
+    },
+    "current_alternative": {
+      "value": "Spreadsheets and manual document management",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "Ensure regulatory readiness for Series A fintech startups",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-14T20:11:02.618612+00:00",
+  "source_idea": "we help fintech startups that just raised series A get their compliance docs in order before regulators come knocking. its not legal software exactly its more like a structured process with some AI he",
+  "client_name": "qa-case-002",
+  "product_fingerprint": "5f75d47c8e3dc100",
+  "brain_version": 2,
+  "last_saved_at": "2026-03-14T20:11:02.618612+00:00"
+}

@@ -1,0 +1,158 @@
+{
+  "case_id": 42,
+  "slug": "qa-case-042",
+  "input_idea": "blockchain-based supply chain visibility tool. before you judge, the use case is actually real \u2014 luxury goods brands need to prove provenance and existing tools are expensive legacy systems",
+  "timings": {
+    "idea": 4.77,
+    "brain_save": 0.01,
+    "landing": 44.12,
+    "ux": 31.0,
+    "total": 82.92
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-042",
+      "idea_extract": {
+        "icp": "luxury goods brand supply chain managers",
+        "problem": "can't track high-value items through complex global networks",
+        "category": "supply chain visibility software",
+        "differentiation": "verifies provenance on blockchain, not just tracking",
+        "alternative": "expensive legacy ERP systems",
+        "tone": "professional and transparent",
+        "goal": "prove authenticity to customers and regulators"
+      },
+      "product_profile_path": "clients/qa-case-042/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "detected 'expensive' in idea"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "detected 'ux' in idea"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        }
+      },
+      "brain_suggestions": null
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "detected 'expensive' in idea"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "detected 'ux' in idea"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      }
+    },
+    "brain_suggestions": null,
+    "brain_save": {
+      "client": "qa-case-042",
+      "product_profile": {
+        "product": "supply chain visibility software",
+        "audience": "luxury goods brand supply chain managers",
+        "problem": "can't track high-value items through complex global networks",
+        "alternatives": "expensive legacy ERP systems",
+        "advantage": "verifies provenance on blockchain, not just tracking",
+        "tone": "professional and transparent",
+        "goal": "prove authenticity to customers and regulators",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "luxury goods brand supply chain managers",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "primary_problem": {
+            "value": "can't track high-value items through complex global networks",
+            "confidence": 0.7,
+            "source_notes": "detected 'expensive' in idea"
+          },
+          "category_frame": {
+            "value": "supply chain visibility software",
+            "confidence": 0.7,
+            "source_notes": "detected 'ux' in idea"
+          },
+          "differentiation": {
+            "value": "verifies provenance on blockchain, not just tracking",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "current_alternative": {
+            "value": "expensive legacy ERP systems",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "prove authenticity to customers and regulators",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-14T21:55:12.453208+00:00",
+        "source_idea": "blockchain-based supply chain visibility tool. before you judge, the use case is actually real \u2014 luxury goods brands need to prove provenance and existing tools are expensive legacy systems",
+        "client_name": "qa-case-042",
+        "product_fingerprint": "9ad2455686b6a92b",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-14T21:55:12.453208+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nprove authenticity to customers and regulators\n\nSUBHEADLINE\nFor luxury goods brand supply chain managers, can't track high-value items through complex global networks.\n\nWHAT THIS IS\nA focused tool that helps luxury goods brand supply chain managers move from can't track high-value items through complex globa to prove authenticity to customers and regulators.\n\nWHO IT IS FOR\nluxury goods brand supply chain managers\n\nTHE PROBLEM\ncan't track high-value items through complex global networks\n\nWHY EXISTING TOOLS FAIL\nexpensive legacy ERP systems was not designed for luxury goods brand supply chain managers. It covers the broader category but lacks the specific mechanics this problem requires, forcing luxury goods brand supply chain managers to patch gaps with manual workarounds that slow outcomes.\n\nHOW IT WORKS\nverifies provenance on blockchain, not just tracking.\n\nKEY BENEFITS\nEarly users of supply chain visibility softwa reach their first outcome without the overhead of general-purpose alternatives.\n\nCALL TO ACTION\nGet started with supply chain visibility software.\n",
+      "slots": {
+        "headline": "Track high-value items reliably",
+        "subhead": "Helps luxury goods supply chain managers prove authenticity without expensive ERP systems.",
+        "problem": "Supply chain managers lose visibility because their legacy systems only track, not verify provenance.",
+        "why_current_options_fail": "Expensive ERP systems only track movement, not guarantee origin and ownership.",
+        "what_this_is": "SupplyChainVerify is a blockchain-based supply chain visibility software that verifies provenance on the blockchain.",
+        "primary_cta": "Start tracking"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\nsupply chain visibility software helps luxury goods brand supply chain managers go from can't track high-value items through complex global networks to prove authenticity to customers and regulators.\n\nONBOARDING\n1. Define who supply chain visibility software is for and the problem it solves.\n2. Shape your core message so supply chain visibility software can tailor output.\n3. Generate your first result and refine as you go.\n\nEMPTY STATE\n1. No audience defined yet. Start by telling supply chain visibility software who you're building for.\n2. No message saved yet. Build your setup to generate output.\n3. No output yet. Generate your first result.\n\nERROR\n1. That did not save. Check your input and try again.\n2. That step did not complete. Make sure all required fields are filled in.\n3. This action failed. Reload and try again, or contact support if it continues.\n\nTOAST\n1. Saved. Your progress is recorded.\n2. Done. Continue when you are ready.\n3. Brain saved. Output ready.\n\nBUTTON LABELS\n1. Build Brain\n2. Review Brain\n3. Generate Positioning\n4. Generate Landing\n5. Generate UX\n6. Refine Message\n7. Compare Outputs\n8. Save Brain\n",
+      "slots": {
+        "primary_cta": "Verify Provenance",
+        "secondary_cta": "View History",
+        "empty_state": "No item tracked yet. Scan barcode to start.",
+        "helper_text": "Describe your luxury good \u2014 what it is and where it's from.",
+        "error_message": "Verification failed. Check that item data is up-to-date."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "",
+    "icp": "luxury goods brand supply chain managers",
+    "problem": "can't track high-value items through complex global networks",
+    "category": "supply chain visibility software",
+    "differentiation": "verifies provenance on blockchain, not just tracking",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "prove authenticity to customers and regulators",
+    "tone": "professional and transparent"
+  },
+  "brain_flags": [
+    "product: empty"
+  ],
+  "suggestions_flags": [],
+  "landing_flags": [],
+  "ux_flags": [],
+  "score": 10,
+  "alpha_ready": true
+}

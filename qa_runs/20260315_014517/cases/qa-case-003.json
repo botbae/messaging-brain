@@ -1,0 +1,160 @@
+{
+  "case_id": 3,
+  "slug": "qa-case-003",
+  "input_idea": "i made a slack bot that notices when your team is stuck on a decision for too long and gently nudges them to either decide or escalate. honestly hard to explain without showing it",
+  "timings": {
+    "idea": 5.47,
+    "brain_save": 0.01,
+    "landing": 51.63,
+    "ux": 41.41
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-003",
+      "idea_extract": {
+        "icp": "team leads in software development",
+        "problem": "stale discussions causing project delays",
+        "category": "decision facilitation bot for teams",
+        "differentiation": "proactively nudges to action, doesn't just summarize",
+        "alternative": "email threads or lengthy meetings",
+        "tone": "friendly and encouraging",
+        "goal": "get projects back on track with timely decisions"
+      },
+      "product_profile_path": "clients/qa-case-003/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "detected 'hard to' in idea"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        }
+      },
+      "brain_suggestions": null
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "detected 'hard to' in idea"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      }
+    },
+    "brain_suggestions": null,
+    "brain_save": {
+      "client": "qa-case-003",
+      "product_profile": {
+        "product": "decision facilitation bot",
+        "audience": "team leads in software development",
+        "problem": "stale discussions causing project delays",
+        "alternatives": "email threads or lengthy meetings",
+        "advantage": "proactively nudges to action, doesn't just summarize",
+        "tone": "friendly and encouraging",
+        "goal": "get projects back on track with timely decisions",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "team leads in software development",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "primary_problem": {
+            "value": "stale discussions causing project delays",
+            "confidence": 0.7,
+            "source_notes": "detected 'hard to' in idea"
+          },
+          "category_frame": {
+            "value": "decision facilitation bot for teams",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "differentiation": {
+            "value": "proactively nudges to action, doesn't just summarize",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "current_alternative": {
+            "value": "email threads or lengthy meetings",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "get projects back on track with timely decisions",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-14T20:19:17.419501+00:00",
+        "source_idea": "i made a slack bot that notices when your team is stuck on a decision for too long and gently nudges them to either decide or escalate. honestly hard to explain without showing it",
+        "client_name": "qa-case-003",
+        "product_fingerprint": "8edda88e9ed3c758",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-14T20:19:17.419501+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nTimely decisions for software development projects\n\nSUBHEADLINE\nFor team leads, stale discussions causing project delays are a thing of the past.\n\nWHAT THIS IS\nA focused tool that helps team leads in software development move from stale discussions to timely decisions.\n\nWHO IT IS FOR\nTeam leads in software development\n\nTHE PROBLEM\nStale discussions cause project delays.\n\nWHY EXISTING TOOLS FAIL\nEmail threads and lengthy meetings were not designed for this problem, forcing manual workarounds that slow outcomes.\n\nHOW IT WORKS\nProactive nudges to action, no summary needed.\n\nKEY BENEFITS\nEarly users reach their first outcome without the overhead of general-purpose alternatives.\n\nCALL TO ACTION\nStart facilitating decisions today.\n",
+      "slots": {
+        "headline": "Get projects back on track",
+        "subhead": "Helps team leads in software development make timely decisions without stale discussions.",
+        "problem": "Team leads delay projects because email threads and lengthy meetings lead to indecision.",
+        "why_current_options_fail": "Email threads summarize information, but don't prompt action, while meetings often devolve into discussion rather than",
+        "what_this_is": "Decision Facilitator is a bot that proactively nudges teams to action, ensuring timely decisions.",
+        "primary_cta": "Start making decisions"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\ndecision facilitation bot helps team leads in software development go from stale discussions causing project delays to get projects back on track with timely decisions.\n\nONBOARDING\n1. Define who decision facilitation bot is for and the problem it solves.\n2. Shape your core message so decision facilitation bot can tailor output.\n3. Generate your first result and refine as you go.\n\nEMPTY STATE\n1. No audience defined yet. Start by telling decision facilitation bot who you're building for.\n2. No message saved yet. Build your setup to generate output.\n3. No output yet. Generate your first result.\n\nERROR\n1. That did not save. Check your input and try again.\n2. That step did not complete. Make sure all required fields are filled in.\n3. This action failed. Reload and try again, or contact support if it continues.\n\nTOAST\n1. Saved. Your progress is recorded.\n2. Done. Continue when you are ready.\n3. Brain saved. Output ready.\n\nBUTTON LABELS\n1. Build Brain\n2. Review Brain\n3. Generate Positioning\n4. Generate Landing\n5. Generate UX\n6. Refine Message\n7. Compare Outputs\n8. Save Brain\n",
+      "slots": {
+        "primary_cta": "Define ICP",
+        "secondary_cta": "Review brief",
+        "empty_state": "No project scope defined yet. Define your goals to start.",
+        "helper_text": "Clarify what your product does and who it helps.",
+        "error_message": "Scope failed. Check that all stakeholders are aligned."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "",
+    "icp": "team leads in software development",
+    "problem": "stale discussions causing project delays",
+    "category": "decision facilitation bot for teams",
+    "differentiation": "proactively nudges to action, doesn't just summarize",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "get projects back on track with timely decisions",
+    "tone": "friendly and encouraging"
+  },
+  "brain_flags": [
+    "product: empty"
+  ],
+  "suggestions_flags": [],
+  "landing_flags": [],
+  "ux_flags": [
+    "slot 'primary_cta': internal/tooling language detected",
+    "slot 'secondary_cta': internal/tooling language detected"
+  ],
+  "score": 8,
+  "alpha_ready": true
+}

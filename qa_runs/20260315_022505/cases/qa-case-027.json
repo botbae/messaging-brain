@@ -1,0 +1,173 @@
+{
+  "case_id": 27,
+  "slug": "qa-case-027",
+  "input_idea": "used to manually QA our design handoffs against Figma specs. built an internal script that does it automatically. now we want to productize it for design-dev teams",
+  "timings": {
+    "idea": 5.06,
+    "brain_save": 0.0,
+    "landing": 45.52,
+    "ux": 35.09,
+    "total": 88.7
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-027",
+      "idea_extract": {
+        "icp": "design-dev team leads",
+        "problem": "manually verifying design handoffs is time-consuming and prone to errors",
+        "category": "design QA automation",
+        "differentiation": "integrates with Figma, not just a generic design validation tool",
+        "alternative": "spreadsheets or manual review processes",
+        "tone": "practical and efficient",
+        "goal": "ensure accurate and timely design implementation"
+      },
+      "product_profile_path": "clients/qa-case-027/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "detected 'teams' in idea"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "detected 'automation' in idea"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        }
+      },
+      "brain_suggestions": [
+        {
+          "field": "audience",
+          "severity": "info",
+          "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+        }
+      ]
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "detected 'teams' in idea"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "detected 'automation' in idea"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      }
+    },
+    "brain_suggestions": [
+      {
+        "field": "audience",
+        "severity": "info",
+        "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+      }
+    ],
+    "brain_save": {
+      "client": "qa-case-027",
+      "product_profile": {
+        "product": "design QA automation",
+        "audience": "design-dev team leads",
+        "problem": "manually verifying design handoffs is time-consuming and prone to errors",
+        "alternatives": "spreadsheets or manual review processes",
+        "advantage": "integrates with Figma, not just a generic design validation tool",
+        "tone": "practical and efficient",
+        "goal": "ensure accurate and timely design implementation",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "design-dev team leads",
+            "confidence": 0.7,
+            "source_notes": "detected 'teams' in idea"
+          },
+          "primary_problem": {
+            "value": "manually verifying design handoffs is time-consuming and prone to errors",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "category_frame": {
+            "value": "design QA automation",
+            "confidence": 0.7,
+            "source_notes": "detected 'automation' in idea"
+          },
+          "differentiation": {
+            "value": "integrates with Figma, not just a generic design validation tool",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "current_alternative": {
+            "value": "spreadsheets or manual review processes",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "ensure accurate and timely design implementation",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-14T21:32:53.135282+00:00",
+        "source_idea": "used to manually QA our design handoffs against Figma specs. built an internal script that does it automatically. now we want to productize it for design-dev teams",
+        "client_name": "qa-case-027",
+        "product_fingerprint": "ec5774fb22c8f147",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-14T21:32:53.135282+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nensure accurate and timely design implementation\n\nSUBHEADLINE\nFor design-dev team leads, manually verifying design handoffs is time-consuming and prone to errors.\n\nWHAT THIS IS\nA focused tool that helps design-dev team leads move from manually verifying design handoffs is time-consumi to ensure accurate and timely design implementation.\n\nWHO IT IS FOR\ndesign-dev team leads\n\nTHE PROBLEM\nmanually verifying design handoffs is time-consuming and prone to errors\n\nWHY EXISTING TOOLS FAIL\nspreadsheets or manual review processes was not designed for design-dev team leads. It covers the broader category but lacks the specific mechanics this problem requires, forcing design-dev team leads to patch gaps with manual workarounds that slow outcomes.\n\nHOW IT WORKS\nintegrates with Figma, not just a generic design validation tool.\n\nKEY BENEFITS\nEarly users of design QA automation reach their first outcome without the overhead of general-purpose alternatives.\n\nCALL TO ACTION\nGet started with design QA automation.\n",
+      "slots": {
+        "headline": "Verify design handoffs accurately",
+        "subhead": "Helps design-dev team leads ensure accurate and timely design implementation without manual verification.",
+        "problem": "Design team leads waste time verifying design handoffs, prone to errors and delays.",
+        "why_current_options_fail": "Spreadsheets and manual review processes can't integrate with Figma, leading to inaccurate results.",
+        "what_this_is": "Design QA Automation is a tool that automates design validation, integrating seamlessly with Figma.",
+        "primary_cta": "Start verifying"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\nProduct description in user terms: Automate design handoffs and ensure accurate implementation.\n\nONBOARDING\n1. Connect your Figma account to start verifying designs.\n2. Upload your first design file to begin the process.\n3. Set up your design QA settings to customize the verification experience.\n\nEMPTY STATE\n1. No designs uploaded yet. Add a design to get started.\n2. Your design queue is empty. Upload a design to verify.\n3. No results available. Run a verification to see the outcome.\n\nERROR\n1. Design file not found. Check your Figma connection and try again.\n2. Verification failed due to incorrect design format. Try uploading a valid design.\n3. Connection timed out. Retry the verification process.\n\nTOAST\n1. Designs uploaded successfully!\n2. Verification complete: [VERIFY: 100%] accurate!\n3. Results saved: review and share with team!\n\nBUTTON LABELS\n1. Verify Design\n2. Upload Profile\n3. Run Setup\n4. Save Result\n5. Edit Settings\n6. Connect Account\n7. Start Verification\n8. View Output\n",
+      "slots": {
+        "primary_cta": "Define ICP",
+        "secondary_cta": "Review brief",
+        "empty_state": "No design defined yet. Upload your Figma file to start.",
+        "helper_text": "Describe your product's user flow and goals.",
+        "error_message": "Validation failed. Check that your Figma file is up-to-date."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "",
+    "icp": "design-dev team leads",
+    "problem": "manually verifying design handoffs is time-consuming and prone to errors",
+    "category": "design QA automation",
+    "differentiation": "integrates with Figma, not just a generic design validation tool",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "ensure accurate and timely design implementation",
+    "tone": "practical and efficient"
+  },
+  "brain_flags": [
+    "product: empty"
+  ],
+  "suggestions_flags": [],
+  "landing_flags": [],
+  "ux_flags": [
+    "slot 'primary_cta': internal/tooling language detected",
+    "slot 'secondary_cta': internal/tooling language detected"
+  ],
+  "score": 8,
+  "alpha_ready": true
+}

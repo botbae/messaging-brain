@@ -1,0 +1,49 @@
+{
+  "product": "battlecard generator",
+  "audience": "sales reps in software companies",
+  "problem": "waste time finding and updating battlecards manually",
+  "alternatives": "spreadsheets",
+  "advantage": "auto-updates from product changelogs, G2 reviews, and sales call transcripts",
+  "tone": "practical and efficient",
+  "goal": "save time and improve sales performance",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "sales reps in software companies",
+      "confidence": 0.7,
+      "source_notes": "detected 'saas' in idea"
+    },
+    "primary_problem": {
+      "value": "waste time finding and updating battlecards manually",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "battlecard generator for sales teams",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "differentiation": {
+      "value": "auto-updates from product changelogs, G2 reviews, and sales call transcripts",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "spreadsheets",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "save time and improve sales performance",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-14T21:18:21.844541+00:00",
+  "source_idea": "competitive battlecards SaaS. sales reps waste time finding and updating battlecards \u2014 ours auto-updates from product changelogs, G2 reviews and sales call transcripts",
+  "client_name": "qa-case-017",
+  "product_fingerprint": "17d461e7161924cf",
+  "brain_version": 1,
+  "last_saved_at": "2026-03-14T21:18:21.844541+00:00"
+}

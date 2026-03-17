@@ -1,0 +1,160 @@
+{
+  "case_id": 5,
+  "slug": "qa-case-005",
+  "input_idea": "enterprise HR teams spend way too long building onboarding plans for each new hire \u2014 we automate that based on their role, team and skills gaps. mainly targeting people ops leads at 200-500 person companies",
+  "timings": {
+    "idea": 7.05,
+    "brain_save": 0.01,
+    "landing": 54.36,
+    "ux": 21.07,
+    "total": 85.5
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-005",
+      "idea_extract": {
+        "product": "AI-powered onboarding plan builder for HR teams",
+        "icp": "people ops leads at 200-500 person companies",
+        "problem": "spend too much time building individualized onboarding plans",
+        "category": "HR onboarding automation",
+        "differentiation": "builds plans based on role, team and skills gaps",
+        "alternative": "manual spreadsheets or generic HR templates",
+        "tone": "practical and efficient",
+        "goal": "streamline new hire onboarding process"
+      },
+      "product_profile_path": "clients/qa-case-005/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "detected 'teams' in idea"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "detected 'automation' in idea"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        }
+      },
+      "brain_suggestions": null
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "detected 'teams' in idea"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "detected 'automation' in idea"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      }
+    },
+    "brain_suggestions": null,
+    "brain_save": {
+      "client": "qa-case-005",
+      "product_profile": {
+        "product": "AI-powered onboarding plan builder for HR teams",
+        "audience": "people ops leads at 200-500 person companies",
+        "problem": "spend too much time building individualized onboarding plans",
+        "alternatives": "manual spreadsheets or generic HR templates",
+        "advantage": "builds plans based on role, team and skills gaps",
+        "tone": "practical and efficient",
+        "goal": "streamline new hire onboarding process",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "people ops leads at 200-500 person companies",
+            "confidence": 0.7,
+            "source_notes": "detected 'teams' in idea"
+          },
+          "primary_problem": {
+            "value": "spend too much time building individualized onboarding plans",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "category_frame": {
+            "value": "HR onboarding automation",
+            "confidence": 0.7,
+            "source_notes": "detected 'automation' in idea"
+          },
+          "differentiation": {
+            "value": "builds plans based on role, team and skills gaps",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "current_alternative": {
+            "value": "manual spreadsheets or generic HR templates",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "streamline new hire onboarding process",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-15T08:44:07.550946+00:00",
+        "source_idea": "enterprise HR teams spend way too long building onboarding plans for each new hire \u2014 we automate that based on their role, team and skills gaps. mainly targeting people ops leads at 200-500 person com",
+        "client_name": "qa-case-005",
+        "product_fingerprint": "d0a101afb9a43a77",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-15T08:44:07.550946+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nstreamline new hire onboarding process\n\nSUBHEADLINE\nFor people ops leads at 200-500 person companies, spend too much time building individualized onboarding plans.\n\nWHAT THIS IS\nA focused tool that helps people ops leads at 200-500 person companies move from spend too much time building individualized onboar to streamline new hire onboarding process.\n\nWHO IT IS FOR\npeople ops leads at 200-500 person companies\n\nTHE PROBLEM\nspend too much time building individualized onboarding plans\n\nWHY EXISTING TOOLS FAIL\nmanual spreadsheets or generic HR templates was not designed for people ops leads at 200-500 person companies. It covers the broader category but lacks the specific mechanics this problem requires, forcing people ops leads at 200-500 person companies to patch gaps with manual workarounds that slow outcomes.\n\nHOW IT WORKS\nbuilds plans based on role, team and skills gaps.\n\nKEY BENEFITS\nEarly users of AI-powered onboarding plan bui reach their first outcome without the overhead of general-purpose alternatives.\n\nCALL TO ACTION\nGet started with AI-powered onboarding plan builder for HR teams.\n",
+      "slots": {
+        "headline": "Streamline new hire onboarding",
+        "subhead": "Helps people ops leads at 200-500 person companies create personalized plans without manual spreadsheets or generic",
+        "problem": "People ops teams waste time building individualized onboarding plans, losing focus on other priorities.",
+        "why_current_options_fail": "Generic HR templates and manual spreadsheets can't account for role, team, and skills gaps, leading to",
+        "what_this_is": "Onboardify is an AI-powered onboarding plan builder that creates tailored plans based on role,",
+        "primary_cta": "Start your trial"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product; Build personalized onboarding plans for new hires with AI-powered guidance.\n\nONBOARDING\n1. Start by creating a profile for your new hire.\n2. Define their role and team to get started.\n3. Identify skills gaps to inform your onboarding plan.\n\nEMPTY STATE\n1. No roles defined yet. Add the first role to start building.\n2. No teams assigned. Connect the dots with your new hire's role.\n3. No skills gaps detected. Start identifying areas for growth.\n\nERROR\n1. Invalid role format. Correct and try again.\n2. Team not found. Check spelling or add a new team.\n3. Skills gap data incomplete. Fill in missing information to proceed.\n\nTOAST\n1. Profile created!\n2. Role defined!\n3. Skills gaps detected!\n\nBUTTON LABELS\n1. Create Profile\n2. Define Role\n3. Identify Gaps\n4. Add Team Member\n5. Set Onboarding Goals\n6. Generate Plan\n7. View Result\n8. Save Results\n",
+      "slots": {
+        "primary_cta": "Create a plan for new",
+        "secondary_cta": "View sample results",
+        "empty_state": "No onboarding plan built yet. Start with your team's needs.",
+        "helper_text": "Define your product \u2014 what skills and roles need training?",
+        "error_message": "Plan generation failed. Check that all required fields are filled."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "AI-powered onboarding plan builder for HR teams",
+    "icp": "people ops leads at 200-500 person companies",
+    "problem": "spend too much time building individualized onboarding plans",
+    "category": "HR onboarding automation",
+    "differentiation": "builds plans based on role, team and skills gaps",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "streamline new hire onboarding process",
+    "tone": "practical and efficient"
+  },
+  "brain_flags": [],
+  "suggestions_flags": [],
+  "landing_flags": [
+    "slot 'what_this_is': generic phrase detected",
+    "landing text: generic phrases ['ai-powered']"
+  ],
+  "ux_flags": [],
+  "score": 9,
+  "alpha_ready": true
+}

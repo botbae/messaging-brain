@@ -1,0 +1,175 @@
+{
+  "case_id": 12,
+  "slug": "qa-case-012",
+  "input_idea": "brand strategy for early stage startups \u2014 mostly helping founders who just got funded figure out their positioning before they build their website. 6 week engagement",
+  "timings": {
+    "idea": 4.31,
+    "brain_save": 0.0,
+    "landing": 40.23,
+    "ux": 34.34,
+    "total": 81.91
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-012",
+      "idea_extract": {
+        "icp": "first-time SaaS founders",
+        "problem": "struggle to articulate their unique value proposition",
+        "category": "startup positioning services",
+        "differentiation": "uses proprietary framework for clarity and focus",
+        "alternative": "Google Docs templates",
+        "tone": "practical and consultative",
+        "goal": "define a compelling brand story"
+      },
+      "product_profile_path": "clients/qa-case-012/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "mentions founders, startups, and saas"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "detected 'positioning' in idea"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        }
+      },
+      "brain_suggestions": [
+        {
+          "field": "audience",
+          "severity": "info",
+          "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+        }
+      ]
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "mentions founders, startups, and saas"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "detected 'positioning' in idea"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      }
+    },
+    "brain_suggestions": [
+      {
+        "field": "audience",
+        "severity": "info",
+        "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+      }
+    ],
+    "brain_save": {
+      "client": "qa-case-012",
+      "product_profile": {
+        "product": "brand strategy for early stage startups",
+        "audience": "first-time SaaS founders",
+        "problem": "struggle to articulate their unique value proposition",
+        "alternatives": "Google Docs templates",
+        "advantage": "uses proprietary framework for clarity and focus",
+        "tone": "practical and consultative",
+        "goal": "define a compelling brand story",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "first-time SaaS founders",
+            "confidence": 0.7,
+            "source_notes": "mentions founders, startups, and saas"
+          },
+          "primary_problem": {
+            "value": "struggle to articulate their unique value proposition",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "category_frame": {
+            "value": "startup positioning services",
+            "confidence": 0.7,
+            "source_notes": "detected 'positioning' in idea"
+          },
+          "differentiation": {
+            "value": "uses proprietary framework for clarity and focus",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "current_alternative": {
+            "value": "Google Docs templates",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "define a compelling brand story",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-14T21:11:18.761672+00:00",
+        "source_idea": "brand strategy for early stage startups \u2014 mostly helping founders who just got funded figure out their positioning before they build their website. 6 week engagement",
+        "client_name": "qa-case-012",
+        "product_fingerprint": "4374929137fff9d9",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-14T21:11:18.761672+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nCraft a compelling brand story\n\nSUBHEADLINE\nFor first-time SaaS founders, define your unique value proposition.\n\nWHAT THIS IS\nAn AI messaging workspace that turns rough product thinking into positioning, landing copy, and UX drafts.\n\nWHO IT IS FOR\nFirst-time SaaS founders\n\nTHE PROBLEM\nUnclear product narratives hinder early traction.\n\nWHY EXISTING TOOLS FAIL\nGoogle Docs templates are too broad for first-time SaaS founders, forcing manual workarounds that slow outcomes.\n\nHOW IT WORKS\nOur proprietary framework provides clarity and focus.\n\nKEY BENEFITS\nFounders report clearer product narratives within the session.\n\nCALL TO ACTION\nStart defining your brand story.\n",
+      "slots": {
+        "headline": "Define your message",
+        "subhead": "Helps first-time SaaS founders ship landing pages without staring at a blank doc.",
+        "problem": "Founders struggle to articulate their unique value proposition.",
+        "why_current_options_fail": "Google Docs templates provide no proprietary framework for clarity and focus.",
+        "what_this_is": "",
+        "primary_cta": "Start positioning"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\nbrand strategy for early stage startups helps first-time saas founders turn rough product ideas into a clear messaging brain, positioning, landing copy, and UX drafts.\n\nONBOARDING\n1. Define who brand strategy for early stage startups is for and the problem it solves.\n2. Shape your core message \u2014 the angle that makes brand strategy for early stage startups different.\n3. Generate your first piece and adjust from the result.\n\nEMPTY STATE\n1. No audience defined yet. Start by telling brand strategy for early stage startups who you're building for.\n2. No message saved yet. Build your brain to shape your positioning.\n3. No output yet. Generate your first piece.\n\nERROR\n1. That did not save. Check your input and try again.\n2. That step did not complete. Make sure all required fields are filled in.\n3. This action failed. Reload and try again, or contact support if it continues.\n\nTOAST\n1. Saved. Your progress is recorded.\n2. Done. Continue when you are ready.\n3. Messaging brain saved.\n\nBUTTON LABELS\n1. Build Brain\n2. Review Brain\n3. Generate Positioning\n4. Generate Landing\n5. Generate UX\n6. Refine Message\n7. Compare Outputs\n8. Save Brain\n",
+      "slots": {
+        "primary_cta": "Define ICP",
+        "secondary_cta": "Review brief",
+        "empty_state": "No ideal customer profile defined yet. Start with your target audience to begin.",
+        "helper_text": "Identify who your product helps and what problems it solves.",
+        "error_message": "Profile failed to generate. Ensure you've entered a valid industry category."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "",
+    "icp": "first-time SaaS founders",
+    "problem": "struggle to articulate their unique value proposition",
+    "category": "startup positioning services",
+    "differentiation": "uses proprietary framework for clarity and focus",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "define a compelling brand story",
+    "tone": "practical and consultative"
+  },
+  "brain_flags": [
+    "product: empty"
+  ],
+  "suggestions_flags": [],
+  "landing_flags": [
+    "slot 'what_this_is': empty"
+  ],
+  "ux_flags": [
+    "slot 'primary_cta': internal/tooling language detected",
+    "slot 'secondary_cta': internal/tooling language detected"
+  ],
+  "score": 8,
+  "alpha_ready": true
+}

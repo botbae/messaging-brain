@@ -1,0 +1,49 @@
+{
+  "product": "retention analysis",
+  "audience": "small ecommerce founders",
+  "problem": "can't pinpoint why repeat customers are disappearing from Shopify dashboards and Klaviyo numbers",
+  "alternatives": "agencies, consultant, crm, dashboard",
+  "advantage": "analyzes campaign signals to provide actionable insights, not just data",
+  "tone": "practical and solution-focused",
+  "goal": "stop guessing and send sharper customer communication",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "small ecommerce founders",
+      "confidence": 0.7,
+      "source_notes": "mentions founders and agencies"
+    },
+    "primary_problem": {
+      "value": "can't pinpoint why repeat customers are disappearing from Shopify dashboards and Klaviyo numbers",
+      "confidence": 0.7,
+      "source_notes": "detected 'generic' in idea"
+    },
+    "category_frame": {
+      "value": "retention analysis for small ecommerce brands",
+      "confidence": 0.7,
+      "source_notes": "mentions messaging, analytics, and tool for"
+    },
+    "differentiation": {
+      "value": "analyzes campaign signals to provide actionable insights, not just data",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "agencies, consultant, crm, dashboard",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "stop guessing and send sharper customer communication",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-17T08:47:50.006376+00:00",
+  "source_idea": "i\u2019ve been thinking about a tool for small ecommerce brands because founders keep guessing why repeat customers quietly disappear. they look at shopify dashboards and klaviyo numbers and maybe some spr",
+  "client_name": "ive-been-thinking",
+  "product_fingerprint": "9dab1493017f007c",
+  "brain_version": 1,
+  "last_saved_at": "2026-03-17T08:47:50.006376+00:00"
+}

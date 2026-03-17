@@ -1,0 +1,160 @@
+{
+  "case_id": 44,
+  "slug": "qa-case-044",
+  "input_idea": "AI writing tool specifically for compliance teams at insurance companies. not chatgpt, not copy.ai \u2014 trained on their internal policy language and regulatory requirements",
+  "timings": {
+    "idea": 4.5,
+    "brain_save": 0.01,
+    "landing": 42.11,
+    "ux": 32.15,
+    "total": 81.79
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-044",
+      "idea_extract": {
+        "icp": "compliance officers at insurance companies",
+        "problem": "struggle to create accurate policy documents quickly",
+        "category": "policy writing assistant",
+        "differentiation": "trained on internal language and regulatory requirements, not general text",
+        "alternative": "Microsoft Word templates",
+        "tone": "practical and authoritative",
+        "goal": "produce compliant policy documents efficiently"
+      },
+      "product_profile_path": "clients/qa-case-044/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "detected 'teams' in idea"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "detected 'specific' in idea"
+        }
+      },
+      "brain_suggestions": null
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "detected 'teams' in idea"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "detected 'specific' in idea"
+      }
+    },
+    "brain_suggestions": null,
+    "brain_save": {
+      "client": "qa-case-044",
+      "product_profile": {
+        "product": "policy writing assistant",
+        "audience": "compliance officers at insurance companies",
+        "problem": "struggle to create accurate policy documents quickly",
+        "alternatives": "Microsoft Word templates",
+        "advantage": "trained on internal language and regulatory requirements, not general text",
+        "tone": "practical and authoritative",
+        "goal": "produce compliant policy documents efficiently",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "compliance officers at insurance companies",
+            "confidence": 0.7,
+            "source_notes": "detected 'teams' in idea"
+          },
+          "primary_problem": {
+            "value": "struggle to create accurate policy documents quickly",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "category_frame": {
+            "value": "policy writing assistant",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "differentiation": {
+            "value": "trained on internal language and regulatory requirements, not general text",
+            "confidence": 0.7,
+            "source_notes": "detected 'specific' in idea"
+          },
+          "current_alternative": {
+            "value": "Microsoft Word templates",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "produce compliant policy documents efficiently",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-14T21:58:06.599839+00:00",
+        "source_idea": "AI writing tool specifically for compliance teams at insurance companies. not chatgpt, not copy.ai \u2014 trained on their internal policy language and regulatory requirements",
+        "client_name": "qa-case-044",
+        "product_fingerprint": "c0838f20633ee1d3",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-14T21:58:06.599839+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nProduce compliant policy documents efficiently\n\nSUBHEADLINE\nFor compliance officers at insurance companies, struggling to create accurate policy documents quickly.\n\nWHAT THIS IS\nA focused tool that helps compliance officers at insurance companies produce compliant policy documents efficiently.\n\nWHO IT IS FOR\nCompliance officers at insurance companies\n\nTHE PROBLEM\nInaccurate and delayed policy document creation hinders compliance.\n\nWHY EXISTING TOOLS FAIL\nMicrosoft Word templates lack specific mechanics, forcing manual workarounds that slow outcomes.\n\nHOW IT WORKS\nTrained on internal language and regulatory requirements for accurate policy writing.\n\nKEY BENEFITS\nEarly users reach their first outcome without the overhead of general-purpose alternatives.\n\nCALL TO ACTION\nStart producing compliant policy documents with our assistant.\n",
+      "slots": {
+        "headline": "Write compliant policy documents",
+        "subhead": "Helps compliance officers at insurance companies create accurate policy documents without tedious template work.",
+        "problem": "Compliance officers waste time and risk errors when creating policy documents from Microsoft Word",
+        "why_current_options_fail": "Microsoft Word templates are not trained on internal language and regulatory requirements, making it difficult to",
+        "what_this_is": "PolicyGenie is a policy writing assistant that works from structured briefs and is trained",
+        "primary_cta": "Start creating"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\nPolicy writing assistant helps compliance officers at insurance companies create accurate policy documents efficiently.\n\nONBOARDING\n1. Start by creating a new profile.\n2. Set up your account to access our library of regulatory requirements.\n3. Input your company's specific policies and procedures.\n\nEMPTY STATE\n1. No policies found in your account yet. Add some today!\n2. Your setup is incomplete. Finish it to start writing policies.\n3. You have no results to view. Start generating policies now!\n\nERROR\n1. Policy not saved: Check your input for errors and try again.\n2. Regulatory requirement not found: Verify the requirement exists and try again.\n3. Policy document not generated: Review your setup and try again.\n\nTOAST\n1. Profile created!\n2. Account set up successfully!\n3. Results ready!\n\nBUTTON LABELS\n1. Create Profile\n2. Set Up Account\n3. Generate Policy\n4. Save Policy Document\n5. Add Regulatory Requirement\n6. Edit Policy Settings\n7. View Policy Results\n8. Start Writing Policies\n",
+      "slots": {
+        "primary_cta": "Craft Policy",
+        "secondary_cta": "Review Brief",
+        "empty_state": "No policy drafted yet. Start with your company's rules to begin.",
+        "helper_text": "Explain your product's purpose and target audience.",
+        "error_message": "Draft failed. Ensure you've met all regulatory requirements."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "",
+    "icp": "compliance officers at insurance companies",
+    "problem": "struggle to create accurate policy documents quickly",
+    "category": "policy writing assistant",
+    "differentiation": "trained on internal language and regulatory requirements, not general text",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "produce compliant policy documents efficiently",
+    "tone": "practical and authoritative"
+  },
+  "brain_flags": [
+    "product: empty"
+  ],
+  "suggestions_flags": [],
+  "landing_flags": [],
+  "ux_flags": [
+    "slot 'secondary_cta': internal/tooling language detected"
+  ],
+  "score": 9,
+  "alpha_ready": true
+}

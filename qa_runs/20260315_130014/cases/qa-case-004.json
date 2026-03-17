@@ -1,0 +1,172 @@
+{
+  "case_id": 4,
+  "slug": "qa-case-004",
+  "input_idea": "its a tool for dev agencies to track client feedback across slack, email and loom and turn it into actual task tickets. clients hate linear and jira so this keeps them out of it",
+  "timings": {
+    "idea": 8.09,
+    "brain_save": 0.0,
+    "landing": 55.47,
+    "ux": 38.44,
+    "total": 105.02
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-004",
+      "idea_extract": {
+        "product": "Slack-based client feedback aggregator for dev agencies",
+        "icp": "Dev agency owners and project managers",
+        "problem": "Clients' ad-hoc feedback is lost in Slack, email, or Loom, leading to misunderstandings and delayed task creation",
+        "category": "Client feedback management for dev agencies",
+        "differentiation": "Automatically converts client feedback into actionable task tickets, eliminating manual data entry",
+        "alternative": "Spreadsheets or email threads",
+        "tone": "Practical and efficient",
+        "goal": "Turn client feedback into actionable tasks without overwhelming clients with Jira or linear workflows"
+      },
+      "product_profile_path": "clients/qa-case-004/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "detected 'agencies' in idea"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "detected 'tool for' in idea"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        }
+      },
+      "brain_suggestions": [
+        {
+          "field": "advantage",
+          "severity": "info",
+          "message": "Advantage may overlap with the problem. Focus on the structural reason why this product wins."
+        }
+      ]
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "detected 'agencies' in idea"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "detected 'tool for' in idea"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      }
+    },
+    "brain_suggestions": [
+      {
+        "field": "advantage",
+        "severity": "info",
+        "message": "Advantage may overlap with the problem. Focus on the structural reason why this product wins."
+      }
+    ],
+    "brain_save": {
+      "client": "qa-case-004",
+      "product_profile": {
+        "product": "Slack-based client feedback aggregator for dev agencies",
+        "audience": "Dev agency owners and project managers",
+        "problem": "Clients' ad-hoc feedback is lost in Slack, email, or Loom, leading to misunderstandings and delayed task creation",
+        "alternatives": "Spreadsheets or email threads",
+        "advantage": "Automatically converts client feedback into actionable task tickets, eliminating manual data entry",
+        "tone": "Practical and efficient",
+        "goal": "Turn client feedback into actionable tasks without overwhelming clients with Jira or linear workflows",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "Dev agency owners and project managers",
+            "confidence": 0.7,
+            "source_notes": "detected 'agencies' in idea"
+          },
+          "primary_problem": {
+            "value": "Clients' ad-hoc feedback is lost in Slack, email, or Loom, leading to misunderstandings and delayed task creation",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "category_frame": {
+            "value": "Client feedback management for dev agencies",
+            "confidence": 0.7,
+            "source_notes": "detected 'tool for' in idea"
+          },
+          "differentiation": {
+            "value": "Automatically converts client feedback into actionable task tickets, eliminating manual data entry",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "current_alternative": {
+            "value": "Spreadsheets or email threads",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "Turn client feedback into actionable tasks without overwhelming clients with Jira or linear workflows",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-15T07:35:26.722995+00:00",
+        "source_idea": "its a tool for dev agencies to track client feedback across slack, email and loom and turn it into actual task tickets. clients hate linear and jira so this keeps them out of it",
+        "client_name": "qa-case-004",
+        "product_fingerprint": "2f85b597bb91e773",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-15T07:35:26.722995+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nTurn client feedback into actionable tasks without overwhelming clients\n\nSUBHEADLINE\nFor dev agency owners and project managers, clients' ad-hoc feedback is lost in Slack, email, or Loom, leading to.\n\nWHAT THIS IS\nA focused tool that helps dev agency owners and project managers move from clients' ad-hoc feedback is lost in slack, email,  to turn client feedback into actionable tasks without.\n\nWHO IT IS FOR\nDev agency owners and project managers\n\nTHE PROBLEM\nClients' ad-hoc feedback is lost in Slack, email, or Loom, leading to misunderstandings and delayed task creation\n\nWHY EXISTING TOOLS FAIL\nSpreadsheets or email threads was not designed for dev agency owners and project managers. It covers the broader category but lacks the specific mechanics this problem requires, forcing dev agency owners and project managers to patch gaps with manual workarounds that slow outcomes.\n\nHOW IT WORKS\nAutomatically converts client feedback into actionable task tickets, eliminating manual data entry.\n\nKEY BENEFITS\nEarly users of Slack-based client feedback ag reach their first outcome without the overhead of general-purpose alternatives.\n\nCALL TO ACTION\nGet started with Slack-based client feedback aggregator for dev agencies.\n",
+      "slots": {
+        "headline": "Define client feedback tasks",
+        "subhead": "Helps dev agency owners and project managers turn client feedback into actionable task tickets without email",
+        "problem": "Dev agencies lose client feedback in Slack, email, or Loom, leading to misunderstandings and",
+        "why_current_options_fail": "Spreadsheets and email threads can't automatically convert client feedback into actionable tasks.",
+        "what_this_is": "Taskify is a Slack-based client feedback aggregator that works from your existing conversations.",
+        "primary_cta": "Start organizing"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\nSlack-based client feedback aggregator for dev agencies helps dev agency owners and project managers go from clients' ad-hoc feedback is lost in slack, email, or loom\u2026 to turn client feedback into actionable tasks without\u2026.\n\nONBOARDING\n1. Define who Slack-based client feedback aggregator for dev agencies is for and the problem it solves.\n2. Shape your core message so Slack-based client feedback aggregator for dev agencies can tailor output.\n3. Generate your first result and refine as you go.\n\nEMPTY STATE\n1. No audience defined yet. Start by telling Slack-based client feedback aggregator for dev agencies who you're building for.\n2. No message saved yet. Build your setup to generate output.\n3. No output yet. Generate your first result.\n\nERROR\n1. That did not save. Check your input and try again.\n2. That step did not complete. Make sure all required fields are filled in.\n3. This action failed. Reload and try again, or contact support if it continues.\n\nTOAST\n1. Saved. Your progress is recorded.\n2. Done. Continue when you are ready.\n3. Brain saved. Output ready.\n\nBUTTON LABELS\n1. Build Brain\n2. Review Brain\n3. Generate Positioning\n4. Generate Landing\n5. Generate UX\n6. Refine Message\n7. Compare Outputs\n8. Save Brain\n",
+      "slots": {
+        "primary_cta": "Define ICP",
+        "secondary_cta": "Review brief",
+        "empty_state": "No client feedback aggregated yet. Connect your Slack to start.",
+        "helper_text": "Summarize your project's goals and outcomes for clients.",
+        "error_message": "Aggregation failed. Ensure all channels are connected."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "Slack-based client feedback aggregator for dev agencies",
+    "icp": "Dev agency owners and project managers",
+    "problem": "Clients' ad-hoc feedback is lost in Slack, email, or Loom, leading to misunderstandings and delayed task creation",
+    "category": "Client feedback management for dev agencies",
+    "differentiation": "Automatically converts client feedback into actionable task tickets, eliminating manual data entry",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "Turn client feedback into actionable tasks without overwhelming clients with Jira or linear workflows",
+    "tone": "Practical and efficient"
+  },
+  "brain_flags": [],
+  "suggestions_flags": [],
+  "landing_flags": [],
+  "ux_flags": [
+    "slot 'primary_cta': internal/tooling language detected",
+    "slot 'secondary_cta': internal/tooling language detected"
+  ],
+  "score": 9,
+  "alpha_ready": true
+}

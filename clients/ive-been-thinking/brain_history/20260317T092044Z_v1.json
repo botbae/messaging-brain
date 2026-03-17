@@ -1,0 +1,49 @@
+{
+  "product": "Customer Retention Analysis",
+  "audience": "Small ecommerce brand founders",
+  "problem": "Can't pinpoint why repeat customers are quietly disappearing from Shopify dashboards and Klaviyo numbers",
+  "alternatives": "agencies, consultant, crm, dashboard",
+  "advantage": "Analyzes store and campaign signals to provide a simple explanation of churn patterns and next best retention message",
+  "tone": "Practical and data-driven",
+  "goal": "Stop guessing and send sharper customer communication without hiring a retention consultant",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "Small ecommerce brand founders",
+      "confidence": 0.7,
+      "source_notes": "mentions founders and agencies"
+    },
+    "primary_problem": {
+      "value": "Can't pinpoint why repeat customers are quietly disappearing from Shopify dashboards and Klaviyo numbers",
+      "confidence": 0.7,
+      "source_notes": "detected 'generic' in idea"
+    },
+    "category_frame": {
+      "value": "Customer Retention Analysis for Ecommerce Brands",
+      "confidence": 0.7,
+      "source_notes": "mentions messaging, analytics, and tool for"
+    },
+    "differentiation": {
+      "value": "Analyzes store and campaign signals to provide a simple explanation of churn patterns and next best retention message",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "agencies, consultant, crm, dashboard",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "Stop guessing and send sharper customer communication without hiring a retention consultant",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-17T09:20:44.910069+00:00",
+  "source_idea": "i\u2019ve been thinking about a tool for small ecommerce brands because founders keep guessing why repeat customers quietly disappear. they look at shopify dashboards and klaviyo numbers and maybe some spr",
+  "client_name": "ive-been-thinking",
+  "product_fingerprint": "7e487323b78a9d8b",
+  "brain_version": 1,
+  "last_saved_at": "2026-03-17T09:20:44.910069+00:00"
+}

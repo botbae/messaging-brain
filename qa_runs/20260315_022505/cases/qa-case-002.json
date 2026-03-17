@@ -1,0 +1,161 @@
+{
+  "case_id": 2,
+  "slug": "qa-case-002",
+  "input_idea": "we help fintech startups that just raised series A get their compliance docs in order before regulators come knocking. its not legal software exactly its more like a structured process with some AI help",
+  "timings": {
+    "idea": 4.85,
+    "brain_save": 0.0,
+    "landing": 41.25,
+    "ux": 33.13,
+    "total": 82.25
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-002",
+      "idea_extract": {
+        "icp": "Series A fintech startup founders",
+        "problem": "Regulators demand compliance documentation without clear templates",
+        "category": "Compliance Document Organizer",
+        "differentiation": "Streamlines process with AI-assisted template guidance",
+        "alternative": "Spreadsheets and manual research",
+        "tone": "Practical and Confident",
+        "goal": "Get regulatory-ready in weeks, not months"
+      },
+      "product_profile_path": "clients/qa-case-002/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "mentions founders and startups"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "detected 'structured' in idea"
+        }
+      },
+      "brain_suggestions": null
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "mentions founders and startups"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "detected 'structured' in idea"
+      }
+    },
+    "brain_suggestions": null,
+    "brain_save": {
+      "client": "qa-case-002",
+      "product_profile": {
+        "product": "Compliance Document Organizer",
+        "audience": "Series A fintech startup founders",
+        "problem": "Regulators demand compliance documentation without clear templates",
+        "alternatives": "Spreadsheets and manual research",
+        "advantage": "Streamlines process with AI-assisted template guidance",
+        "tone": "Practical and Confident",
+        "goal": "Get regulatory-ready in weeks, not months",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "Series A fintech startup founders",
+            "confidence": 0.7,
+            "source_notes": "mentions founders and startups"
+          },
+          "primary_problem": {
+            "value": "Regulators demand compliance documentation without clear templates",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "category_frame": {
+            "value": "Compliance Document Organizer",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "differentiation": {
+            "value": "Streamlines process with AI-assisted template guidance",
+            "confidence": 0.7,
+            "source_notes": "detected 'structured' in idea"
+          },
+          "current_alternative": {
+            "value": "Spreadsheets and manual research",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "Get regulatory-ready in weeks, not months",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-14T20:56:41.119923+00:00",
+        "source_idea": "we help fintech startups that just raised series A get their compliance docs in order before regulators come knocking. its not legal software exactly its more like a structured process with some AI he",
+        "client_name": "qa-case-002",
+        "product_fingerprint": "80b3b0046c146f61",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-14T20:56:41.119923+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nGet regulatory-ready in weeks, not months\n\nSUBHEADLINE\nFor series a fintech startup founders, regulators demand compliance documentation without clear templates.\n\nWHAT THIS IS\nA focused tool that helps series a fintech startup founders move from regulators demand compliance documentation without to get regulatory-ready in weeks, not months.\n\nWHO IT IS FOR\nSeries A fintech startup founders\n\nTHE PROBLEM\nRegulators demand compliance documentation without clear templates\n\nWHY EXISTING TOOLS FAIL\nSpreadsheets and manual research was not designed for series a fintech startup founders. It covers the broader category but lacks the specific mechanics this problem requires, forcing series a fintech startup founders to patch gaps with manual workarounds that slow outcomes.\n\nHOW IT WORKS\nStreamlines process with AI-assisted template guidance.\n\nKEY BENEFITS\nEarly users of Compliance Document Organizer reach their first outcome without the overhead of general-purpose alternatives.\n\nCALL TO ACTION\nGet started with Compliance Document Organizer.\n",
+      "slots": {
+        "headline": "Get regulatory-ready in weeks",
+        "subhead": "Helps Series A fintech startup founders organize compliance documents without manual research and spreadsheets.",
+        "problem": "Founders lose time because regulators demand compliance documentation without clear templates.",
+        "why_current_options_fail": "Spreadsheets and manual research can't provide the structured guidance needed for regulatory readiness.",
+        "what_this_is": "Compliance Document Organizer is a template guidance system that streamlines process with AI-assistance.",
+        "primary_cta": "Start organizing"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\nCompliance Document Organizer helps series a fintech startup founders go from regulators demand compliance documentation without clear\u2026 to get regulatory-ready in weeks, not months.\n\nONBOARDING\n1. Define who Compliance Document Organizer is for and the problem it solves.\n2. Shape your core message so Compliance Document Organizer can tailor output.\n3. Generate your first result and refine as you go.\n\nEMPTY STATE\n1. No audience defined yet. Start by telling Compliance Document Organizer who you're building for.\n2. No message saved yet. Build your setup to generate output.\n3. No output yet. Generate your first result.\n\nERROR\n1. That did not save. Check your input and try again.\n2. That step did not complete. Make sure all required fields are filled in.\n3. This action failed. Reload and try again, or contact support if it continues.\n\nTOAST\n1. Saved. Your progress is recorded.\n2. Done. Continue when you are ready.\n3. Brain saved. Output ready.\n\nBUTTON LABELS\n1. Build Brain\n2. Review Brain\n3. Generate Positioning\n4. Generate Landing\n5. Generate UX\n6. Refine Message\n7. Compare Outputs\n8. Save Brain\n",
+      "slots": {
+        "primary_cta": "Define ICP",
+        "secondary_cta": "Review brief",
+        "empty_state": "No compliance plan created yet. Start with your product's purpose.",
+        "helper_text": "Explain how your fintech startup helps investors and what it does differently.",
+        "error_message": "Plan failed to generate. Ensure all regulatory requirements are met."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "",
+    "icp": "Series A fintech startup founders",
+    "problem": "Regulators demand compliance documentation without clear templates",
+    "category": "Compliance Document Organizer",
+    "differentiation": "Streamlines process with AI-assisted template guidance",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "Get regulatory-ready in weeks, not months",
+    "tone": "Practical and Confident"
+  },
+  "brain_flags": [
+    "product: empty"
+  ],
+  "suggestions_flags": [],
+  "landing_flags": [],
+  "ux_flags": [
+    "slot 'primary_cta': internal/tooling language detected",
+    "slot 'secondary_cta': internal/tooling language detected"
+  ],
+  "score": 8,
+  "alpha_ready": true
+}

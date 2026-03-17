@@ -1,0 +1,179 @@
+{
+  "case_id": 1,
+  "slug": "qa-case-001",
+  "input_idea": "ok so basically i built this thing for sales teams where instead of them having to manually update their crm notes after every call it just listens and does it automatically. but idk how to explain what it is on the website without it sounding like every other AI tool",
+  "timings": {
+    "idea": 6.6,
+    "brain_save": 0.01,
+    "landing": 49.31,
+    "ux": 37.91,
+    "total": 96.84
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-001",
+      "idea_extract": {
+        "product": "Sales call note-taking bot for CRM updates",
+        "icp": "Sales team leaders",
+        "problem": "Manual CRM note-taking after every sales call is time-consuming and prone to errors",
+        "category": "Sales productivity tools",
+        "differentiation": "Automatically transcribes and updates CRM notes in real-time, eliminating manual effort",
+        "alternative": "Spreadsheets or email",
+        "tone": "Practical and efficient",
+        "goal": "Streamline sales team workflows and reduce administrative tasks"
+      },
+      "product_profile_path": "clients/qa-case-001/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "detected 'teams' in idea"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "detected 'instead of' in idea"
+        }
+      },
+      "brain_suggestions": [
+        {
+          "field": "audience",
+          "severity": "info",
+          "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+        },
+        {
+          "field": "advantage",
+          "severity": "info",
+          "message": "Advantage may overlap with the problem. Focus on the structural reason why this product wins."
+        }
+      ]
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "detected 'teams' in idea"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "detected 'instead of' in idea"
+      }
+    },
+    "brain_suggestions": [
+      {
+        "field": "audience",
+        "severity": "info",
+        "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+      },
+      {
+        "field": "advantage",
+        "severity": "info",
+        "message": "Advantage may overlap with the problem. Focus on the structural reason why this product wins."
+      }
+    ],
+    "brain_save": {
+      "client": "qa-case-001",
+      "product_profile": {
+        "product": "Sales call note-taking bot for CRM updates",
+        "audience": "Sales team leaders",
+        "problem": "Manual CRM note-taking after every sales call is time-consuming and prone to errors",
+        "alternatives": "Spreadsheets or email",
+        "advantage": "Automatically transcribes and updates CRM notes in real-time, eliminating manual effort",
+        "tone": "Practical and efficient",
+        "goal": "Streamline sales team workflows and reduce administrative tasks",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "Sales team leaders",
+            "confidence": 0.7,
+            "source_notes": "detected 'teams' in idea"
+          },
+          "primary_problem": {
+            "value": "Manual CRM note-taking after every sales call is time-consuming and prone to errors",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "category_frame": {
+            "value": "Sales productivity tools",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "differentiation": {
+            "value": "Automatically transcribes and updates CRM notes in real-time, eliminating manual effort",
+            "confidence": 0.7,
+            "source_notes": "detected 'instead of' in idea"
+          },
+          "current_alternative": {
+            "value": "Spreadsheets or email",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "Streamline sales team workflows and reduce administrative tasks",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-15T08:37:17.067074+00:00",
+        "source_idea": "ok so basically i built this thing for sales teams where instead of them having to manually update their crm notes after every call it just listens and does it automatically. but idk how to explain wh",
+        "client_name": "qa-case-001",
+        "product_fingerprint": "0bb98e3c8a01f299",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-15T08:37:17.067074+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nStreamline sales team workflows and reduce administrative tasks\n\nSUBHEADLINE\nFor sales team leaders, manual CRM note-taking after every sales call is time-consuming and prone to errors.\n\nWHAT THIS IS\nA focused tool that helps sales team leaders move from manual crm note-taking after every sales call is t to streamline sales team workflows and reduce adminis.\n\nWHO IT IS FOR\nSales team leaders\n\nTHE PROBLEM\nManual CRM note-taking after every sales call is time-consuming and prone to errors\n\nWHY EXISTING TOOLS FAIL\nSpreadsheets or email was not designed for sales team leaders. It covers the broader category but lacks the specific mechanics this problem requires, forcing sales team leaders to patch gaps with manual workarounds that slow outcomes.\n\nHOW IT WORKS\nAutomatically transcribes and updates CRM notes in real-time, eliminating manual effort.\n\nKEY BENEFITS\nEarly users of Sales call note-taking bot for reach their first outcome without the overhead of general-purpose alternatives.\n\nCALL TO ACTION\nGet started with Sales call note-taking bot for CRM updates.\n",
+      "slots": {
+        "headline": "Update CRM notes quickly",
+        "subhead": "Helps sales team leaders keep accurate records without manual note-taking.",
+        "problem": "Sales teams waste time and make errors when manually updating CRM notes after every",
+        "why_current_options_fail": "Spreadsheets and email are not designed for real-time CRM updates, leading to inaccuracies.",
+        "what_this_is": "SalesNote is a sales call note-taking bot that automatically transcribes and updates CRM notes",
+        "primary_cta": "Start your trial"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\nSales call note-taking bot for CRM updates helps sales team leaders go from manual crm note-taking after every sales call is time-consuming\u2026 to streamline sales team workflows and reduce\u2026.\n\nONBOARDING\n1. Define who Sales call note-taking bot for CRM updates is for and the problem it solves.\n2. Shape your core message so Sales call note-taking bot for CRM updates can tailor output.\n3. Generate your first result and refine as you go.\n\nEMPTY STATE\n1. No audience defined yet. Start by telling Sales call note-taking bot for CRM updates who you're building for.\n2. No message saved yet. Build your setup to generate output.\n3. No output yet. Generate your first result.\n\nERROR\n1. That did not save. Check your input and try again.\n2. That step did not complete. Make sure all required fields are filled in.\n3. This action failed. Reload and try again, or contact support if it continues.\n\nTOAST\n1. Saved. Your progress is recorded.\n2. Done. Continue when you are ready.\n3. Brain saved. Output ready.\n\nBUTTON LABELS\n1. Build Brain\n2. Review Brain\n3. Generate Positioning\n4. Generate Landing\n5. Generate UX\n6. Refine Message\n7. Compare Outputs\n8. Save Brain\n",
+      "slots": {
+        "primary_cta": "Capture your call notes",
+        "secondary_cta": "Try a sample note",
+        "empty_state": "No notes recorded yet. Start with your first call to begin.",
+        "helper_text": "Summarize your sales conversation \u2014 what was discussed and agreed upon?",
+        "error_message": "Note failed to generate. Check that Ollama is connected to your CRM."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "Sales call note-taking bot for CRM updates",
+    "icp": "Sales team leaders",
+    "problem": "Manual CRM note-taking after every sales call is time-consuming and prone to errors",
+    "category": "Sales productivity tools",
+    "differentiation": "Automatically transcribes and updates CRM notes in real-time, eliminating manual effort",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "Streamline sales team workflows and reduce administrative tasks",
+    "tone": "Practical and efficient"
+  },
+  "brain_flags": [],
+  "suggestions_flags": [],
+  "landing_flags": [],
+  "ux_flags": [],
+  "score": 10,
+  "alpha_ready": true
+}

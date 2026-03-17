@@ -1,0 +1,171 @@
+{
+  "case_id": 7,
+  "slug": "qa-case-007",
+  "input_idea": "subscription tracker but for B2B \u2014 it reminds your finance person which SaaS tools your team actually uses vs which ones you're just paying for. built it for myself tbh",
+  "timings": {
+    "idea": 6.62,
+    "brain_save": 0.01,
+    "landing": 49.42,
+    "ux": 24.13
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-007",
+      "idea_extract": {
+        "icp": "B2B finance professionals",
+        "problem": "waste money on unused SaaS subscriptions",
+        "category": "SaaS subscription trackers",
+        "differentiation": "provides actionable insights for cost optimization",
+        "alternative": "spreadsheets",
+        "tone": "practical and analytical",
+        "goal": "maximize ROI by identifying unused tools"
+      },
+      "product_profile_path": "clients/qa-case-007/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "mentions b2b and saas"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        }
+      },
+      "brain_suggestions": [
+        {
+          "field": "audience",
+          "severity": "info",
+          "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+        }
+      ]
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "mentions b2b and saas"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      }
+    },
+    "brain_suggestions": [
+      {
+        "field": "audience",
+        "severity": "info",
+        "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+      }
+    ],
+    "brain_save": {
+      "client": "qa-case-007",
+      "product_profile": {
+        "product": "subscription tracker but for B2B",
+        "audience": "B2B finance professionals",
+        "problem": "waste money on unused SaaS subscriptions",
+        "alternatives": "spreadsheets",
+        "advantage": "provides actionable insights for cost optimization",
+        "tone": "practical and analytical",
+        "goal": "maximize ROI by identifying unused tools",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "B2B finance professionals",
+            "confidence": 0.7,
+            "source_notes": "mentions b2b and saas"
+          },
+          "primary_problem": {
+            "value": "waste money on unused SaaS subscriptions",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "category_frame": {
+            "value": "SaaS subscription trackers",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "differentiation": {
+            "value": "provides actionable insights for cost optimization",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "current_alternative": {
+            "value": "spreadsheets",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "maximize ROI by identifying unused tools",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-14T20:26:08.846706+00:00",
+        "source_idea": "subscription tracker but for B2B \u2014 it reminds your finance person which SaaS tools your team actually uses vs which ones you're just paying for. built it for myself tbh",
+        "client_name": "qa-case-007",
+        "product_fingerprint": "2fcb7fd044849d31",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-14T20:26:08.846706+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nmaximize ROI by identifying unused tools\n\nSUBHEADLINE\nFor b2b finance professionals, waste money on unused SaaS subscriptions.\n\nWHAT THIS IS\nAn AI messaging workspace that turns rough product thinking into positioning, landing copy, and UX drafts.\n\nWHO IT IS FOR\nB2B finance professionals\n\nTHE PROBLEM\nwaste money on unused SaaS subscriptions\n\nWHY EXISTING TOOLS FAIL\nspreadsheets was not designed for b2b finance professionals. It covers the broader category but lacks the specific mechanics this problem requires, forcing b2b finance professionals to patch gaps with manual workarounds that slow outcomes.\n\nHOW IT WORKS\nprovides actionable insights for cost optimization.\n\nKEY BENEFITS\nFounders who complete their first brief report clearer product narratives within the session.\n\nCALL TO ACTION\nGet started with subscription tracker but for B2B.\n",
+      "slots": {
+        "headline": "Maximize ROI on SaaS tools",
+        "subhead": "Helps B2B finance professionals identify unused subscriptions without manual spreadsheets.",
+        "problem": "Finance teams waste money on unused software because they can't track usage effectively.",
+        "why_current_options_fail": "Manual tracking in spreadsheets is time-consuming and prone to errors, leading to missed opportunities for cost",
+        "what_this_is": "SaaS Tracker is a subscription management tool that provides actionable insights for cost optimization.",
+        "primary_cta": "Start optimizing"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\nSubscription tracker for B2B finance professionals helps identify unused SaaS subscriptions and maximize ROI.\n\nONBOARDING\n1. Connect your account to start tracking.\n2. Set up your profile to get started.\n3. Import existing subscriptions to begin analysis.\n\nEMPTY STATE\n1. No subscriptions found yet. Add some to get started!\n2. Your subscription list is empty. Start adding tools today!\n3. You haven't connected an account yet. Link one now!\n\nERROR\n1. Unable to import subscription data. Check your CSV file format.\n2. Connection error: ensure your account credentials are correct.\n3. Subscription not found: try searching again or check the spelling.\n\nTOAST\n1. Subscriptions imported!\n2. Profile set up successfully!\n3. Account connected!\n\nBUTTON LABELS\n1. Track My Subscriptions\n2. Update My Profile\n3. Connect My Account\n4. Add New Subscription\n5. Remove Unused Tools\n6. Review My Results\n7. Edit My Settings\n8. Save My Progress\n",
+      "slots": {
+        "primary_cta": "Maximize ROI",
+        "secondary_cta": "Review brief",
+        "empty_state": "No subscriptions tracked yet. Connect your account to start.",
+        "helper_text": "List your SaaS tools \u2014 what they do and who uses them.",
+        "error_message": "Data failed to load. Check that all accounts are connected."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "",
+    "icp": "B2B finance professionals",
+    "problem": "waste money on unused SaaS subscriptions",
+    "category": "SaaS subscription trackers",
+    "differentiation": "provides actionable insights for cost optimization",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "maximize ROI by identifying unused tools",
+    "tone": "practical and analytical"
+  },
+  "brain_flags": [
+    "product: empty"
+  ],
+  "suggestions_flags": [],
+  "landing_flags": [],
+  "ux_flags": [
+    "slot 'secondary_cta': internal/tooling language detected"
+  ],
+  "score": 9,
+  "alpha_ready": true
+}

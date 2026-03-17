@@ -1,0 +1,49 @@
+{
+  "product": "engineering manager tool that tracks team health signals",
+  "audience": "Engineering Manager Leaders",
+  "problem": "can't measure team performance accurately",
+  "alternatives": "Spreadsheets",
+  "advantage": "tracks multiple health signals, not just one metric",
+  "tone": "Practical and Data-Driven",
+  "goal": "Optimize Team Velocity",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "Engineering Manager Leaders",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "primary_problem": {
+      "value": "can't measure team performance accurately",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "Team Health Analytics",
+      "confidence": 0.7,
+      "source_notes": "detected 'analytics' in idea"
+    },
+    "differentiation": {
+      "value": "tracks multiple health signals, not just one metric",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "Spreadsheets",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "Optimize Team Velocity",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-14T21:35:55.421196+00:00",
+  "source_idea": "engineering manager tool that tracks team health signals \u2014 PR review times, standup participation, deploy frequency. not spyware. for EMs who care about team performance",
+  "client_name": "qa-case-029",
+  "product_fingerprint": "d315c5e2bdf98a23",
+  "brain_version": 2,
+  "last_saved_at": "2026-03-14T21:35:55.421196+00:00"
+}

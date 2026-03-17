@@ -1,0 +1,49 @@
+{
+  "product": "investor email writer",
+  "audience": "venture-backed startup founders",
+  "problem": "struggle to craft compelling investor updates on time",
+  "alternatives": "Google Docs templates",
+  "advantage": "uses AI-powered template with customizable fields",
+  "tone": "practical and supportive",
+  "goal": "secure funding with confidence",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "venture-backed startup founders",
+      "confidence": 0.7,
+      "source_notes": "detected 'founders' in idea"
+    },
+    "primary_problem": {
+      "value": "struggle to craft compelling investor updates on time",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "investor email writer for startups",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "differentiation": {
+      "value": "uses AI-powered template with customizable fields",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "Google Docs templates",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "secure funding with confidence",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-14T21:17:00.771859+00:00",
+  "source_idea": "i'm a PMM at a big company building a side product that helps startup founders write their investor update emails faster. i have a template but i want to turn it into a proper product",
+  "client_name": "qa-case-016",
+  "product_fingerprint": "c1d1706e6da35e12",
+  "brain_version": 2,
+  "last_saved_at": "2026-03-14T21:17:00.771859+00:00"
+}

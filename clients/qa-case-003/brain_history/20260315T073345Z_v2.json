@@ -1,0 +1,49 @@
+{
+  "product": "Slack bot that detects stuck decision-making",
+  "audience": "Product managers in software development teams",
+  "problem": "Decision paralysis leads to delayed project timelines",
+  "alternatives": "Email threads and ad-hoc meetings",
+  "advantage": "Gently nudges teams towards resolution, rather than dictating a solution",
+  "tone": "Practical and supportive",
+  "goal": "Enable informed decision-making and timely project progress",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "Product managers in software development teams",
+      "confidence": 0.7,
+      "source_notes": "detected 'teams' in idea"
+    },
+    "primary_problem": {
+      "value": "Decision paralysis leads to delayed project timelines",
+      "confidence": 0.7,
+      "source_notes": "detected 'hard to' in idea"
+    },
+    "category_frame": {
+      "value": "Collaboration workflow management",
+      "confidence": 0.7,
+      "source_notes": "detected 'workflow' in idea"
+    },
+    "differentiation": {
+      "value": "Gently nudges teams towards resolution, rather than dictating a solution",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "Email threads and ad-hoc meetings",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "Enable informed decision-making and timely project progress",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-15T07:33:45.439278+00:00",
+  "source_idea": "i made a slack bot that notices when your team is stuck on a decision for too long and gently nudges them to either decide or escalate. honestly hard to explain without showing it",
+  "client_name": "qa-case-003",
+  "product_fingerprint": "21ec49a54ab6b0c9",
+  "brain_version": 2,
+  "last_saved_at": "2026-03-15T07:33:45.439278+00:00"
+}

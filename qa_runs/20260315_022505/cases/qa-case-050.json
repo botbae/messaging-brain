@@ -1,0 +1,172 @@
+{
+  "case_id": 50,
+  "slug": "qa-case-050",
+  "input_idea": "SaaS for property managers to handle maintenance request triage. tenants submit via text or app, AI categorizes urgency, assigns to the right vendor, tracks resolution. the current process is a mess",
+  "timings": {
+    "idea": 4.92,
+    "brain_save": 0.0,
+    "landing": 42.79,
+    "ux": 32.78,
+    "total": 83.51
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-050",
+      "idea_extract": {
+        "icp": "property managers",
+        "problem": "tenants' maintenance requests are lost in a sea of unorganized emails and phone calls",
+        "category": "maintenance request management",
+        "differentiation": "automatically categorizes urgency and assigns tasks to the right vendors",
+        "alternative": "phone calls and email threads",
+        "tone": "practical and efficient",
+        "goal": "streamline maintenance request resolution process"
+      },
+      "product_profile_path": "clients/qa-case-050/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "detected 'saas' in idea"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        }
+      },
+      "brain_suggestions": [
+        {
+          "field": "audience",
+          "severity": "info",
+          "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+        }
+      ]
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "detected 'saas' in idea"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      }
+    },
+    "brain_suggestions": [
+      {
+        "field": "audience",
+        "severity": "info",
+        "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+      }
+    ],
+    "brain_save": {
+      "client": "qa-case-050",
+      "product_profile": {
+        "product": "SaaS",
+        "audience": "property managers",
+        "problem": "tenants' maintenance requests are lost in a sea of unorganized emails and phone calls",
+        "alternatives": "phone calls and email threads",
+        "advantage": "automatically categorizes urgency and assigns tasks to the right vendors",
+        "tone": "practical and efficient",
+        "goal": "streamline maintenance request resolution process",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "property managers",
+            "confidence": 0.7,
+            "source_notes": "detected 'saas' in idea"
+          },
+          "primary_problem": {
+            "value": "tenants' maintenance requests are lost in a sea of unorganized emails and phone calls",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "category_frame": {
+            "value": "maintenance request management",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "differentiation": {
+            "value": "automatically categorizes urgency and assigns tasks to the right vendors",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "current_alternative": {
+            "value": "phone calls and email threads",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "streamline maintenance request resolution process",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-14T22:06:55.996656+00:00",
+        "source_idea": "SaaS for property managers to handle maintenance request triage. tenants submit via text or app, AI categorizes urgency, assigns to the right vendor, tracks resolution. the current process is a mess",
+        "client_name": "qa-case-050",
+        "product_fingerprint": "75ecca081b78185e",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-14T22:06:55.996656+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nstreamline maintenance request resolution process\n\nSUBHEADLINE\nFor property managers, tenants' maintenance requests are lost in a sea of unorganized emails and phone calls.\n\nWHAT THIS IS\nAn AI messaging workspace that turns rough product thinking into positioning, landing copy, and UX drafts.\n\nWHO IT IS FOR\nproperty managers\n\nTHE PROBLEM\ntenants' maintenance requests are lost in a sea of unorganized emails and phone calls\n\nWHY EXISTING TOOLS FAIL\nphone calls and email threads was not designed for property managers. It covers the broader category but lacks the specific mechanics this problem requires, forcing property managers to patch gaps with manual workarounds that slow outcomes.\n\nHOW IT WORKS\nautomatically categorizes urgency and assigns tasks to the right vendors.\n\nKEY BENEFITS\nFounders who complete their first brief report clearer product narratives within the session.\n\nCALL TO ACTION\nGet started with SaaS.\n",
+      "slots": {
+        "headline": "Resolve tenant requests",
+        "subhead": "Helps property managers streamline maintenance request resolution without drowning in emails and calls.",
+        "problem": "Tenants' maintenance requests are lost in unorganized emails and phone calls.",
+        "why_current_options_fail": "Phone calls and email threads fail to categorize urgency and assign tasks to the right vendors.",
+        "what_this_is": "SaaS is a maintenance request management tool that automatically categorizes urgency and assigns tasks",
+        "primary_cta": "Start streamlining"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\nSaaS helps property managers go from tenants' maintenance requests are lost in a sea of unorganized\u2026 to streamline maintenance request resolution process.\n\nONBOARDING\n1. Define who SaaS is for and the problem it solves.\n2. Shape your core message so SaaS can tailor output.\n3. Generate your first result and refine as you go.\n\nEMPTY STATE\n1. No audience defined yet. Start by telling SaaS who you're building for.\n2. No message saved yet. Build your setup to generate output.\n3. No output yet. Generate your first result.\n\nERROR\n1. That did not save. Check your input and try again.\n2. That step did not complete. Make sure all required fields are filled in.\n3. This action failed. Reload and try again, or contact support if it continues.\n\nTOAST\n1. Saved. Your progress is recorded.\n2. Done. Continue when you are ready.\n3. Brain saved. Output ready.\n\nBUTTON LABELS\n1. Build Brain\n2. Review Brain\n3. Generate Positioning\n4. Generate Landing\n5. Generate UX\n6. Refine Message\n7. Compare Outputs\n8. Save Brain\n",
+      "slots": {
+        "primary_cta": "Assign Vendor",
+        "secondary_cta": "Review Brief",
+        "empty_state": "No requests received yet. Upload your first request to start.",
+        "helper_text": "Enter tenant's maintenance request details \u2014 what needs fixing and why.",
+        "error_message": "Request failed. Check that vendor information is complete."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "",
+    "icp": "property managers",
+    "problem": "tenants' maintenance requests are lost in a sea of unorganized emails and phone calls",
+    "category": "maintenance request management",
+    "differentiation": "automatically categorizes urgency and assigns tasks to the right vendors",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "streamline maintenance request resolution process",
+    "tone": "practical and efficient"
+  },
+  "brain_flags": [
+    "product: empty"
+  ],
+  "suggestions_flags": [],
+  "landing_flags": [],
+  "ux_flags": [
+    "slot 'secondary_cta': internal/tooling language detected"
+  ],
+  "score": 9,
+  "alpha_ready": true
+}

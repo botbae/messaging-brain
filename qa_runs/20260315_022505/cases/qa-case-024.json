@@ -1,0 +1,160 @@
+{
+  "case_id": 24,
+  "slug": "qa-case-024",
+  "input_idea": "recipe app for people who have exactly 20 minutes, whatever is in their fridge, and a toddler underfoot. not another pinterest but actually fast and practical",
+  "timings": {
+    "idea": 4.76,
+    "brain_save": 0.0,
+    "landing": 46.71,
+    "ux": 32.85,
+    "total": 87.36
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-024",
+      "idea_extract": {
+        "icp": "busy parents with toddlers",
+        "problem": "can't find a recipe that uses ingredients they have on hand in under 20 minutes",
+        "category": "quick meal planning app",
+        "differentiation": "generates recipes based on fridge contents and cooking time constraints",
+        "alternative": "Google search",
+        "tone": "practical and encouraging",
+        "goal": "serve a healthy meal without stress"
+      },
+      "product_profile_path": "clients/qa-case-024/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        }
+      },
+      "brain_suggestions": null
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      }
+    },
+    "brain_suggestions": null,
+    "brain_save": {
+      "client": "qa-case-024",
+      "product_profile": {
+        "product": "quick meal planning app",
+        "audience": "busy parents with toddlers",
+        "problem": "can't find a recipe that uses ingredients they have on hand in under 20 minutes",
+        "alternatives": "Google search",
+        "advantage": "generates recipes based on fridge contents and cooking time constraints",
+        "tone": "practical and encouraging",
+        "goal": "serve a healthy meal without stress",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "busy parents with toddlers",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "primary_problem": {
+            "value": "can't find a recipe that uses ingredients they have on hand in under 20 minutes",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "category_frame": {
+            "value": "quick meal planning app",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "differentiation": {
+            "value": "generates recipes based on fridge contents and cooking time constraints",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "current_alternative": {
+            "value": "Google search",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "serve a healthy meal without stress",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-14T21:28:31.466850+00:00",
+        "source_idea": "recipe app for people who have exactly 20 minutes, whatever is in their fridge, and a toddler underfoot. not another pinterest but actually fast and practical",
+        "client_name": "qa-case-024",
+        "product_fingerprint": "7a8d403f6e56107c",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-14T21:28:31.466850+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nserve a healthy meal without stress\n\nSUBHEADLINE\nFor busy parents with toddlers, can't find a recipe that uses ingredients they have on hand in under 20 minutes.\n\nWHAT THIS IS\nA focused tool that helps busy parents with toddlers move from can't find a recipe that uses ingredients they hav to serve a healthy meal without stress.\n\nWHO IT IS FOR\nbusy parents with toddlers\n\nTHE PROBLEM\ncan't find a recipe that uses ingredients they have on hand in under 20 minutes\n\nWHY EXISTING TOOLS FAIL\nGoogle search was not designed for busy parents with toddlers. It covers the broader category but lacks the specific mechanics this problem requires, forcing busy parents with toddlers to patch gaps with manual workarounds that slow outcomes.\n\nHOW IT WORKS\ngenerates recipes based on fridge contents and cooking time constraints.\n\nKEY BENEFITS\nEarly users of quick meal planning app reach their first outcome without the overhead of general-purpose alternatives.\n\nCALL TO ACTION\nGet started with quick meal planning app.\n",
+      "slots": {
+        "headline": "Healthy meals in 20 minutes",
+        "subhead": "Helps busy parents with toddlers serve a meal without stress, using only what's in their fridge.",
+        "problem": "Parents waste time searching for recipes that use ingredients they have on hand.",
+        "why_current_options_fail": "Google search can't generate recipes based on fridge contents and cooking time constraints.",
+        "what_this_is": "QuickMeal is a meal planning app that generates recipes based on your fridge contents",
+        "primary_cta": "Start planning"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\nquick meal planning app helps busy parents with toddlers go from can't find a recipe that uses ingredients they have on hand in\u2026 to serve a healthy meal without stress.\n\nONBOARDING\n1. Define who quick meal planning app is for and the problem it solves.\n2. Shape your core message so quick meal planning app can tailor output.\n3. Generate your first result and refine as you go.\n\nEMPTY STATE\n1. No audience defined yet. Start by telling quick meal planning app who you're building for.\n2. No message saved yet. Build your setup to generate output.\n3. No output yet. Generate your first result.\n\nERROR\n1. That did not save. Check your input and try again.\n2. That step did not complete. Make sure all required fields are filled in.\n3. This action failed. Reload and try again, or contact support if it continues.\n\nTOAST\n1. Saved. Your progress is recorded.\n2. Done. Continue when you are ready.\n3. Brain saved. Output ready.\n\nBUTTON LABELS\n1. Build Brain\n2. Review Brain\n3. Generate Positioning\n4. Generate Landing\n5. Generate UX\n6. Refine Message\n7. Compare Outputs\n8. Save Brain\n",
+      "slots": {
+        "primary_cta": "Make Meal",
+        "secondary_cta": "Review Brief",
+        "empty_state": "No meal planned yet. Add ingredients to start.",
+        "helper_text": "Tell us what you have in your fridge and pantry.",
+        "error_message": "Meal failed to generate. Check that all ingredients are listed."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "",
+    "icp": "busy parents with toddlers",
+    "problem": "can't find a recipe that uses ingredients they have on hand in under 20 minutes",
+    "category": "quick meal planning app",
+    "differentiation": "generates recipes based on fridge contents and cooking time constraints",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "serve a healthy meal without stress",
+    "tone": "practical and encouraging"
+  },
+  "brain_flags": [
+    "product: empty"
+  ],
+  "suggestions_flags": [],
+  "landing_flags": [],
+  "ux_flags": [
+    "slot 'secondary_cta': internal/tooling language detected"
+  ],
+  "score": 9,
+  "alpha_ready": true
+}

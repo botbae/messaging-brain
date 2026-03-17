@@ -1,0 +1,193 @@
+{
+  "case_id": 29,
+  "slug": "qa-case-029",
+  "input_idea": "engineering manager tool that tracks team health signals \u2014 PR review times, standup participation, deploy frequency. not spyware. for EMs who care about team performance",
+  "timings": {
+    "idea": 4.35,
+    "brain_save": 0.0,
+    "landing": 41.54,
+    "ux": 33.35,
+    "total": 82.28
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-029",
+      "idea_extract": {
+        "icp": "Engineering Manager Leaders",
+        "problem": "can't measure team performance accurately",
+        "category": "Team Health Analytics",
+        "differentiation": "tracks multiple health signals, not just one metric",
+        "alternative": "Spreadsheets",
+        "tone": "Practical and Data-Driven",
+        "goal": "Optimize Team Velocity"
+      },
+      "product_profile_path": "clients/qa-case-029/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "detected 'analytics' in idea"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        }
+      },
+      "brain_suggestions": [
+        {
+          "field": "audience",
+          "severity": "info",
+          "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+        },
+        {
+          "field": "problem",
+          "severity": "info",
+          "message": "Problem is vague. Add more detail about what specifically goes wrong."
+        },
+        {
+          "field": "goal",
+          "severity": "info",
+          "message": "Goal is very short. Describe the specific outcome or transformation the user experiences."
+        }
+      ]
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "detected 'analytics' in idea"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      }
+    },
+    "brain_suggestions": [
+      {
+        "field": "audience",
+        "severity": "info",
+        "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+      },
+      {
+        "field": "problem",
+        "severity": "info",
+        "message": "Problem is vague. Add more detail about what specifically goes wrong."
+      },
+      {
+        "field": "goal",
+        "severity": "info",
+        "message": "Goal is very short. Describe the specific outcome or transformation the user experiences."
+      }
+    ],
+    "brain_save": {
+      "client": "qa-case-029",
+      "product_profile": {
+        "product": "engineering manager tool that tracks team health signals",
+        "audience": "Engineering Manager Leaders",
+        "problem": "can't measure team performance accurately",
+        "alternatives": "Spreadsheets",
+        "advantage": "tracks multiple health signals, not just one metric",
+        "tone": "Practical and Data-Driven",
+        "goal": "Optimize Team Velocity",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "Engineering Manager Leaders",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "primary_problem": {
+            "value": "can't measure team performance accurately",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "category_frame": {
+            "value": "Team Health Analytics",
+            "confidence": 0.7,
+            "source_notes": "detected 'analytics' in idea"
+          },
+          "differentiation": {
+            "value": "tracks multiple health signals, not just one metric",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "current_alternative": {
+            "value": "Spreadsheets",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "Optimize Team Velocity",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-14T21:35:55.421196+00:00",
+        "source_idea": "engineering manager tool that tracks team health signals \u2014 PR review times, standup participation, deploy frequency. not spyware. for EMs who care about team performance",
+        "client_name": "qa-case-029",
+        "product_fingerprint": "d315c5e2bdf98a23",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-14T21:35:55.421196+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nOptimize Team Velocity\n\nSUBHEADLINE\nFor engineering manager leaders, can't measure team performance accurately.\n\nWHAT THIS IS\nA focused tool that helps engineering manager leaders move from can't measure team performance accurately to optimize team velocity.\n\nWHO IT IS FOR\nEngineering Manager Leaders\n\nTHE PROBLEM\ncan't measure team performance accurately\n\nWHY EXISTING TOOLS FAIL\nSpreadsheets was not designed for engineering manager leaders. It covers the broader category but lacks the specific mechanics this problem requires, forcing engineering manager leaders to patch gaps with manual workarounds that slow outcomes.\n\nHOW IT WORKS\ntracks multiple health signals, not just one metric.\n\nKEY BENEFITS\nEarly users of engineering manager tool that  reach their first outcome without the overhead of general-purpose alternatives.\n\nCALL TO ACTION\nGet started with engineering manager tool that tracks team health signals.\n",
+      "slots": {
+        "headline": "Measure team performance accurately",
+        "subhead": "Helps Engineering Manager Leaders optimize team velocity without relying on spreadsheets.",
+        "problem": "Engineering leaders can't measure team performance accurately due to limited data points.",
+        "why_current_options_fail": "Spreadsheets only track one metric, missing critical health signals.",
+        "what_this_is": "TeamHealth is a team analytics tool that tracks multiple health signals for optimized velocity.",
+        "primary_cta": "Start optimizing"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\nengineering manager tool that tracks team health signals helps engineering manager leaders go from can't measure team performance accurately to optimize team velocity.\n\nONBOARDING\n1. Define who engineering manager tool that tracks team health signals is for and the problem it solves.\n2. Shape your core message so engineering manager tool that tracks team health signals can tailor output.\n3. Generate your first result and refine as you go.\n\nEMPTY STATE\n1. No audience defined yet. Start by telling engineering manager tool that tracks team health signals who you're building for.\n2. No message saved yet. Build your setup to generate output.\n3. No output yet. Generate your first result.\n\nERROR\n1. That did not save. Check your input and try again.\n2. That step did not complete. Make sure all required fields are filled in.\n3. This action failed. Reload and try again, or contact support if it continues.\n\nTOAST\n1. Saved. Your progress is recorded.\n2. Done. Continue when you are ready.\n3. Brain saved. Output ready.\n\nBUTTON LABELS\n1. Build Brain\n2. Review Brain\n3. Generate Positioning\n4. Generate Landing\n5. Generate UX\n6. Refine Message\n7. Compare Outputs\n8. Save Brain\n",
+      "slots": {
+        "primary_cta": "Define ICP",
+        "secondary_cta": "Review brief",
+        "empty_state": "No health signals tracked yet. Connect your team's data to start.",
+        "helper_text": "Identify what matters most for your engineering team \u2014 goals, metrics, and more.",
+        "error_message": "Data connection failed. Check that your team's tools are properly linked."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "",
+    "icp": "Engineering Manager Leaders",
+    "problem": "can't measure team performance accurately",
+    "category": "Team Health Analytics",
+    "differentiation": "tracks multiple health signals, not just one metric",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "Optimize Team Velocity",
+    "tone": "Practical and Data-Driven"
+  },
+  "brain_flags": [
+    "product: empty"
+  ],
+  "suggestions_flags": [],
+  "landing_flags": [],
+  "ux_flags": [
+    "slot 'primary_cta': internal/tooling language detected",
+    "slot 'secondary_cta': internal/tooling language detected"
+  ],
+  "score": 8,
+  "alpha_ready": true
+}

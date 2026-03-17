@@ -1,0 +1,49 @@
+{
+  "product": "decision facilitation software",
+  "audience": "mid-sized project managers",
+  "problem": "team members get stuck in indecision, causing delays",
+  "alternatives": "email reminders",
+  "advantage": "proactively nudges teams to decide or escalate",
+  "tone": "helpful and timely",
+  "goal": "keep projects on track by making timely decisions",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "mid-sized project managers",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "primary_problem": {
+      "value": "team members get stuck in indecision, causing delays",
+      "confidence": 0.7,
+      "source_notes": "detected 'hard to' in idea"
+    },
+    "category_frame": {
+      "value": "decision facilitation software",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "differentiation": {
+      "value": "proactively nudges teams to decide or escalate",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "email reminders",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "keep projects on track by making timely decisions",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-15T08:40:36.872973+00:00",
+  "source_idea": "i made a slack bot that notices when your team is stuck on a decision for too long and gently nudges them to either decide or escalate. honestly hard to explain without showing it",
+  "client_name": "qa-case-003",
+  "product_fingerprint": "6595fa69ac96d8ef",
+  "brain_version": 1,
+  "last_saved_at": "2026-03-15T08:40:36.872973+00:00"
+}

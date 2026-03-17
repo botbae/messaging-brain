@@ -1,0 +1,49 @@
+{
+  "product": "product positioning services",
+  "audience": "non-technical startup leaders",
+  "problem": "struggle to articulate their product's value proposition",
+  "alternatives": "word-of-mouth marketing",
+  "advantage": "uses data-driven insights to inform messaging",
+  "tone": "practical and consultative",
+  "goal": "generate interest and drive early traction",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "non-technical startup leaders",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "primary_problem": {
+      "value": "struggle to articulate their product's value proposition",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "product positioning services",
+      "confidence": 0.7,
+      "source_notes": "mentions positioning and ux"
+    },
+    "differentiation": {
+      "value": "uses data-driven insights to inform messaging",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "word-of-mouth marketing",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "generate interest and drive early traction",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-14T21:52:11.595721+00:00",
+  "source_idea": "built by engineers for engineers so all our UX copy is extremely dry and functional. now we're trying to go upmarket to less technical buyers and the copy isnt landing",
+  "client_name": "qa-case-040",
+  "product_fingerprint": "25e437ac248d3231",
+  "brain_version": 1,
+  "last_saved_at": "2026-03-14T21:52:11.595721+00:00"
+}

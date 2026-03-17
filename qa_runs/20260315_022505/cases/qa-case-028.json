@@ -1,0 +1,173 @@
+{
+  "case_id": 28,
+  "slug": "qa-case-028",
+  "input_idea": "a dashboard for founder-led sales \u2014 shows you which deals went cold and why, based on email thread analysis. built it because we were losing deals and couldnt figure out the pattern",
+  "timings": {
+    "idea": 4.75,
+    "brain_save": 0.01,
+    "landing": 44.44,
+    "ux": 32.06,
+    "total": 84.28
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-028",
+      "idea_extract": {
+        "icp": "founder-led sales teams",
+        "problem": "deals go cold due to unclear communication",
+        "category": "sales performance dashboard",
+        "differentiation": "analyzes email threads to identify patterned issues",
+        "alternative": "manual deal tracking and analysis",
+        "tone": "practical and analytical",
+        "goal": "identify and address root causes of lost deals"
+      },
+      "product_profile_path": "clients/qa-case-028/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "detected 'teams' in idea"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "detected 'unclear' in idea"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        }
+      },
+      "brain_suggestions": [
+        {
+          "field": "audience",
+          "severity": "info",
+          "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+        }
+      ]
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "detected 'teams' in idea"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "detected 'unclear' in idea"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      }
+    },
+    "brain_suggestions": [
+      {
+        "field": "audience",
+        "severity": "info",
+        "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+      }
+    ],
+    "brain_save": {
+      "client": "qa-case-028",
+      "product_profile": {
+        "product": "a dashboard for founder-led sales",
+        "audience": "founder-led sales teams",
+        "problem": "deals go cold due to unclear communication",
+        "alternatives": "manual deal tracking and analysis",
+        "advantage": "analyzes email threads to identify patterned issues",
+        "tone": "practical and analytical",
+        "goal": "identify and address root causes of lost deals",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "founder-led sales teams",
+            "confidence": 0.7,
+            "source_notes": "detected 'teams' in idea"
+          },
+          "primary_problem": {
+            "value": "deals go cold due to unclear communication",
+            "confidence": 0.7,
+            "source_notes": "detected 'unclear' in idea"
+          },
+          "category_frame": {
+            "value": "sales performance dashboard",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "differentiation": {
+            "value": "analyzes email threads to identify patterned issues",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "current_alternative": {
+            "value": "manual deal tracking and analysis",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "identify and address root causes of lost deals",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-14T21:34:26.538849+00:00",
+        "source_idea": "a dashboard for founder-led sales \u2014 shows you which deals went cold and why, based on email thread analysis. built it because we were losing deals and couldnt figure out the pattern",
+        "client_name": "qa-case-028",
+        "product_fingerprint": "e482f361b2f02518",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-14T21:34:26.538849+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nidentify and address root causes of lost deals\n\nSUBHEADLINE\nFor founder-led sales teams, deals go cold due to unclear communication.\n\nWHAT THIS IS\nA focused tool that helps founder-led sales teams move from deals go cold due to unclear communication to identify and address root causes of lost deals.\n\nWHO IT IS FOR\nfounder-led sales teams\n\nTHE PROBLEM\ndeals go cold due to unclear communication\n\nWHY EXISTING TOOLS FAIL\nmanual deal tracking and analysis was not designed for founder-led sales teams. It covers the broader category but lacks the specific mechanics this problem requires, forcing founder-led sales teams to patch gaps with manual workarounds that slow outcomes.\n\nHOW IT WORKS\nanalyzes email threads to identify patterned issues.\n\nKEY BENEFITS\nEarly users of a dashboard for founder-led sa reach their first outcome without the overhead of general-purpose alternatives.\n\nCALL TO ACTION\nGet started with a dashboard for founder-led sales.\n",
+      "slots": {
+        "headline": "Close deals with clarity",
+        "subhead": "Helps founder-led sales teams identify and address root causes of lost deals without manual deal tracking",
+        "problem": "Deals go cold due to unclear communication, making it hard to pinpoint what went",
+        "why_current_options_fail": "Manual deal tracking and analysis can't reveal patterned issues in email threads.",
+        "what_this_is": "SalesScript is a sales performance dashboard that analyzes email threads to identify and address",
+        "primary_cta": "Start identifying"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\na dashboard for founder-led sales helps founder-led sales teams go from deals go cold due to unclear communication to identify and address root causes of lost deals.\n\nONBOARDING\n1. Define who a dashboard for founder-led sales is for and the problem it solves.\n2. Shape your core message so a dashboard for founder-led sales can tailor output.\n3. Generate your first result and refine as you go.\n\nEMPTY STATE\n1. No audience defined yet. Start by telling a dashboard for founder-led sales who you're building for.\n2. No message saved yet. Build your setup to generate output.\n3. No output yet. Generate your first result.\n\nERROR\n1. That did not save. Check your input and try again.\n2. That step did not complete. Make sure all required fields are filled in.\n3. This action failed. Reload and try again, or contact support if it continues.\n\nTOAST\n1. Saved. Your progress is recorded.\n2. Done. Continue when you are ready.\n3. Brain saved. Output ready.\n\nBUTTON LABELS\n1. Build Brain\n2. Review Brain\n3. Generate Positioning\n4. Generate Landing\n5. Generate UX\n6. Refine Message\n7. Compare Outputs\n8. Save Brain\n",
+      "slots": {
+        "primary_cta": "Define ICP",
+        "secondary_cta": "Review brief",
+        "empty_state": "No sales playbook built yet. Upload your email thread to start.",
+        "helper_text": "Identify your ideal customer \u2014 what they buy and why they buy it.",
+        "error_message": "Analysis failed. Check that all emails are uploaded."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "",
+    "icp": "founder-led sales teams",
+    "problem": "deals go cold due to unclear communication",
+    "category": "sales performance dashboard",
+    "differentiation": "analyzes email threads to identify patterned issues",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "identify and address root causes of lost deals",
+    "tone": "practical and analytical"
+  },
+  "brain_flags": [
+    "product: empty"
+  ],
+  "suggestions_flags": [],
+  "landing_flags": [],
+  "ux_flags": [
+    "slot 'primary_cta': internal/tooling language detected",
+    "slot 'secondary_cta': internal/tooling language detected"
+  ],
+  "score": 8,
+  "alpha_ready": true
+}

@@ -1,0 +1,49 @@
+{
+  "product": "in-app copywriting",
+  "audience": "founders of early-stage startups",
+  "problem": "inconsistent tone in app copy makes them look unprofessional",
+  "alternatives": "Microsoft Word",
+  "advantage": "tailors tone to founder's brand voice, not generic templates",
+  "tone": "practical and empathetic",
+  "goal": "create a consistent brand voice that resonates with users",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "founders of early-stage startups",
+      "confidence": 0.7,
+      "source_notes": "mentions founders and startups"
+    },
+    "primary_problem": {
+      "value": "inconsistent tone in app copy makes them look unprofessional",
+      "confidence": 0.7,
+      "source_notes": "detected 'inconsistent' in idea"
+    },
+    "category_frame": {
+      "value": "in-app copywriting for founders",
+      "confidence": 0.7,
+      "source_notes": "detected 'copywriting' in idea"
+    },
+    "differentiation": {
+      "value": "tailors tone to founder's brand voice, not generic templates",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "Microsoft Word",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "create a consistent brand voice that resonates with users",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-14T21:47:40.602628+00:00",
+  "source_idea": "i write all the in-app copy for our startup and it's always this weird mix of overly formal and weirdly casual. some buttons say 'Submit' and some say 'Let\u2019s go' and it\u2019s embarrassing",
+  "client_name": "qa-case-037",
+  "product_fingerprint": "3656c724bd064d7f",
+  "brain_version": 2,
+  "last_saved_at": "2026-03-14T21:47:40.602628+00:00"
+}

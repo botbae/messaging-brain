@@ -1,0 +1,49 @@
+{
+  "product": "policy writing assistant",
+  "audience": "compliance officers at insurance companies",
+  "problem": "struggle to create accurate policy documents quickly",
+  "alternatives": "Microsoft Word templates",
+  "advantage": "trained on internal language and regulatory requirements, not general text",
+  "tone": "practical and authoritative",
+  "goal": "produce compliant policy documents efficiently",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "compliance officers at insurance companies",
+      "confidence": 0.7,
+      "source_notes": "detected 'teams' in idea"
+    },
+    "primary_problem": {
+      "value": "struggle to create accurate policy documents quickly",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "policy writing assistant",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "differentiation": {
+      "value": "trained on internal language and regulatory requirements, not general text",
+      "confidence": 0.7,
+      "source_notes": "detected 'specific' in idea"
+    },
+    "current_alternative": {
+      "value": "Microsoft Word templates",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "produce compliant policy documents efficiently",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-14T21:58:05.582144+00:00",
+  "source_idea": "AI writing tool specifically for compliance teams at insurance companies. not chatgpt, not copy.ai \u2014 trained on their internal policy language and regulatory requirements",
+  "client_name": "qa-case-044",
+  "product_fingerprint": "c0838f20633ee1d3",
+  "brain_version": 1,
+  "last_saved_at": "2026-03-14T21:58:05.582144+00:00"
+}

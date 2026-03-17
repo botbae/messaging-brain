@@ -1,0 +1,49 @@
+{
+  "product": "Error analysis tool for TypeScript code",
+  "audience": "software developers",
+  "problem": "can't quickly identify and fix runtime errors in their code",
+  "alternatives": "Google search, Stack Overflow, debugging tools like Chrome DevTools",
+  "advantage": "analyzes error messages to provide actionable insights",
+  "tone": "practical and informative",
+  "goal": "quickly resolve the error and get back to coding",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "software developers",
+      "confidence": 0.7,
+      "source_notes": "detected 'developers' in idea"
+    },
+    "primary_problem": {
+      "value": "can't quickly identify and fix runtime errors in their code",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "error analysis for TypeScript",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "differentiation": {
+      "value": "analyzes error messages to provide actionable insights",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "Google search, Stack Overflow, debugging tools like Chrome DevTools",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "quickly resolve the error and get back to coding",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-17T11:05:14.285100+00:00",
+  "source_idea": "## Error Type\nRuntime TypeError\n\n## Error Message\nstrength.toLowerCase is not a function\n\n\n    at mapBackendStrength (src/components/BrainReviewCard.tsx:32:22)\n    at BrainReviewCard (src/components/B",
+  "client_name": "error-type",
+  "product_fingerprint": "2f13b3871509a781",
+  "brain_version": 1,
+  "last_saved_at": "2026-03-17T11:05:14.285100+00:00"
+}

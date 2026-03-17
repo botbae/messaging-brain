@@ -1,0 +1,49 @@
+{
+  "product": "meeting summarization software tool for executives and team leaders",
+  "audience": "executives and team leaders",
+  "problem": "waste time reading through lengthy meeting recordings to identify key decisions and action items",
+  "alternatives": "human summarizers or manual note-taking",
+  "advantage": "provides actionable insights and ownership assignments, not just transcription",
+  "tone": "practical and concise",
+  "goal": "make informed decisions quickly",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "executives and team leaders",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "primary_problem": {
+      "value": "waste time reading through lengthy meeting recordings to identify key decisions and action items",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "meeting summarization software",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "differentiation": {
+      "value": "provides actionable insights and ownership assignments, not just transcription",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "human summarizers or manual note-taking",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "make informed decisions quickly",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-15T08:48:42.280920+00:00",
+  "source_idea": "built a thing that turns long meeting recordings into short opinionated summaries. like it doesnt just transcribe \u2014 it tells you what decisions were made and who owns what",
+  "client_name": "qa-case-008",
+  "product_fingerprint": "1d431cf7b3ce8886",
+  "brain_version": 2,
+  "last_saved_at": "2026-03-15T08:48:42.280920+00:00"
+}

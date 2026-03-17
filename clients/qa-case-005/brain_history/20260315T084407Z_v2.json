@@ -1,0 +1,49 @@
+{
+  "product": "AI-powered onboarding plan builder for HR teams",
+  "audience": "people ops leads at 200-500 person companies",
+  "problem": "spend too much time building individualized onboarding plans",
+  "alternatives": "manual spreadsheets or generic HR templates",
+  "advantage": "builds plans based on role, team and skills gaps",
+  "tone": "practical and efficient",
+  "goal": "streamline new hire onboarding process",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "people ops leads at 200-500 person companies",
+      "confidence": 0.7,
+      "source_notes": "detected 'teams' in idea"
+    },
+    "primary_problem": {
+      "value": "spend too much time building individualized onboarding plans",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "HR onboarding automation",
+      "confidence": 0.7,
+      "source_notes": "detected 'automation' in idea"
+    },
+    "differentiation": {
+      "value": "builds plans based on role, team and skills gaps",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "manual spreadsheets or generic HR templates",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "streamline new hire onboarding process",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-15T08:44:07.550946+00:00",
+  "source_idea": "enterprise HR teams spend way too long building onboarding plans for each new hire \u2014 we automate that based on their role, team and skills gaps. mainly targeting people ops leads at 200-500 person com",
+  "client_name": "qa-case-005",
+  "product_fingerprint": "d0a101afb9a43a77",
+  "brain_version": 2,
+  "last_saved_at": "2026-03-15T08:44:07.550946+00:00"
+}

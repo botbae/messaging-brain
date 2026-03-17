@@ -1,0 +1,49 @@
+{
+  "product": "customer acquisition strategy",
+  "audience": "D2C brand marketers",
+  "problem": "can't optimize customer acquisition costs effectively",
+  "alternatives": "ads agencies",
+  "advantage": "provides actionable 90-day playbook, not just diagnostic report",
+  "tone": "practical and consultative",
+  "goal": "achieve sustainable revenue growth",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "D2C brand marketers",
+      "confidence": 0.7,
+      "source_notes": "detected 'marketers' in idea"
+    },
+    "primary_problem": {
+      "value": "can't optimize customer acquisition costs effectively",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "customer acquisition strategy",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "differentiation": {
+      "value": "provides actionable 90-day playbook, not just diagnostic report",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "ads agencies",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "achieve sustainable revenue growth",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-14T22:05:26.533043+00:00",
+  "source_idea": "we help D2C brands figure out their CAC problem. not ads agency, not attribution tool \u2014 we do a diagnostic and then build them a 90-day playbook. mostly brands doing $1M-$10M revenue",
+  "client_name": "qa-case-049",
+  "product_fingerprint": "6c0cd45258c273a0",
+  "brain_version": 2,
+  "last_saved_at": "2026-03-14T22:05:26.533043+00:00"
+}

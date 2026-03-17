@@ -1,0 +1,49 @@
+{
+  "product": "podcast production service",
+  "audience": "B2B marketing managers",
+  "problem": "struggle to maintain consistent podcast output without overburdening their teams",
+  "alternatives": "outsourcing individual tasks to virtual assistants or freelancers",
+  "advantage": "provides turnkey solutions, handling all aspects of podcast creation from editing to show notes and clips",
+  "tone": "practical and supportive",
+  "goal": "deliver a professional-sounding podcast that drives business results",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "B2B marketing managers",
+      "confidence": 0.7,
+      "source_notes": "detected 'b2b' in idea"
+    },
+    "primary_problem": {
+      "value": "struggle to maintain consistent podcast output without overburdening their teams",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "podcast production service for B2B",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "differentiation": {
+      "value": "provides turnkey solutions, handling all aspects of podcast creation from editing to show notes and clips",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "outsourcing individual tasks to virtual assistants or freelancers",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "deliver a professional-sounding podcast that drives business results",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-14T22:02:28.320161+00:00",
+  "source_idea": "podcast production service for B2B companies. we do everything \u2014 editing, show notes, chapters, clips for social. the pain point is consistent output without having to manage a VA",
+  "client_name": "qa-case-047",
+  "product_fingerprint": "87754a90f9e2729e",
+  "brain_version": 2,
+  "last_saved_at": "2026-03-14T22:02:28.320161+00:00"
+}

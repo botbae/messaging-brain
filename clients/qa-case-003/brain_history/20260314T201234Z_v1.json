@@ -1,0 +1,49 @@
+{
+  "product": "decision facilitation bot",
+  "audience": "team leads in software development",
+  "problem": "stale discussions causing project delays",
+  "alternatives": "email threads or lengthy meetings",
+  "advantage": "proactively suggests next steps, not just nudges",
+  "tone": "friendly and constructive",
+  "goal": "reach a timely decision without sacrificing quality",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "team leads in software development",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "primary_problem": {
+      "value": "stale discussions causing project delays",
+      "confidence": 0.7,
+      "source_notes": "detected 'hard to' in idea"
+    },
+    "category_frame": {
+      "value": "decision facilitation bot for teams",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "differentiation": {
+      "value": "proactively suggests next steps, not just nudges",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "email threads or lengthy meetings",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "reach a timely decision without sacrificing quality",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-14T20:12:34.326347+00:00",
+  "source_idea": "i made a slack bot that notices when your team is stuck on a decision for too long and gently nudges them to either decide or escalate. honestly hard to explain without showing it",
+  "client_name": "qa-case-003",
+  "product_fingerprint": "8edda88e9ed3c758",
+  "brain_version": 1,
+  "last_saved_at": "2026-03-14T20:12:34.326347+00:00"
+}

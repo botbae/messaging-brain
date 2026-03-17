@@ -1,0 +1,49 @@
+{
+  "product": "Sales productivity tools",
+  "audience": "Sales team leaders",
+  "problem": "Manual CRM note-taking after every sales call is time-consuming and prone to errors",
+  "alternatives": "Spreadsheets or email",
+  "advantage": "Automatically transcribes and updates CRM notes in real-time, eliminating manual effort",
+  "tone": "Practical and efficient",
+  "goal": "Streamline sales team workflows and reduce administrative tasks",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "Sales team leaders",
+      "confidence": 0.7,
+      "source_notes": "detected 'teams' in idea"
+    },
+    "primary_problem": {
+      "value": "Manual CRM note-taking after every sales call is time-consuming and prone to errors",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "Sales productivity tools",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "differentiation": {
+      "value": "Automatically transcribes and updates CRM notes in real-time, eliminating manual effort",
+      "confidence": 0.7,
+      "source_notes": "detected 'instead of' in idea"
+    },
+    "current_alternative": {
+      "value": "Spreadsheets or email",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "Streamline sales team workflows and reduce administrative tasks",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-15T08:37:16.050173+00:00",
+  "source_idea": "ok so basically i built this thing for sales teams where instead of them having to manually update their crm notes after every call it just listens and does it automatically. but idk how to explain wh",
+  "client_name": "qa-case-001",
+  "product_fingerprint": "23b9af936e6aaf94",
+  "brain_version": 1,
+  "last_saved_at": "2026-03-15T08:37:16.050173+00:00"
+}

@@ -1,0 +1,49 @@
+{
+  "product": "Customer behavior analysis tool that identifies retention gaps",
+  "audience": "Ecommerce founders of small to medium-sized brands",
+  "problem": "Can't pinpoint why repeat customers suddenly stop purchasing",
+  "alternatives": "agencies, crm, dashboard, dashboards",
+  "advantage": "Provides actionable insights and personalized messaging suggestions",
+  "tone": "Practical and data-driven",
+  "goal": "Develop a targeted retention strategy to win back repeat customers",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "Ecommerce founders of small to medium-sized brands",
+      "confidence": 0.7,
+      "source_notes": "mentions founders and agencies"
+    },
+    "primary_problem": {
+      "value": "Can't pinpoint why repeat customers suddenly stop purchasing",
+      "confidence": 0.7,
+      "source_notes": "detected 'generic' in idea"
+    },
+    "category_frame": {
+      "value": "Retention analytics for ecommerce",
+      "confidence": 0.7,
+      "source_notes": "detected 'analytics' in idea"
+    },
+    "differentiation": {
+      "value": "Provides actionable insights and personalized messaging suggestions",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "agencies, crm, dashboard, dashboards",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "Develop a targeted retention strategy to win back repeat customers",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-16T18:54:15.695530+00:00",
+  "source_idea": "i\u2019m building something for small ecommerce brands because founders keep guessing why repeat customers quietly disappear. they look at dashboards, crm tools, spreadsheets, and email tools but still can",
+  "client_name": "unimind",
+  "product_fingerprint": "a3d3e76f929ca1e4",
+  "brain_version": 2,
+  "last_saved_at": "2026-03-16T18:54:15.695530+00:00"
+}

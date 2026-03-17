@@ -3,12 +3,22 @@
 Local prototyping only — no auth, no database, no production infra.
 
 Run from the repo root:
-    PYTHONPATH=src uvicorn src.api.app:app --reload --port 8000
+    PYTHONPATH=src uvicorn src.api.app:app --reload --port 8001
+
+Interactive docs: http://localhost:8001/docs
 """
 
+import logging
 import sys
 from pathlib import Path
 from typing import Optional
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    datefmt="%H:%M:%S",
+)
+logger = logging.getLogger(__name__)
 
 # Ensure src/ is on the path when uvicorn loads this module from repo root.
 _src = Path(__file__).parent.parent
@@ -17,6 +27,7 @@ if str(_src) not in sys.path:
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 from agents.writing_agent import ClientBrief
@@ -30,6 +41,7 @@ from core.strategy_context import (
     assess_narrative_readiness,
     build_strategy_layers,
 )
+from core.client_state import init_client_state
 from core.utils import clean_phrase
 from main import (
     _load_profile_if_exists,
@@ -37,7 +49,7 @@ from main import (
     _run_generate,
     _run_idea_mode,
 )
-from product_profile import ProductProfile
+from product_profile import ProductProfile, score_brain_strength, suggest_brain_improvements
 
 app = FastAPI(
     title="Unimind API",
@@ -112,6 +124,59 @@ class BrainSaveRequest(BaseModel):
     idea_extract: IdeaExtractData
 
 
+class ClientInitRequest(BaseModel):
+    client: str
+    reset_brief: bool = False
+
+
+# ---------------------------------------------------------------------------
+# Internal helpers
+# ---------------------------------------------------------------------------
+
+def _safe_profile(profile: ProductProfile) -> dict:
+    """Return only user-facing profile fields.
+
+    Strips internal metadata (confidence, source_notes, fingerprint,
+    timestamps, version counter) that the frontend should never see.
+    """
+    safe_decisions: dict = {}
+    if profile.decisions:
+        # DecisionDict stores plain strings as values — iterate to get them
+        for k, v in profile.decisions.items():
+            safe_decisions[k] = v
+    return {
+        "product": profile.product,
+        "audience": profile.audience,
+        "problem": profile.problem,
+        "alternatives": profile.alternatives,
+        "advantage": profile.advantage,
+        "tone": profile.tone,
+        "goal": profile.goal,
+        "context": profile.context,
+        "decisions": safe_decisions,
+    }
+
+
+def _normalize_brain_strength(raw) -> str | None:
+    """Normalize brain_strength to a simple lowercase label for the frontend.
+
+    Accepts the dict returned by score_brain_strength(), a raw string, or None.
+    Always returns one of "weak", "moderate", "strong", or None.
+    """
+    if raw is None:
+        return None
+    # score_brain_strength returns {"score": float, "label": str, "field_scores": ...}
+    if isinstance(raw, dict):
+        raw = raw.get("label", "")
+    label = str(raw).strip().lower()
+    _MAP = {
+        "strong": "strong", "high": "strong", "good": "strong",
+        "moderate": "moderate", "medium": "moderate", "decent": "moderate", "ok": "moderate",
+        "weak": "weak", "low": "weak", "incomplete": "weak", "poor": "weak",
+    }
+    return _MAP.get(label)
+
+
 # ---------------------------------------------------------------------------
 # Endpoints
 # ---------------------------------------------------------------------------
@@ -120,13 +185,26 @@ class BrainSaveRequest(BaseModel):
 def idea(req: IdeaRequest):
     """Extract ICP, problem, category, and differentiation from a product idea string."""
     client_slug = clean_phrase(req.client) if req.client else None
+    logger.info("POST /idea client=%s", client_slug or "(anonymous)")
     result, profile_path = _run_idea_mode(req.idea, client_slug=client_slug)
     if result is None:
         raise HTTPException(status_code=500, detail="Idea extraction failed. Check that Ollama is running.")
+
+    brain_suggestions = None
+    brain_strength = None
+    if profile_path and Path(profile_path).exists():
+        _profile = ProductProfile.load(profile_path)
+        _suggestions = suggest_brain_improvements(_profile)
+        if _suggestions:
+            brain_suggestions = _suggestions
+        brain_strength = _normalize_brain_strength(score_brain_strength(_profile))
+
     return {
         "client": client_slug or "",
+        "suggested_slug": result.get("suggested_slug", ""),
         "idea_extract": result,
-        "product_profile_path": str(profile_path) if profile_path else None,
+        "brain_suggestions": brain_suggestions,
+        "brain_strength": brain_strength,
     }
 
 
@@ -134,6 +212,7 @@ def idea(req: IdeaRequest):
 def brain(req: BrainRequest):
     """Run full positioning LLM pass and save product_profile.json for the client."""
     client_slug = clean_phrase(req.client)
+    logger.info("POST /brain client=%s", client_slug)
     brief = ClientBrief(
         product=req.brief.product,
         audience=req.brief.audience,
@@ -144,11 +223,32 @@ def brain(req: BrainRequest):
         examples=req.brief.examples,
         context=req.brief.context,
     )
-    profile, profile_path = _run_brain_mode(brief, client_slug)
+    profile, _ = _run_brain_mode(brief, client_slug)
+    _brain_suggestions = suggest_brain_improvements(profile)
+    _brain_strength = _normalize_brain_strength(score_brain_strength(profile))
     return {
         "client": client_slug,
-        "product_profile": profile.to_dict(),
+        "product_profile": _safe_profile(profile),
+        "brain_suggestions": _brain_suggestions if _brain_suggestions else None,
+        "brain_strength": _brain_strength,
     }
+
+
+@app.post("/client/init")
+def client_init(req: ClientInitRequest):
+    """Initialize or reset a client directory.
+
+    Removes brain, idea extract, and output files for a fresh start.
+    Optionally invalidates an existing brief (reset_brief=true).
+    """
+    client_slug = clean_phrase(req.client)
+    if not client_slug:
+        raise HTTPException(status_code=400, detail="client is required")
+    logger.info("POST /client/init client=%s reset_brief=%s", client_slug, req.reset_brief)
+    result = init_client_state(client_slug, reset_brief=req.reset_brief)
+    if result.get("error"):
+        raise HTTPException(status_code=400, detail=result["error"])
+    return {"client": client_slug, **{k: v for k, v in result.items() if k != "error"}}
 
 
 @app.post("/generate/landing")
@@ -159,7 +259,12 @@ def generate_landing(req: GenerateRequest):
 
 @app.post("/generate/ux")
 def generate_ux(req: GenerateRequest):
-    """Generate a UX pack for the client using their stored brain."""
+    """Generate a UX pack for the client using their stored brain.
+
+    Note: UX copy generation is de-scoped from the V1 main flow.
+    The primary artifact is now the Landing Page Blueprint (POST /generate/landing).
+    This endpoint remains available for direct use but is not featured in the UI.
+    """
     return _run_generate_endpoint(req, "ux")
 
 
@@ -252,15 +357,61 @@ def brain_save(req: BrainSaveRequest):
         profile.advantage = edits.differentiation
 
     profile.save(profile_path)
-    return {"client": client_slug, "product_profile": profile.to_dict()}
+    logger.info("POST /brain/save client=%s — profile updated", client_slug)
+    return {"client": client_slug, "product_profile": _safe_profile(profile)}
 
 
 # ---------------------------------------------------------------------------
-# Internal helper
+# Internal helpers
 # ---------------------------------------------------------------------------
+
+def _extract_slots_from_blueprint(text: str) -> dict:
+    """Extract landing page slots from a blueprint document.
+
+    Maps blueprint sections to the slot schema:
+      headline, subhead, problem, why_current_options_fail, what_this_is, primary_cta
+    """
+    import re
+
+    def _field(label: str) -> str:
+        """Extract a labeled field value like 'Headline: ...' from the text."""
+        pattern = rf'{re.escape(label)}\s*:\s*(.+)'
+        m = re.search(pattern, text, re.IGNORECASE)
+        return m.group(1).strip().strip('"\'') if m else ""
+
+    def _section_body(header: str, next_headers: tuple) -> str:
+        """Extract body text between a section header and the next header."""
+        idx = text.find(header)
+        if idx < 0:
+            return ""
+        start = idx + len(header)
+        end = len(text)
+        for nh in next_headers:
+            ni = text.find(nh, start)
+            if 0 < ni < end:
+                end = ni
+        body = text[start:end].strip()
+        # Remove labeled sub-fields, keep just the prose
+        lines = [l.strip() for l in body.splitlines() if l.strip() and not re.match(r'^(Purpose|Headline|Subhead|Primary CTA|Proof line)\s*:', l)]
+        return " ".join(lines[:3])
+
+    _NEXT = ("POSITIONING SUMMARY", "HERO", "PROBLEM SECTION", "WHY CURRENT OPTIONS FAIL",
+             "PRODUCT EXPLANATION", "HOW IT WORKS", "PROOF / CREDIBILITY",
+             "FINAL CTA SECTION", "UX / CONTENT NOTES", "OPTIONAL FUTURE SECTIONS")
+
+    return {
+        "headline": _field("Headline"),
+        "subhead": _field("Subhead"),
+        "problem": _section_body("PROBLEM SECTION", _NEXT),
+        "why_current_options_fail": _section_body("WHY CURRENT OPTIONS FAIL", _NEXT),
+        "what_this_is": _section_body("PRODUCT EXPLANATION", _NEXT),
+        "primary_cta": _field("Primary CTA"),
+    }
+
 
 def _run_generate_endpoint(req: GenerateRequest, mode: str) -> dict:
     client_slug = clean_phrase(req.client)
+    logger.info("POST /generate/%s client=%s", mode, client_slug)
 
     # Load stored data
     profile = _load_profile_if_exists(client_slug)
@@ -291,7 +442,7 @@ def _run_generate_endpoint(req: GenerateRequest, mode: str) -> dict:
 
     # If cross-product was detected, include it in the response
     if gen_ctx.cross_product_detected:
-        print(f"API: cross-product detected for client '{client_slug}': {gen_ctx.coherence_notes}")
+        logger.warning("Cross-product detected for client '%s': %s", client_slug, gen_ctx.coherence_notes)
 
     # Readiness check
     readiness = assess_readiness(gen_ctx, mode)
@@ -312,14 +463,30 @@ def _run_generate_endpoint(req: GenerateRequest, mode: str) -> dict:
     positioning, narrative = build_strategy_layers(gen_ctx)
     nar_readiness = assess_narrative_readiness(positioning, narrative, mode)
 
-    final_text, out_path, latest_path = _run_generate(
-        merged_brief, mode, client_slug, brain=brain,
-        positioning=positioning, narrative=narrative,
-    )
+    try:
+        final_text, out_path, latest_path = _run_generate(
+            merged_brief, mode, client_slug, brain=brain,
+            positioning=positioning, narrative=narrative,
+        )
+    except Exception as e:
+        return JSONResponse(
+            status_code=500,
+            content={"error": "generation_failed", "detail": str(e)},
+        )
+
+    # Extract fixed-schema slots from the blueprint text (no second LLM call).
+    slots = None
+    if mode == "landing":
+        slots = _extract_slots_from_blueprint(final_text)
+
+    # Include brain strength if a profile was loaded
+    _strength = _normalize_brain_strength(score_brain_strength(profile)) if profile else None
 
     result = {
         "mode": mode,
         "text": final_text,
+        "slots": slots,
+        "brain_strength": _strength,
         "latest_path": str(latest_path),
         "versioned_path": str(out_path),
         "context_sources": gen_ctx.sources,

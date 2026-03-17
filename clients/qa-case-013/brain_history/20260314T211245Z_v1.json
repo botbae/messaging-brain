@@ -1,0 +1,49 @@
+{
+  "product": "CMO strategy consultant",
+  "audience": "B2B SaaS founders $1M-$5M ARR",
+  "problem": "struggle to articulate their unique value proposition",
+  "alternatives": "hiring a full-time CMO or using generic marketing templates",
+  "advantage": "develops tailored positioning strategies from deep market research",
+  "tone": "practical and results-driven",
+  "goal": "define a compelling value proposition that drives growth",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "B2B SaaS founders $1M-$5M ARR",
+      "confidence": 0.7,
+      "source_notes": "mentions founders, b2b, and saas"
+    },
+    "primary_problem": {
+      "value": "struggle to articulate their unique value proposition",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "CMO strategy consultant for B2B SaaS",
+      "confidence": 0.7,
+      "source_notes": "mentions messaging, marketing, and content"
+    },
+    "differentiation": {
+      "value": "develops tailored positioning strategies from deep market research",
+      "confidence": 0.7,
+      "source_notes": "detected 'tailored' in idea"
+    },
+    "current_alternative": {
+      "value": "hiring a full-time CMO or using generic marketing templates",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "define a compelling value proposition that drives growth",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-14T21:12:45.838241+00:00",
+  "source_idea": "fractional CMO for B2B SaaS companies between $1M and $5M ARR. not content marketing, actual strategy \u2014 ICP, messaging, channel mix",
+  "client_name": "qa-case-013",
+  "product_fingerprint": "df91f67ff29eb181",
+  "brain_version": 1,
+  "last_saved_at": "2026-03-14T21:12:45.838241+00:00"
+}

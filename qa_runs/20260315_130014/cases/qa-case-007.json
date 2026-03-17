@@ -1,0 +1,179 @@
+{
+  "case_id": 7,
+  "slug": "qa-case-007",
+  "input_idea": "subscription tracker but for B2B \u2014 it reminds your finance person which SaaS tools your team actually uses vs which ones you're just paying for. built it for myself tbh",
+  "timings": {
+    "idea": 6.17,
+    "brain_save": 0.0,
+    "landing": 44.57,
+    "ux": 39.47,
+    "total": 93.24
+  },
+  "errors": [],
+  "responses": {
+    "idea": {
+      "client": "qa-case-007",
+      "idea_extract": {
+        "product": "SaaS tool usage tracker for finance teams",
+        "icp": "B2B finance professionals",
+        "problem": "can't accurately track which SaaS tools their team is actively using",
+        "category": "SaaS expense management",
+        "differentiation": "integrates with existing accounting software to automate tracking",
+        "alternative": "spreadsheets",
+        "tone": "practical and organized",
+        "goal": "maximize ROI by optimizing SaaS tool usage"
+      },
+      "product_profile_path": "clients/qa-case-007/product_profile.json",
+      "idea_metadata": {
+        "icp": {
+          "confidence": 0.7,
+          "source_notes": "mentions b2b and saas"
+        },
+        "problem": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "category": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        },
+        "differentiation": {
+          "confidence": 0.7,
+          "source_notes": "inferred from idea text"
+        }
+      },
+      "brain_suggestions": [
+        {
+          "field": "audience",
+          "severity": "info",
+          "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+        },
+        {
+          "field": "problem",
+          "severity": "info",
+          "message": "Problem sounds like a feature description. Describe the real pain or consequence instead."
+        }
+      ]
+    },
+    "idea_metadata": {
+      "icp": {
+        "confidence": 0.7,
+        "source_notes": "mentions b2b and saas"
+      },
+      "problem": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "category": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      },
+      "differentiation": {
+        "confidence": 0.7,
+        "source_notes": "inferred from idea text"
+      }
+    },
+    "brain_suggestions": [
+      {
+        "field": "audience",
+        "severity": "info",
+        "message": "Audience is broad. Narrow it to a specific buyer, role, or team."
+      },
+      {
+        "field": "problem",
+        "severity": "info",
+        "message": "Problem sounds like a feature description. Describe the real pain or consequence instead."
+      }
+    ],
+    "brain_save": {
+      "client": "qa-case-007",
+      "product_profile": {
+        "product": "SaaS tool usage tracker for finance teams",
+        "audience": "B2B finance professionals",
+        "problem": "can't accurately track which SaaS tools their team is actively using",
+        "alternatives": "spreadsheets",
+        "advantage": "integrates with existing accounting software to automate tracking",
+        "tone": "practical and organized",
+        "goal": "maximize ROI by optimizing SaaS tool usage",
+        "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+        "decisions": {
+          "icp": {
+            "value": "B2B finance professionals",
+            "confidence": 0.7,
+            "source_notes": "mentions b2b and saas"
+          },
+          "primary_problem": {
+            "value": "can't accurately track which SaaS tools their team is actively using",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "category_frame": {
+            "value": "SaaS expense management",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "differentiation": {
+            "value": "integrates with existing accounting software to automate tracking",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "current_alternative": {
+            "value": "spreadsheets",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "desired_outcome": {
+            "value": "maximize ROI by optimizing SaaS tool usage",
+            "confidence": 0.7,
+            "source_notes": "inferred from idea text"
+          },
+          "anti_positioning": ""
+        },
+        "updated_at": "2026-03-15T07:40:21.100490+00:00",
+        "source_idea": "subscription tracker but for B2B \u2014 it reminds your finance person which SaaS tools your team actually uses vs which ones you're just paying for. built it for myself tbh",
+        "client_name": "qa-case-007",
+        "product_fingerprint": "aac268b2bef7b45d",
+        "brain_version": 2,
+        "last_saved_at": "2026-03-15T07:40:21.100490+00:00"
+      }
+    },
+    "landing": {
+      "text": "HEADLINE\nMaximize ROI\n\nSUBHEADLINE\nFor B2B finance professionals, accurately track which SaaS tools their team uses.\n\nWHAT THIS IS\nAn AI messaging workspace that turns rough product thinking into positioning, landing copy, and UX drafts.\n\nWHO IT IS FOR\nB2B finance professionals\n\nTHE PROBLEM\nInaccurate tracking of SaaS tool usage hinders ROI.\n\nWHY EXISTING TOOLS FAIL\nSpreadsheets are inadequate for B2B finance professionals, forcing manual workarounds that slow outcomes.\n\nHOW IT WORKS\nAutomates tracking with existing accounting software integration.\n\nKEY BENEFITS\nFounders create clearer product narratives within the first brief report.\n\nCALL TO ACTION\nStart optimizing SaaS tool usage.\n",
+      "slots": {
+        "headline": "Maximize ROI on SaaS tools",
+        "subhead": "Helps B2B finance professionals track active tool usage without spreadsheets.",
+        "problem": "Finance teams lose visibility into which tools their team is actively using.",
+        "why_current_options_fail": "Spreadsheets can't keep up with the complexity of multiple tool integrations.",
+        "what_this_is": "SaaS Tracker is a SaaS expense management tool that automates tracking and integrates with",
+        "primary_cta": "Start optimizing"
+      }
+    },
+    "ux": {
+      "text": "UX CONTEXT\nTARGET: product\nSaaS tool usage tracker for finance teams helps b2b finance professionals understand risk, complete KYC, and start their first investment with confidence.\n\nONBOARDING\n1. Answer a few questions to understand your financial situation.\n2. Complete your verification so SaaS tool usage tracker for finance teams can personalise your plan.\n3. Start your first investment and track your progress.\n\nEMPTY STATE\n1. No risk profile yet. Complete the questionnaire to get started.\n2. No investments set up yet. Finish setup to see your plan.\n3. No transactions yet. Make your first investment to see activity.\n\nERROR\n1. That did not save. Check your input and try again.\n2. That step did not complete. Make sure all required fields are filled in.\n3. This action failed. Reload and try again, or contact support if it continues.\n\nTOAST\n1. Saved. Your progress is recorded.\n2. Done. Continue when you are ready.\n3. Profile complete. Your plan is ready.\n\nBUTTON LABELS\n1. Learn My Risk\n2. Complete KYC\n3. Start My SIP\n4. Review Plan\n5. View Portfolio\n6. Confirm Details\n7. Update Risk Profile\n8. Track Progress\n",
+      "slots": {
+        "primary_cta": "Track Tools",
+        "secondary_cta": "View Report",
+        "empty_state": "No tools tracked yet. Connect your accounting software to start.",
+        "helper_text": "List the SaaS apps your team uses \u2014 and why they're essential.",
+        "error_message": "Connection failed. Ensure your accounting software is up-to-date."
+      }
+    }
+  },
+  "brain_summary": {
+    "product": "SaaS tool usage tracker for finance teams",
+    "icp": "B2B finance professionals",
+    "problem": "can't accurately track which SaaS tools their team is actively using",
+    "category": "SaaS expense management",
+    "differentiation": "integrates with existing accounting software to automate tracking",
+    "alternatives": "",
+    "advantage": "",
+    "goal": "maximize ROI by optimizing SaaS tool usage",
+    "tone": "practical and organized"
+  },
+  "brain_flags": [],
+  "suggestions_flags": [],
+  "landing_flags": [],
+  "ux_flags": [],
+  "score": 10,
+  "alpha_ready": true
+}

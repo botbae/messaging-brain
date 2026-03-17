@@ -1,0 +1,49 @@
+{
+  "product": "landing page writer",
+  "audience": "founders of early-stage SaaS startups",
+  "problem": "struggle to craft clear elevator pitches for investors and customers",
+  "alternatives": "AI-powered copywriting tools",
+  "advantage": "uses structured briefs to ensure accurate messaging, not relying on AI prompts",
+  "tone": "practical and straightforward",
+  "goal": "develop a compelling pitch that drives investment interest",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "founders of early-stage SaaS startups",
+      "confidence": 0.7,
+      "source_notes": "mentions founders, startups, and saas"
+    },
+    "primary_problem": {
+      "value": "struggle to craft clear elevator pitches for investors and customers",
+      "confidence": 0.7,
+      "source_notes": "detected 'generic' in idea"
+    },
+    "category_frame": {
+      "value": "landing page writer for founders",
+      "confidence": 0.7,
+      "source_notes": "detected 'landing page' in idea"
+    },
+    "differentiation": {
+      "value": "uses structured briefs to ensure accurate messaging, not relying on AI prompts",
+      "confidence": 0.7,
+      "source_notes": "detected 'structured' in idea"
+    },
+    "current_alternative": {
+      "value": "AI-powered copywriting tools",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "develop a compelling pitch that drives investment interest",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-14T19:13:27.865809+00:00",
+  "source_idea": "building something for founders who struggle to explain what they do clearly\nlike landing pages always sound generic and ai tools write fluffy copy\nwant something that actually forces clarity first th",
+  "client_name": "unimind",
+  "product_fingerprint": "e231c08684579d57",
+  "brain_version": 1,
+  "last_saved_at": "2026-03-14T19:13:27.865809+00:00"
+}

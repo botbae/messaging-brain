@@ -1,0 +1,49 @@
+{
+  "product": "proposal status tracker",
+  "audience": "agency operations managers",
+  "problem": "manually tracking proposal statuses across multiple tools is time-consuming and error-prone",
+  "alternatives": "spreadsheets",
+  "advantage": "integrates with popular agency tools, not just email and Notion",
+  "tone": "practical and efficient",
+  "goal": "streamline proposal tracking to reduce administrative burdens",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "agency operations managers",
+      "confidence": 0.7,
+      "source_notes": "detected 'agencies' in idea"
+    },
+    "primary_problem": {
+      "value": "manually tracking proposal statuses across multiple tools is time-consuming and error-prone",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "proposal status tracker",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "differentiation": {
+      "value": "integrates with popular agency tools, not just email and Notion",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "spreadsheets",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "streamline proposal tracking to reduce administrative burdens",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-14T21:31:22.631930+00:00",
+  "source_idea": "we built an internal tool at our agency for tracking proposal statuses across email, notion and our PM tool. it got out of hand and now we want to sell it to other agencies",
+  "client_name": "qa-case-026",
+  "product_fingerprint": "c728e138257267b2",
+  "brain_version": 2,
+  "last_saved_at": "2026-03-14T21:31:22.631930+00:00"
+}

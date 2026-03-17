@@ -1,0 +1,49 @@
+{
+  "product": "Client Feedback Manager",
+  "audience": "Dev agency owners",
+  "problem": "Manually tracking client feedback across multiple channels",
+  "alternatives": "Spreadsheets",
+  "advantage": "Automates task ticket creation from diverse feedback sources",
+  "tone": "Practical and Efficient",
+  "goal": "Streamline client communication and project management",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "Dev agency owners",
+      "confidence": 0.7,
+      "source_notes": "detected 'agencies' in idea"
+    },
+    "primary_problem": {
+      "value": "Manually tracking client feedback across multiple channels",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "Client Feedback Manager",
+      "confidence": 0.7,
+      "source_notes": "detected 'tool for' in idea"
+    },
+    "differentiation": {
+      "value": "Automates task ticket creation from diverse feedback sources",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "Spreadsheets",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "Streamline client communication and project management",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-14T20:20:56.053851+00:00",
+  "source_idea": "its a tool for dev agencies to track client feedback across slack, email and loom and turn it into actual task tickets. clients hate linear and jira so this keeps them out of it",
+  "client_name": "qa-case-004",
+  "product_fingerprint": "64697dc6cdbeb258",
+  "brain_version": 1,
+  "last_saved_at": "2026-03-14T20:20:56.053851+00:00"
+}

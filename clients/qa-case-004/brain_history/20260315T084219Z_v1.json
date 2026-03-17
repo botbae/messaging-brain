@@ -1,0 +1,49 @@
+{
+  "product": "Client Feedback Management",
+  "audience": "Dev agency project managers",
+  "problem": "Clients' ad-hoc feedback is lost in Slack, email, and Loom, causing misunderstandings and delayed projects",
+  "alternatives": "Spreadsheets or manual note-taking",
+  "advantage": "Automates task ticket creation from client feedback across multiple channels",
+  "tone": "Practical and efficient",
+  "goal": "Turn client feedback into actionable project tasks without overwhelming clients with Jira or linear workflows",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "Dev agency project managers",
+      "confidence": 0.7,
+      "source_notes": "detected 'agencies' in idea"
+    },
+    "primary_problem": {
+      "value": "Clients' ad-hoc feedback is lost in Slack, email, and Loom, causing misunderstandings and delayed projects",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "Client Feedback Management for Dev Agencies",
+      "confidence": 0.7,
+      "source_notes": "detected 'tool for' in idea"
+    },
+    "differentiation": {
+      "value": "Automates task ticket creation from client feedback across multiple channels",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "Spreadsheets or manual note-taking",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "Turn client feedback into actionable project tasks without overwhelming clients with Jira or linear workflows",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-15T08:42:19.305499+00:00",
+  "source_idea": "its a tool for dev agencies to track client feedback across slack, email and loom and turn it into actual task tickets. clients hate linear and jira so this keeps them out of it",
+  "client_name": "qa-case-004",
+  "product_fingerprint": "e116ce7e70ddbe04",
+  "brain_version": 1,
+  "last_saved_at": "2026-03-15T08:42:19.305499+00:00"
+}

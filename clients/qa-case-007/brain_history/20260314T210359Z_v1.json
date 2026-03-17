@@ -1,0 +1,49 @@
+{
+  "product": "subscription tracker but for B2B",
+  "audience": "B2B finance professionals",
+  "problem": "waste money on unused SaaS subscriptions",
+  "alternatives": "spreadsheets",
+  "advantage": "tracks actual usage, not just invoices",
+  "tone": "practical and analytical",
+  "goal": "optimize subscription spend",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "B2B finance professionals",
+      "confidence": 0.7,
+      "source_notes": "mentions b2b and saas"
+    },
+    "primary_problem": {
+      "value": "waste money on unused SaaS subscriptions",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "SaaS subscription tracker",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "differentiation": {
+      "value": "tracks actual usage, not just invoices",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "spreadsheets",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "optimize subscription spend",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-03-14T21:03:59.987587+00:00",
+  "source_idea": "subscription tracker but for B2B \u2014 it reminds your finance person which SaaS tools your team actually uses vs which ones you're just paying for. built it for myself tbh",
+  "client_name": "qa-case-007",
+  "product_fingerprint": "2fcb7fd044849d31",
+  "brain_version": 1,
+  "last_saved_at": "2026-03-14T21:03:59.987587+00:00"
+}

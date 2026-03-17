@@ -1,0 +1,25 @@
+{
+  "product": "ChurnRadar",
+  "audience": "B2B SaaS operators who run customer success teams",
+  "problem": "They only find out a customer is about to churn after it's too late \u2014 there's no early signal before the renewal conversation",
+  "alternatives": "Existing tools and manual approaches that b2b saas operators who run customer success teams use today but were not built specifically for a churn prediction dashboard that flags at-risk accounts 30 days before renewal using product usage signals.",
+  "advantage": "a churn prediction dashboard that flags at-risk accounts 30 days before renewal using product usage signals",
+  "tone": "confident, data-driven, direct",
+  "goal": "a churn prediction dashboard that flags at-risk accounts 30 days before renewal using product usage signals.",
+  "context": "",
+  "decisions": {
+    "icp": "B2B SaaS operators who run customer success teams",
+    "primary_problem": "They only find out a customer is about to churn after it's too late \u2014 there's no early signal before the renewal conversation.",
+    "current_alternative": "Existing tools and manual approaches that b2b saas operators who run customer success teams use today but were not built specifically for a churn prediction dashboard that flags at-risk accounts 30 days before renewal using product usage signals.",
+    "desired_outcome": "a churn prediction dashboard that flags at-risk accounts 30 days before renewal using product usage signals.",
+    "category_frame": "ChurnRadar for b2b saas operators who run customer success teams.",
+    "differentiation": "Built specifically for b2b saas operators who run customer success teams \u2014 not a general-purpose tool repurposed for this problem. Focused entirely on a churn prediction dashboard that flags at-risk accounts 30 days before renewal using product usage signals.",
+    "anti_positioning": "Not a broad platform trying to do everything. Designed around the specific problem b2b saas operators who run customer success teams face, not the category they sit in."
+  },
+  "updated_at": "2026-03-16T20:11:07.799073+00:00",
+  "source_idea": "",
+  "client_name": "qa-smoke-2",
+  "product_fingerprint": "9cb0d482e1dbb88c",
+  "brain_version": 1,
+  "last_saved_at": "2026-03-16T20:11:07.799073+00:00"
+}
