@@ -35,7 +35,7 @@ from core.strategy_context import (
 from core.client_state import init_client_state
 from core.output import next_output_path, slugify
 from core.utils import clean_phrase
-from product_profile import ProductProfile
+from product_profile import DecisionDict, ProductProfile
 
 MODEL_NAME = "llama3:8b"
 
@@ -73,10 +73,11 @@ def _extract_product_name(idea_text: str, category: str = "") -> str:
     Priority:
       1. Everything before 'is a' / 'is an' in the idea text (e.g. 'Unimind is an...' -> 'Unimind')
       2. First capitalized word when idea starts with a proper noun
-      3. First three words if all else fails
+      3. Category-derived name
+      4. First three content words after stripping filler
     Falls back to first 40 chars of category, then raw truncated idea.
     """
-    text = (idea_text or "").strip()
+    text = _strip_idea_filler(idea_text)
     for sep in [" is an ", " is a ", " - ", " — "]:
         if sep.lower() in text.lower():
             idx = text.lower().index(sep.lower())
@@ -94,30 +95,381 @@ def _extract_product_name(idea_text: str, category: str = "") -> str:
     return " ".join(words[:3]) if words else text[:40]
 
 
+# Filler openings that founders use before describing their product.
+_IDEA_FILLER_PREFIXES: tuple[str, ...] = (
+    "i've been thinking about ",
+    "i have been thinking about ",
+    "ive been thinking about ",
+    "i'm building ",
+    "im building ",
+    "i am building ",
+    "i want to build ",
+    "i want to create ",
+    "i'm creating ",
+    "i'm working on ",
+    "im working on ",
+    "i am working on ",
+    "we're building ",
+    "we are building ",
+    "we want to build ",
+    "so basically ",
+    "basically ",
+    "something for ",
+    "a tool for ",
+    "a product for ",
+    "an app for ",
+    "it's basically ",
+    "its basically ",
+    "it is basically ",
+    "think of it as ",
+    "imagine ",
+    "what if there was ",
+    "what if you could ",
+    "picture this ",
+    "here's the idea ",
+    "here is the idea ",
+    "the idea is ",
+    "my idea is ",
+    "i'm trying to build ",
+    "i'm trying to create ",
+    "im trying to build ",
+    "im trying to create ",
+    "i am trying to build ",
+    "i am trying to create ",
+    "i need to build ",
+    "i need to create ",
+    "i need something ",
+    "i want something ",
+)
+
+
+def _strip_idea_filler(idea_text: str) -> str:
+    """Remove conversational filler prefixes from a raw idea string."""
+    text = (idea_text or "").strip()
+    lower = text.lower()
+    for prefix in _IDEA_FILLER_PREFIXES:
+        if lower.startswith(prefix):
+            text = text[len(prefix):].lstrip()
+            lower = text.lower()
+            # Allow stripping a second layer (e.g. "basically a tool for...")
+            for prefix2 in _IDEA_FILLER_PREFIXES:
+                if lower.startswith(prefix2):
+                    text = text[len(prefix2):].lstrip()
+                    break
+            break
+    return text
+
+
+def _slug_from_idea_extract(extract: dict) -> str:
+    """Derive a product-like slug from LLM extraction results.
+
+    Priority: category > product field > fallback.
+    Returns a lowercase hyphenated string like 'retention-drop-detector'.
+    Capped at 4 words to keep slugs concise.
+    """
+    category = (extract.get("category") or "").strip()
+    product = (extract.get("product") or "").strip()
+
+    # Prefer category — it's usually the most concise concept label
+    if category:
+        source = category
+    elif product:
+        source = _strip_idea_filler(product)
+    else:
+        return "product"
+
+    # Strip filler words that make slugs verbose
+    _SLUG_STOP_WORDS = {"a", "an", "the", "for", "that", "which", "and", "or", "of", "to", "with"}
+    words = [w for w in source.split() if w.lower() not in _SLUG_STOP_WORDS]
+    # Cap at 4 content words
+    words = words[:4]
+    if not words:
+        return "product"
+
+    return slugify(" ".join(words))
+
+
+# Per-field keyword lists used by _idea_source_note.
+# Multi-word phrases work because matching is substring-based on lowercased text.
+_IDEA_NOTE_KEYWORDS: dict[str, list[str]] = {
+    "icp": [
+        "founders", "startups", "teams", "developers", "marketers",
+        "agencies", "designers", "operators", "enterprises", "businesses",
+        "solopreneurs", "freelancers", "b2b", "saas",
+    ],
+    "primary_problem": [
+        "confused", "struggling", "unclear", "messy", "broken",
+        "difficult", "hard to", "failing", "slow", "expensive",
+        "frustrating", "inconsistent", "generic", "wasted", "can't explain",
+    ],
+    "category_frame": [
+        "messaging", "positioning", "landing page", "launch", "marketing",
+        "copywriting", "content", "conversion", "analytics", "automation",
+        "platform", "workflow", "ux", "tool for",
+    ],
+    "differentiation": [
+        "unlike", "instead of", "only", "structured", "specific",
+        "built for", "designed for", "focused", "tailored", "from a brief",
+    ],
+}
+
+
+def _idea_source_note(field_key: str, value: str, idea_text: str) -> str:
+    """Return a short human-readable note explaining why a decision field was inferred.
+
+    Scans the raw idea text and extracted value for per-field signal keywords.
+    Returns a phrase under 15 words.  Falls back to a generic note if no
+    keywords are detected.
+    """
+    keywords = _IDEA_NOTE_KEYWORDS.get(field_key, [])
+    if not keywords:
+        return "inferred from idea text"
+
+    combined = f"{idea_text} {value}".lower()
+    found = [kw for kw in keywords if kw in combined][:3]
+
+    if not found:
+        return "inferred from idea text"
+    if len(found) == 1:
+        return f"detected '{found[0]}' in idea"
+    if len(found) == 2:
+        return f"mentions {found[0]} and {found[1]}"
+    return f"mentions {found[0]}, {found[1]}, and {found[2]}"
+
+
+# Generic alternative phrases that signal the LLM fell back to a vague non-answer.
+# When the extracted "alternative" field matches one of these, we try harder to
+# infer domain-specific alternatives from the idea text and category.
+_GENERIC_ALT_PHRASES: tuple[str, ...] = (
+    "generic ai writing tools",
+    "generic tools",
+    "existing tools",
+    "existing solutions",
+    "manual processes",
+    "current tools",
+    "traditional tools",
+    "manual methods",
+    "various tools",
+    "other tools",
+    "standard tools",
+    "common tools",
+    "conventional tools",
+    "basic tools",
+    "no specific tool",
+    "not specified",
+    "unknown",
+)
+
+# Single-word or two-word alternatives that are too vague to be useful.
+# These are abstract category nouns, not specific tools or behaviors.
+_GENERIC_ALT_SINGLE_WORDS: frozenset[str] = frozenset({
+    "agencies", "agency", "consultants", "consultant",
+    "dashboards", "dashboard", "spreadsheets", "spreadsheet",
+    "crm", "erp", "tools", "software", "apps",
+    "ai", "gpt", "chatgpt",
+})
+
+# Known tool and platform names to detect when they appear in a free-form idea string.
+_KNOWN_TOOL_NAMES: frozenset[str] = frozenset({
+    "notion", "slack", "airtable", "hubspot", "salesforce", "quickbooks",
+    "excel", "google sheets", "sheets", "looker", "tableau", "mixpanel",
+    "intercom", "zendesk", "jira", "linear", "asana", "trello",
+    "mailchimp", "klaviyo", "sendgrid", "stripe", "shopify", "woocommerce",
+    "webflow", "figma", "miro", "zapier", "make", "n8n",
+    "chatgpt", "claude", "gpt", "openai",
+    "agency", "agencies", "freelancer", "freelancers", "consultant", "consultants",
+    "spreadsheets", "spreadsheet", "dashboards", "dashboard",
+    "email threads", "slack threads", "crm", "erp", "bi tools", "bi tool",
+})
+
+# Domain keyword → product-specific alternative examples.
+# Keyed by short domain words that appear in category or idea text.
+_DOMAIN_ALTERNATIVES: dict[str, str] = {
+    "ecommerce":   "Shopify dashboards, Klaviyo manual flows, spreadsheet tracking, retention agencies",
+    "retention":   "Klaviyo email sequences, spreadsheet cohort tracking, manual CRM follow-up, retention agencies",
+    "inventory":   "spreadsheets, ERP systems, manual counts, dashboards",
+    "messaging":   "ChatGPT prompts, copywriters, Notion docs, Slack threads",
+    "positioning": "ChatGPT prompts, copywriters, Notion docs, messaging agencies",
+    "copywriting": "freelance writers, ChatGPT prompts, Notion docs, email templates",
+    "landing page":"Webflow templates, ChatGPT prompt sessions, freelance copywriters, Notion docs",
+    "landing":     "Webflow templates, ChatGPT prompt sessions, freelance copywriters, Notion docs",
+    "analytics":   "spreadsheets, BI tools, dashboards, Looker, consultants",
+    "reporting":   "spreadsheets, manual reports, BI tools, dashboards",
+    "finance":     "spreadsheets, CFO consultants, QuickBooks manual, dashboards",
+    "runway":      "spreadsheets, CFO consultants, manual forecasts",
+    "recruiting":  "LinkedIn manual search, ATS tools, spreadsheets, agencies",
+    "hiring":      "LinkedIn, job boards, spreadsheets, agencies",
+    "sales":       "CRM manual setup, spreadsheets, email follow-ups, agencies",
+    "crm":         "spreadsheets, Notion, manual email, HubSpot manual setup",
+    "marketing":   "ChatGPT prompts, agencies, spreadsheets, manual workflows",
+    "content":     "freelance writers, ChatGPT, Notion docs, agencies",
+    "social media":"manual posting, scheduling tools, agencies, ChatGPT",
+    "social":      "manual posting, scheduling tools, agencies, ChatGPT",
+    "ux":          "user interviews, spreadsheets, Notion docs, UX agencies",
+    "operations":  "spreadsheets, manual workflows, Notion, email chains",
+    "scheduling":  "email chains, spreadsheets, Calendly manual, back-and-forth",
+    "support":     "email manually, Intercom manual, spreadsheets, FAQs",
+    "influencer":  "DM manually, spreadsheets, agencies, brand decks",
+    "creator":     "manual outreach, spreadsheets, agencies, brand decks",
+    "developer":   "CLI scripts, documentation, manual processes, copy-paste",
+    "devtool":     "CLI scripts, existing libraries, documentation, workarounds",
+    "saas":        "spreadsheets, manual onboarding, email chains, generic tools",
+}
+
+
+def _scan_idea_for_tools(idea_text: str) -> list[str]:
+    """Detect explicitly mentioned tool/platform names in a free-form idea string.
+
+    Returns up to 4 matched tool names (lowercased) in the order they are
+    found.  Only looks for entries in _KNOWN_TOOL_NAMES.
+    """
+    text_lower = idea_text.lower()
+    found: list[str] = []
+    for tool in sorted(_KNOWN_TOOL_NAMES):
+        if len(found) >= 4:
+            break
+        if tool in text_lower:
+            found.append(tool)
+    return found
+
+
+def _infer_alternatives(idea_text: str, category: str, llm_alternative: str) -> str:
+    """Return the most specific alternatives inference available.
+
+    Priority:
+    1. Explicitly mentioned tools found verbatim in the idea text.
+    2. LLM-extracted value — if it is not a known generic phrase.
+    3. Domain-inferred alternatives from category + idea keywords.
+    4. Original LLM output as last resort (may still be generic).
+    """
+    llm_lower = (llm_alternative or "").lower().strip()
+    # Check if the LLM output is generic — either a known phrase or all-generic single words
+    is_generic_llm = any(phrase in llm_lower for phrase in _GENERIC_ALT_PHRASES)
+    if not is_generic_llm:
+        alt_words = {w.strip(".,;") for w in llm_lower.split(",") if w.strip()}
+        # If every comma-separated item is a single generic noun, it's still generic
+        if alt_words and all(
+            w.strip() in _GENERIC_ALT_SINGLE_WORDS
+            for item in alt_words
+            for w in [item.strip()]
+        ):
+            is_generic_llm = True
+
+    # Priority 1: explicit tool mentions in the idea text itself
+    # Only use if at least one mention is a specific tool (not just "chatgpt" alone)
+    mentioned = _scan_idea_for_tools(idea_text)
+    has_specific = any(m not in _GENERIC_ALT_SINGLE_WORDS for m in mentioned)
+    if mentioned and has_specific:
+        return ", ".join(mentioned)
+
+    # Priority 2: keep LLM value when it's not generic
+    if llm_alternative and not is_generic_llm:
+        return llm_alternative
+
+    # Priority 3: domain inference — multi-match and merge for compound domains
+    combined = (category + " " + idea_text).lower()
+    matched_alts: list[str] = []
+    for kw, alts in _DOMAIN_ALTERNATIVES.items():
+        if kw in combined:
+            for alt in alts.split(", "):
+                alt_stripped = alt.strip()
+                if not alt_stripped:
+                    continue
+                # Skip if a similar alternative already exists (substring overlap)
+                alt_lower = alt_stripped.lower()
+                already_covered = any(
+                    alt_lower in existing.lower() or existing.lower() in alt_lower
+                    for existing in matched_alts
+                )
+                if not already_covered:
+                    matched_alts.append(alt_stripped)
+    if matched_alts:
+        return ", ".join(matched_alts[:6])
+
+    # Priority 4: return LLM output as-is
+    return llm_alternative
+
+
+# Phrases that indicate LLM-generated fluff slipped through the prompt guardrails.
+# Any extracted field containing one of these is blanked rather than seeded with garbage.
+_IDEA_FLUFF_PHRASES: tuple[str, ...] = (
+    "unleash", "ai-driven", "innovative platform", "cutting-edge",
+    "seamless experience", "powerful solution", "next-generation",
+    "next generation", "game-changing", "state-of-the-art",
+    "robust platform", "leverage synerg", "all-in-one", "end-to-end",
+    "modern platform", "revolutionize", "disrupt",
+)
+
+
+def _clean_idea_field(value: str) -> str:
+    """Light normalization for a single LLM-extracted idea field.
+
+    - Strips whitespace
+    - Returns "" for placeholder-looking values ("[...]", "N/A", "TBD")
+    - Returns "" if the value contains a known fluff phrase (safety net —
+      the prompt bans these, but small models slip up)
+    - Truncates to 150 chars at a word boundary
+    """
+    v = (value or "").strip()
+    if not v:
+        return ""
+    if v.startswith("[") or v.lower() in ("n/a", "none", "tbd", "unknown", "to be determined"):
+        return ""
+    v_lower = v.lower()
+    if any(f in v_lower for f in _IDEA_FLUFF_PHRASES):
+        return ""
+    if len(v) > 150:
+        v = v[:150].rsplit(" ", 1)[0]
+    return v
+
+
 def _idea_to_profile(extract: dict, idea_text: str, client_slug: str | None = None) -> "ProductProfile":
     """Convert raw idea extraction output to an initial ProductProfile (Messaging Brain seed).
 
     Fields that need a full brief (current_alternative, desired_outcome, anti_positioning)
     are left blank — run --mode brain with a full brief to fill them in.
     """
-    decisions = {
-        "icp": extract.get("icp", ""),
-        "primary_problem": extract.get("problem", ""),
-        "current_alternative": "",
-        "desired_outcome": "",
-        "category_frame": extract.get("category", ""),
-        "differentiation": extract.get("differentiation", ""),
-        "anti_positioning": "",
-    }
-    product_name = _extract_product_name(idea_text, category=extract.get("category", ""))
+    decisions = DecisionDict()
+    # LLM-extracted core positioning fields — normalize then store with provenance.
+    # confidence=0.7: single-pass LLM inference, not yet validated against a full brief.
+    for _key, _raw in (
+        ("icp",            extract.get("icp", "")),
+        ("primary_problem", extract.get("problem", "")),
+        ("category_frame", extract.get("category", "")),
+        ("differentiation", extract.get("differentiation", "")),
+    ):
+        _val = _clean_idea_field(_raw)
+        decisions.set_entry(
+            _key, _val,
+            confidence=0.7,
+            source_notes=_idea_source_note(_key, _val, idea_text),
+        )
+    # Newly extracted optional fields — seed when present, leave blank otherwise.
+    for _key, _raw in (
+        ("current_alternative", extract.get("alternative", "")),
+        ("desired_outcome",     extract.get("goal", "")),
+    ):
+        _val = _clean_idea_field(_raw)
+        if _val:
+            decisions.set_entry(_key, _val, confidence=0.7,
+                                source_notes=_idea_source_note(_key, _val, idea_text))
+        else:
+            decisions[_key] = ""
+    decisions["anti_positioning"] = ""
+
+    # Prefer the LLM-extracted product field (already cleaned/resolved in _run_idea_mode).
+    # Only fall back to raw idea parsing when the LLM field is empty.
+    product_name = _clean_idea_field(extract.get("product", ""))
+    if not product_name:
+        product_name = _extract_product_name(idea_text, category=extract.get("category", ""))
     return ProductProfile(
         product=product_name,
-        audience=extract.get("icp", ""),
-        problem=extract.get("problem", ""),
-        alternatives="",
-        advantage=extract.get("differentiation", ""),
-        tone="",
-        goal="",
+        audience=_clean_idea_field(extract.get("icp", "")),
+        problem=_clean_idea_field(extract.get("problem", "")),
+        alternatives=_clean_idea_field(extract.get("alternative", "")),
+        advantage=_clean_idea_field(extract.get("differentiation", "")),
+        tone=_clean_idea_field(extract.get("tone", "")),
+        goal=_clean_idea_field(extract.get("goal", "")),
         context="Seeded from idea extraction. Run --mode brain with a full brief to refine.",
         decisions=decisions,
         source_idea=idea_text.strip()[:200] if idea_text else "",
@@ -144,40 +496,6 @@ def _load_brain_if_exists(client_slug: str | None) -> dict | None:
     if profile and profile.decisions:
         return profile.decisions
     return None
-
-
-def _resolve_brief_from_profile(brief: ClientBrief, profile: "ProductProfile") -> ClientBrief:
-    """Return a new ClientBrief where stale fields are overridden by the saved ProductProfile.
-
-    Priority per field:
-      product  -> profile.product (brain-set description)
-      audience -> decisions.icp -> profile.audience -> brief.audience
-      pain     -> decisions.primary_problem -> profile.problem -> brief.pain
-      offer    -> decisions.desired_outcome -> decisions.differentiation
-                 -> profile.advantage -> brief.offer
-      tone     -> profile.tone -> brief.tone
-      cta / examples / context -> brief only (supplementary, not overridden by brain)
-    """
-    d = profile.decisions or {}
-    # Apply clean_phrase to product so a raw idea string stored by an older /idea run
-    # is at least truncated at the first sentence boundary before being used in generation.
-    raw_product = profile.product or brief.product
-    product = clean_phrase(raw_product) or raw_product
-    return ClientBrief(
-        product=product,
-        audience=d.get("icp") or profile.audience or brief.audience,
-        pain=d.get("primary_problem") or profile.problem or brief.pain,
-        offer=(
-            d.get("desired_outcome")
-            or d.get("differentiation")
-            or profile.advantage
-            or brief.offer
-        ),
-        tone=profile.tone or brief.tone,
-        cta=brief.cta,
-        examples=brief.examples,
-        context=brief.context,
-    )
 
 
 def _recover_json_object(raw: str) -> str:
@@ -236,17 +554,46 @@ def _run_idea_mode(idea_text: str, client_slug: str | None = None) -> tuple[dict
     """
     import re
     system = (
-        "You are a product positioning analyst. "
-        "Respond with ONLY a JSON object — no markdown, no explanation, no trailing text. "
-        "Use exactly these four keys: icp, problem, category, differentiation. "
-        "Each value must be one short, concrete sentence. "
+        "You are a product positioning analyst. Extract positioning facts from a raw founder idea.\n"
+        "Respond with ONLY a JSON object — no markdown, no explanation, no trailing text.\n"
+        "Use exactly these eight keys: product, icp, problem, category, differentiation, alternative, tone, goal.\n\n"
+        "Rules per field:\n"
+        "- product: a concise one-line description of what is being built. Max 12 words. "
+        "Describe the thing itself, not its category. Start with the mechanism or noun (e.g. 'Slack bot that...', "
+        "'Runway monitoring tool that...', 'Chrome extension that...'). "
+        "No generic words like 'platform', 'solution', 'ecosystem'. Always return something.\n"
+        "- icp: who it is built for. Max 8 words. Name the person type specifically, not 'users' or 'people'.\n"
+        "- problem: the core pain. Max 12 words. Be specific — name what breaks, not just 'lack of clarity'.\n"
+        "- category: 3-6 words naming the product type. No 'platform', 'solution', 'ecosystem', 'tool'.\n"
+        "- differentiation: what makes it different. Max 12 words. Start with a verb.\n"
+        "- alternative: what the user currently uses instead. "
+        "If the idea mentions specific tools, workflows, platforms, or services by name, list those. "
+        "Otherwise infer from the domain: e-commerce → 'spreadsheets, CRM tools, agencies'; "
+        "messaging/positioning → 'ChatGPT prompts, copywriters, Notion docs'; "
+        "analytics → 'dashboards, spreadsheets, BI tools, consultants'. "
+        "Comma-separated, 2-6 items. Each must be a named tool, specific workflow, or described behavior — "
+        "never an abstract category noun like 'AI tools', 'dashboards', or 'agencies' by itself. "
+        "Never write 'generic tools', 'existing solutions', or 'manual processes'.\n"
+        "- tone: 2-4 words describing the voice. E.g. 'direct and strategic' or 'warm and practical'.\n"
+        "- goal: the user's desired outcome. Max 10 words. Start with a verb.\n\n"
+        "Never use: 'unleash', 'AI-driven', 'innovative', 'cutting-edge', 'seamless', "
+        "'powerful solution', 'next-generation', 'game-changing', 'robust', 'leverage', "
+        "'revolutionize', 'disrupt', 'all-in-one', 'end-to-end', 'modern platform'.\n"
+        "If a field is genuinely unknown, write a short grounded guess — never a vague filler phrase.\n"
         "The response must be a complete, valid JSON object ending with }."
     )
     user = (
         f"Product idea: {idea_text}\n\n"
-        "Return a complete JSON object with keys: icp, problem, category, differentiation. "
-        "Example format:\n"
-        '{"icp": "...", "problem": "...", "category": "...", "differentiation": "..."}'
+        "Return JSON with exactly these keys: product, icp, problem, category, differentiation, alternative, tone, goal.\n"
+        "Example:\n"
+        '{"product": "Positioning writer that generates landing pages from a structured brief", '
+        '"icp": "early-stage SaaS founders", '
+        '"problem": "can\'t explain their product clearly to visitors", '
+        '"category": "positioning writer for founders", '
+        '"differentiation": "works from a structured brief, not open prompts", '
+        '"alternative": "ChatGPT prompt sessions, freelance copywriters, Notion docs", '
+        '"tone": "direct and strategic", '
+        '"goal": "ship a landing page that converts"}'
     )
     try:
         raw = llm_generate(system=system, user=user, model=MODEL_NAME, temperature=0.2)
@@ -269,12 +616,34 @@ def _run_idea_mode(idea_text: str, client_slug: str | None = None) -> tuple[dict
         except json.JSONDecodeError:
             print("Could not parse JSON after recovery attempt.\nRaw output:\n", raw)
             return None, None
+    _raw_product = _clean_idea_field((data.get("product") or "").strip())
+    if not _raw_product:
+        # Fallback: <category> + "tool for" + <icp>, or _extract_product_name as last resort
+        _fb_category = _clean_idea_field((data.get("category") or "").strip())
+        _fb_icp = _clean_idea_field((data.get("icp") or "").strip())
+        if _fb_category and _fb_icp:
+            _raw_product = f"{_fb_category} tool for {_fb_icp}"
+            _words = _raw_product.split()
+            if len(_words) > 12:
+                _raw_product = " ".join(_words[:12])
+        else:
+            _raw_product = _extract_product_name(idea_text, category=_fb_category)
+    _raw_category = (data.get("category") or "").strip()
+    _raw_alternative = (data.get("alternative") or "").strip()
     result = {
+        "product": _raw_product,
         "icp": (data.get("icp") or "").strip(),
         "problem": (data.get("problem") or "").strip(),
-        "category": (data.get("category") or "").strip(),
+        "category": _raw_category,
         "differentiation": (data.get("differentiation") or "").strip(),
+        # Infer domain-specific alternatives when LLM returns a generic fallback
+        "alternative": _infer_alternatives(idea_text, _raw_category, _raw_alternative),
+        "tone": (data.get("tone") or "").strip(),
+        "goal": (data.get("goal") or "").strip(),
     }
+    # Derive a product-like slug from the extraction (not from the raw idea opening)
+    result["suggested_slug"] = _slug_from_idea_extract(result)
+
     print("\n--- IDEA EXTRACTION ---\n")
     print(json.dumps(result, indent=2))
     print("\n--- END ---\n")
@@ -369,10 +738,7 @@ def _run_generate(
 
     if not agent_loop_on:
         if mode == "landing":
-            draft_v1 = agent.write_landing_page(brief)
-            critic = CriticAgent()
-            critique = critic.review_landing_page(draft_v1, brief)
-            final_text = agent.rewrite_landing_page(brief, draft_v1, critique)
+            final_text = agent.write_landing_blueprint(brief)
             strategy = None
         elif mode == "linkedin":
             final_text = agent.write_linkedin_post(brief)
@@ -404,9 +770,9 @@ def _run_generate(
     else:
         strategist = StrategistAgent()
         if mode == "landing":
-            critic = CriticAgent()
-            final_text, meta = run_landing_loop(brief, agent, critic, strategist)
-            strategy = meta.get("strategy")
+            # Blueprint replaces the loop — no critic/rewrite cycle needed
+            final_text = agent.write_landing_blueprint(brief)
+            strategy = None
         elif mode == "linkedin":
             final_text, meta = run_linkedin_loop(brief, agent, strategist)
             strategy = meta.get("strategy")

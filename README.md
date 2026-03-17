@@ -49,10 +49,14 @@ python src/main.py --mode ux --client myproduct
 ### API server
 
 ```bash
-PYTHONPATH=src uvicorn src.api.app:app --reload --port 8000
+PYTHONPATH=src uvicorn src.api.app:app --reload --port 8001
 ```
 
-Interactive docs: `http://localhost:8000/docs`
+Interactive docs: `http://localhost:8001/docs`
+
+### Frontend
+
+The frontend is a separate repository. Point it at `http://localhost:8001` and ensure the backend is running before starting it.
 
 ---
 
@@ -89,20 +93,22 @@ OPEN_LATEST=true python src/main.py --client myproduct --mode landing
 | POST | `/idea` | Extract positioning from a free-text idea |
 | POST | `/brain` | Run full positioning LLM pass and save brain |
 | POST | `/brain/save` | Persist edited brain fields to `product_profile.json` |
-| POST | `/generate/positioning` | Generate positioning doc from stored brain |
+| POST | `/client/init` | Initialize or reset a client directory |
 | POST | `/generate/landing` | Generate landing page from stored brain |
 | POST | `/generate/ux` | Generate UX pack from stored brain |
+| POST | `/generate/positioning` | Generate positioning doc from stored brain |
+| GET | `/readiness/{client}/{mode}` | Check whether client has enough data to generate |
 
 ### Request/response examples
 
 ```bash
 # Extract from idea
-curl -X POST http://localhost:8000/idea \
+curl -X POST http://localhost:8001/idea \
   -H "Content-Type: application/json" \
   -d '{"idea": "An AI tool that writes landing pages for B2B SaaS founders", "client": "myproduct"}'
 
 # Run brain from brief
-curl -X POST http://localhost:8000/brain \
+curl -X POST http://localhost:8001/brain \
   -H "Content-Type: application/json" \
   -d '{
     "client": "myproduct",
@@ -117,7 +123,7 @@ curl -X POST http://localhost:8000/brain \
   }'
 
 # Save edited brain fields
-curl -X POST http://localhost:8000/brain/save \
+curl -X POST http://localhost:8001/brain/save \
   -H "Content-Type: application/json" \
   -d '{
     "client": "myproduct",
@@ -129,18 +135,23 @@ curl -X POST http://localhost:8000/brain/save \
     }
   }'
 
+# Initialize a fresh client (clear brain, idea extract, outputs)
+curl -X POST http://localhost:8001/client/init \
+  -H "Content-Type: application/json" \
+  -d '{"client": "myproduct", "reset_brief": false}'
+
 # Generate landing page
-curl -X POST http://localhost:8000/generate/landing \
+curl -X POST http://localhost:8001/generate/landing \
   -H "Content-Type: application/json" \
   -d '{"client": "myproduct"}'
 
 # Generate UX pack
-curl -X POST http://localhost:8000/generate/ux \
+curl -X POST http://localhost:8001/generate/ux \
   -H "Content-Type: application/json" \
   -d '{"client": "myproduct"}'
 
 # Generate positioning doc
-curl -X POST http://localhost:8000/generate/positioning \
+curl -X POST http://localhost:8001/generate/positioning \
   -H "Content-Type: application/json" \
   -d '{"client": "myproduct"}'
 ```
@@ -241,7 +252,7 @@ This repository implements the core messaging intelligence engine for Unimind.
 - Landing page generation (validated copy with quality enforcement)
 - UX copy generation (onboarding, labels, empty states, toasts)
 - Validation and retry logic (banned phrases, word counts, domain drift detection)
-- API interface (FastAPI, 6 endpoints)
+- API interface (FastAPI, 8 endpoints)
 
 **Not yet implemented (future phases):**
 
