@@ -21,3 +21,5 @@ __pycache__/
 .DS_Store
 clients/
 qa_runs/
+clients/
+qa_runs/
