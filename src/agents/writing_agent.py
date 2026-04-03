@@ -120,16 +120,13 @@ _LANDING_BANNED = (
 # ---------------------------------------------------------------------------
 
 _BLUEPRINT_HEADERS = (
-    "POSITIONING SUMMARY",
     "HERO",
-    "PROBLEM SECTION",
+    "PROBLEM",
     "WHY CURRENT OPTIONS FAIL",
-    "PRODUCT EXPLANATION",
-    "HOW IT WORKS",
-    "PROOF / CREDIBILITY",
-    "FINAL CTA SECTION",
-    "UX / CONTENT NOTES",
-    "OPTIONAL FUTURE SECTIONS",
+    "PRODUCT",
+    "PROOF",
+    "FINAL CTA",
+    "TONE + VOICE",
 )
 
 _BLUEPRINT_BANNED = (
@@ -148,21 +145,21 @@ def _normalize_blueprint_output(raw: str) -> str:
     if not raw or not raw.strip():
         return raw or ""
     t = raw.strip()
-    # Find the first recognized header and trim preamble
+    # Find the first recognized ## header and trim preamble before it
     first_idx = len(t)
     for h in _BLUEPRINT_HEADERS:
-        idx = t.find(h)
-        if 0 <= idx < first_idx:
-            first_idx = idx
+        for marker in (f"## {h}", f"##{h}"):
+            idx = t.find(marker)
+            if 0 <= idx < first_idx:
+                first_idx = idx
     if first_idx > 0:
         t = t[first_idx:]
-    # Remove markdown heading markers (##, #, **) around headers
+    # Normalise bold/plain header variants to the canonical ## format
     for h in _BLUEPRINT_HEADERS:
-        t = t.replace(f"**{h}**", h)
-        t = t.replace(f"**{h}", h)
-        t = t.replace(f"{h}**", h)
-        t = t.replace(f"## {h}", h)
-        t = t.replace(f"# {h}", h)
+        t = t.replace(f"**{h}**", f"## {h}")
+        t = t.replace(f"**{h}", f"## {h}")
+        t = t.replace(f"{h}**", f"## {h}")
+        t = t.replace(f"# {h}", f"## {h}")
     return t.strip()
 
 
@@ -1360,105 +1357,100 @@ class WritingAgent:
         proof_hint = _infer_proof_suggestions(category, product, icp, outcome, core_problem)
 
         system = (
-            "You are a senior product marketing strategist (PMM) writing a Landing Page Blueprint. "
-            "This document is for the FOUNDER — not for the website visitor. "
-            "It is a structured strategy artifact, like a creative brief. "
-            "Write it as decisions and recommendations, not as consumer-facing copy.\n\n"
+            "You are a senior product marketing strategist writing a Landing Page Blueprint. "
+            "Output EXACTLY 7 sections in this exact order, with EXACTLY these ## headers:\n"
+            "## HERO, ## PROBLEM, ## WHY CURRENT OPTIONS FAIL, ## PRODUCT, ## PROOF, ## FINAL CTA, ## TONE + VOICE\n\n"
 
-            "PRE-COMPUTED ANALYSIS:\n"
-            "A PMM ANALYSIS section is provided in the brief below. "
-            "It contains the product mechanism, user job, before/after transformation, and expanded alternatives with failure reasons. "
-            "Use these directly in your sections. Do not override them with generic versions. "
-            "Copy the alternative failure reasons into WHY CURRENT OPTIONS FAIL. "
-            "Copy the before/after into PROBLEM SECTION framing.\n\n"
+            "FORMAT — MANDATORY, NO EXCEPTIONS:\n"
+            "- Every section header: ## SECTIONNAME (all caps, two hashes, one space)\n"
+            "- Every field: label line (plain text, no formatting) followed immediately by the value "
+            "on the next line in double quotes\n"
+            "- If a field has no content: write the label, then \"—\" as the value\n"
+            "- Notes is always the last field in each section\n"
+            "- No markdown bold (**), no bullet points, no numbered lists, no extra formatting\n"
+            "- Output NOTHING outside these 7 sections — no preamble, no summary, no closing remarks\n\n"
 
-            "WHAT THIS IS NOT:\n"
-            "- NOT a marketing brochure. Do not write 'Don't just take our word for it'.\n"
-            "- NOT a webpage. Do not write '[Insert image]' or '[Insert eye-catching graphic]'.\n"
-            "- NOT a pitch deck. Do not write 'We are the solution to your problem'.\n"
-            "- NOT a template. Every field must be filled with actual product-specific content.\n"
-            "Every section must read like a PMM decision memo, not a copywriting draft.\n\n"
+            "EXACT SECTION STRUCTURE TO FOLLOW:\n\n"
 
-            "QUALITY RULES — MANDATORY:\n"
-            "- PRODUCT EXPLANATION: One clear sentence. Pattern: '[Product] is a [category] that [mechanism]'. "
-            "Not 'a tool that helps teams'. Name the mechanism verb.\n"
-            "- HOW IT WORKS: 3-4 numbered steps describing the actual product flow. "
-            "Name specific inputs (idea, URL, data), actions (extracts, analyzes, generates), "
-            "and outputs (blueprint, report, dashboard). Never 'Step 1: Input your data'.\n"
-            "- WHY CURRENT OPTIONS FAIL: Use the expanded alternative failure reasons from PMM ANALYSIS. "
-            "Name the tool and what it does wrong structurally. "
-            "NEVER write '[tool] was not built for this' or '[tool] is not designed for this'. "
-            "Instead: '[tool] does X which causes Y'.\n"
-            "- FINAL CTA: A human verb phrase the founder literally does. 2-4 words. "
-            "NEVER stuff the product name into the CTA. NEVER write 'Unlock', 'Transform', 'Elevate'. "
-            "Good: 'Paste your idea', 'Try it free', 'See a demo'. Bad: 'Start with ProductName'.\n"
-            "- Headline: Standalone outcome. No colon. No product name. No question mark. "
+            "## HERO\n"
+            "Headline\n"
+            "\"[≤10-word outcome — no colon, no question mark, no product name]\"\n\n"
+            "Subhead\n"
+            "\"[≤20 words. Pattern: {product} helps [ICP] [action] without [old way]]\"\n\n"
+            "CTA\n"
+            "\"[2-4 word verb-led button label]\"\n\n"
+            "Notes\n"
+            "\"[Tone and placement guidance]\"\n\n"
+
+            "## PROBLEM\n"
+            "Core problem statement\n"
+            "\"[One sentence describing the pain]\"\n\n"
+            "Stakes\n"
+            "\"[What happens if this goes unsolved]\"\n\n"
+            "Notes\n"
+            "\"[Optional framing notes, or —]\"\n\n"
+
+            "## WHY CURRENT OPTIONS FAIL\n"
+            "\"[Name each alternative and what it does wrong structurally. One paragraph.]\"\n\n"
+            "Notes\n"
+            "\"[Optional, or —]\"\n\n"
+
+            "## PRODUCT\n"
+            "One-liner\n"
+            "\"[[Product] is a [category] that [mechanism]]\"\n\n"
+            "How it works\n"
+            "\"[Step 1 / Step 2 / Step 3 — name specific inputs, actions, outputs]\"\n\n"
+            "Key differentiator\n"
+            "\"[What makes this different from alternatives]\"\n\n"
+            "Notes\n"
+            "\"[Optional, or —]\"\n\n"
+
+            "## PROOF\n"
+            "\"[Specific metric, quote, or credibility signal. "
+            "Write 'add when measured' if number is unknown — never use [brackets].]\"\n\n"
+            "Notes\n"
+            "\"[Optional, or —]\"\n\n"
+
+            "## FINAL CTA\n"
+            "Headline\n"
+            "\"[Closing line — complete sentence, names the specific artifact or outcome after session 1]\"\n\n"
+            "CTA\n"
+            "\"[2-4 word verb-led label]\"\n\n"
+            "Notes\n"
+            "\"[Optional, or —]\"\n\n"
+
+            "## TONE + VOICE\n"
+            "Tone\n"
+            "\"[2-3 adjectives describing the voice]\"\n\n"
+            "Words to avoid\n"
+            "\"[5-8 specific banned words for this product]\"\n\n"
+
+            "CONTENT RULES — MANDATORY:\n"
+            f"- Product name is '{product}'. The ICP/audience is '{icp}'. "
+            "These are different — never use the ICP as the product name.\n"
+            "- Headline: ≤10 words. Standalone outcome. No colon. No question mark. No product name. "
             "Not 'stop guessing'. Not 'sharper communication'. Name what specifically improves.\n"
-            "- Subhead: Must not repeat the headline. Must not just restate the product name + mechanism. "
-            "Pattern: 'Helps [ICP] [specific action] without [specific frustration]'.\n"
-            "- Reinforcement line in FINAL CTA: A complete sentence. "
-            "Name the specific artifact the user has after session 1. Never end with 'to' or a preposition.\n\n"
-
-            "CRITICAL RULES:\n"
-            f"1. PRODUCT NAME: The product is '{product}'. "
-            "Never use the ICP or audience description as the product name. "
-            f"'{product}' is the tool. The ICP is the person who uses it. These are different.\n"
-            "2. POSITIONING SUMMARY: Must have exactly 4 labeled fields on separate lines:\n"
-            "   Product: [one sentence — what the tool is]\n"
-            "   Audience: [who it is for — specific role]\n"
-            "   Problem: [the core friction]\n"
-            "   Differentiation: [why this wins]\n"
-            "3. HERO: Must have exactly these labeled fields on separate lines:\n"
-            "   Purpose: [why this section exists]\n"
-            "   Headline: [≤10 words, outcome, no colon, no question mark, no quotes]\n"
-            "   Subhead: [≤20 words. Pattern: '{product} helps [ICP] [action] without [old way]']\n"
-            "   Primary CTA: [2–4 words, verb-led, product-specific]\n"
-            "   Proof line: [a specific proof signal or testimonial placeholder with context]\n"
-            "4. HOW IT WORKS: 3–4 numbered steps. Concrete actions. No bracket placeholders — not even 'Step 1: [what the user does]'. "
-            "A HOW IT WORKS HINT will be provided — use it as your starting point. Adapt the wording, keep the concrete step structure.\n"
-            "5. PROOF / CREDIBILITY: List 2–3 proof type suggestions. "
-            "A PROOF HINT will be provided — expand on it with specific, product-grounded language. "
-            "Write each suggestion as a full sentence. No naked [placeholder] brackets. "
-            "If a number is unknown, say 'add when measured' in plain text, not in brackets.\n"
-            "6. CTA: Product-specific verb. Never 'Get Started', 'Learn More', 'Try It Free', 'Sign Up'.\n"
-            "7. ALTERNATIVES: If context says 'chatgpt, gpt' or similar vague names, expand them. "
-            "Name what the user actually does: 'manual ChatGPT prompt sessions', 'copying outputs into Notion'. "
-            "Use the expanded alternatives provided in the brief — do not replace them with shorter versions.\n"
-            "8. REINFORCEMENT LINE in FINAL CTA: A complete sentence in plain English. "
-            "Name the specific artifact or outcome the user has after session 1 — no brackets, no 'TBD', no 'coming soon'.\n\n"
-
-            "SECTIONS (use these exact headers, in this order):\n"
-            "POSITIONING SUMMARY\n"
-            "HERO\n"
-            "PROBLEM SECTION\n"
-            "WHY CURRENT OPTIONS FAIL\n"
-            "PRODUCT EXPLANATION\n"
-            "HOW IT WORKS\n"
-            "PROOF / CREDIBILITY\n"
-            "FINAL CTA SECTION\n"
-            "UX / CONTENT NOTES\n"
-            "OPTIONAL FUTURE SECTIONS\n\n"
-
-            "PROOF / CREDIBILITY format — write 2–3 entries like this (fill in actual suggestions, not placeholders):\n"
-            "  Founder quote — a [ICP role] who [specific action they took] and saw [specific result]: add quote + name.\n"
-            "  Before/after — show [specific artifact before] vs [specific artifact after using product].\n"
-            "  Activation metric — '% of [ICP] who [first key action] in session 1': add number when measured.\n\n"
-
-            "UX / CONTENT NOTES must contain:\n"
-            "  Headline rule: [max word count and what it must express]\n"
-            "  Tone: [2–3 adjectives] — [brief example of the voice in one phrase]\n"
-            "  Avoid: [5–8 specific banned words for this product]\n"
-            "  Layout: [1–2 specific layout decisions for this product's conversion goal]\n\n"
-
-            "OPTIONAL FUTURE SECTIONS must comment on each of:\n"
-            "  FAQ / Comparison table / Onboarding preview / Feature highlights\n"
-            "  For each: worth adding (yes/no) and specifically why for this product.\n\n"
-
+            "- Subhead: ≤20 words. Must not repeat the headline. "
+            "Must not just restate product + mechanism.\n"
+            "- CTA: 2-4 words, verb-led. "
+            "Good: 'Paste your idea', 'See a demo'. "
+            "Bad: 'Start with ProductName', 'Get Started', 'Sign Up', 'Unlock', 'Transform'.\n"
+            "- WHY CURRENT OPTIONS FAIL: Name each alternative and what it does wrong structurally. "
+            "Never write '[tool] was not built for this'. Instead: '[tool] does X which causes Y'.\n"
+            "- One-liner: Pattern '[Product] is a [category] that [mechanism]'. "
+            "Name the mechanism verb. Not 'a tool that helps teams'.\n"
+            "- How it works: Name specific inputs (idea, URL, data), "
+            "actions (extracts, analyzes, generates), outputs (blueprint, report, dashboard). "
+            "Never 'Input your data'.\n"
+            "- PROOF: Specific and grounded. Write 'add when measured' for unknown numbers — "
+            "never use [bracket placeholders].\n"
+            "- FINAL CTA Headline: A complete sentence. "
+            "Name the specific artifact the user has after session 1. "
+            "Never end with 'to' or a preposition.\n"
             "Banned words: streamline, empower, unlock, innovative, cutting-edge, revolutionize, "
-            "best-in-class, game-changing, seamless, powerful solution, modern platform, AI-powered, AI-driven, "
-            "next generation, all-in-one, end-to-end, synergy, leverage, ecosystem, disrupt, "
-            "robust, comprehensive, world-class, don't just take our word.\n"
-            "Output only the Blueprint document. No preamble. Start with POSITIONING SUMMARY."
+            "best-in-class, game-changing, seamless, AI-powered, AI-driven, next generation, "
+            "all-in-one, end-to-end, synergy, leverage, ecosystem, disrupt, robust, comprehensive, "
+            "world-class, don't just take our word, you're not alone."
         )
 
         alt_label = f"{alt_for_prompt} {'(inferred from category)' if alt_is_inferred else ''}"
@@ -1525,7 +1517,7 @@ class WritingAgent:
 
         user_parts += [
             "",
-            "Write the full Blueprint now. All 10 headers required.",
+            "Write the full Blueprint now. All 7 sections required. Use ## headers. Every field value must be in double quotes on its own line after the label.",
             f"Remember: '{product}' is the product name. Never write '{icp}' as the product.",
         ]
         user = "\n".join(user_parts)
@@ -1566,25 +1558,24 @@ class WritingAgent:
             lower = out.lower()
             if any(p in lower for p in _BLUEPRINT_REJECT_PATTERNS):
                 return False
-            # POSITIONING SUMMARY must have 4 labeled fields
-            pos_sum = _blueprint_section_text(out, "POSITIONING SUMMARY", "HERO")
-            if not ("product:" in pos_sum.lower() and "audience:" in pos_sum.lower()):
+            # ## HERO must exist and contain a Headline field
+            if "## hero" not in lower:
                 return False
-            # UX / CONTENT NOTES must not be empty
-            ux_section = _blueprint_section_text(out, "UX / CONTENT NOTES", "OPTIONAL FUTURE SECTIONS")
-            if len(ux_section.strip()) < 30:
+            if "headline" not in lower:
+                return False
+            # ## TONE + VOICE must exist and have content
+            tone_idx = lower.find("## tone + voice")
+            if tone_idx < 0 or len(out[tone_idx:].strip()) < 20:
                 return False
             return True
 
         system_strict = (
-            f"PMM strategist. Product name: '{product}'. ICP: '{icp}'. These are different things. "
-            "STRICT mode. Output Landing Page Blueprint with exactly these 10 headers: "
-            + ", ".join(_BLUEPRINT_HEADERS) + ". "
-            "HOW IT WORKS: 3–4 concrete numbered steps, no bracket placeholders. "
-            "ALTERNATIVES: specific tool names or user behaviors, not abstract categories. "
-            "CTA: product-specific verb, never 'Get Started' or 'Sign Up'. "
-            "Concrete proof suggestions, not naked [placeholder] lines. "
-            "No banned words. Output only the document."
+            f"PMM strategist. Product: '{product}'. ICP: '{icp}'. These are different things. "
+            "STRICT mode. Output Landing Page Blueprint with EXACTLY these 7 ## headers in order: "
+            + ", ".join(f"## {h}" for h in _BLUEPRINT_HEADERS) + ". "
+            "Every field value must be on its own line in double quotes immediately after the label. "
+            "Notes field always last in each section. "
+            "No preamble. No extra sections. No banned words. Output only the document."
         )
 
         raw = _run_with_retry(
@@ -2426,125 +2417,20 @@ APP STORE SUBTITLE
         return draft
 
     def extract_positioning_decisions(self, brief: ClientBrief) -> dict:
-        """Decision phase: extract positioning decisions as strict JSON; fallback to brief-derived dict if invalid.
+        """Decision phase: extract positioning decisions from brief via ExtractionAgent.
 
-        If brain_decisions are preloaded from product_profile.json (set by main.py after loading the
-        Messaging Brain), they are returned immediately — no LLM call is made.
+        If brain_decisions are preloaded from product_profile.json (set by main.py after loading
+        the Messaging Brain), they are returned immediately — no LLM call is made.
+
+        Otherwise delegates to ExtractionAgent which handles the LLM call, retry, grounding,
+        and fallback. Extraction logic lives in agents/extraction_agent.py.
         """
         if self.brain_decisions:
             _print_decisions_if_debug(self.brain_decisions)
             return self.brain_decisions
 
-        _DECISION_KEYS = (
-            "icp", "primary_problem", "current_alternative", "desired_outcome",
-            "category_frame", "differentiation", "anti_positioning",
-        )
-        _BANNED = (
-            "streamline", "empower", "unlock", "innovative", "cutting-edge",
-            "revolutionize", "best-in-class",
-        )
-
-        def _parse_and_validate(raw: str) -> Optional[dict]:
-            if not raw or not raw.strip():
-                return None
-            raw = raw.strip()
-            if raw.startswith("```"):
-                lines = raw.split("\n")
-                start = next((i for i, l in enumerate(lines) if "{" in l), 0)
-                end = next((i for i in range(len(lines) - 1, -1, -1) if "}" in lines[i]), len(lines))
-                raw = "\n".join(lines[start : end + 1])
-            try:
-                data = json.loads(raw)
-            except json.JSONDecodeError:
-                return None
-            if not isinstance(data, dict):
-                return None
-            for k in _DECISION_KEYS:
-                if k not in data or not isinstance(data.get(k), str):
-                    return None
-            result = {k: (data[k] or "").strip() for k in _DECISION_KEYS}
-            if not all(result[k] for k in _DECISION_KEYS):
-                return None  # empty field — cannot propagate to generation
-            combined = " ".join(result[k] for k in _DECISION_KEYS)
-            if _contains_banned_phrases(combined, _BANNED):
-                return None
-            return result
-
-        system = (
-            "You are a product positioning strategist. "
-            "Make concrete strategic decisions. No marketing tone. No storytelling. No hype language. "
-            "Output must be STRICT JSON only. No markdown. No explanation text. No extra keys. No headings."
-        )
-        system_strict = (
-            "You are a product positioning strategist. Output ONLY valid JSON. "
-            "No markdown, no code fences, no explanation, no extra keys. "
-            "Exactly 7 keys: icp, primary_problem, current_alternative, desired_outcome, category_frame, differentiation, anti_positioning. "
-            "Each value: one short concrete sentence. "
-            "Banned words: streamline, empower, unlock, innovative, cutting-edge, revolutionize, best-in-class."
-        )
-        tone_instruction = (brief.tone or "Clear and direct").strip()
-        user_parts = [
-            "Extract positioning decisions from this brief.",
-            f"product: {brief.product or 'Not specified'}",
-            f"audience: {brief.audience or 'Not specified'}",
-            f"pain: {brief.pain or 'Not specified'}",
-            f"offer: {brief.offer or 'Not specified'}",
-            f"User custom instructions (tone): {tone_instruction}",
-        ]
-        if brief.examples:
-            user_parts.append(f"examples: {brief.examples}")
-        if brief.context:
-            user_parts.append(f"context: {brief.context}")
-        user_parts.append(
-            "Return valid JSON with EXACTLY these keys (each value a short, concrete sentence): "
-            "icp, primary_problem, current_alternative, desired_outcome, category_frame, differentiation, anti_positioning. "
-            "Do NOT use vague words: streamline, empower, unlock, innovative, cutting-edge, revolutionize, best-in-class."
-        )
-        user = "\n".join(user_parts)
-
-        parsed = _run_with_retry(
-            generate_fn=lambda: _parse_and_validate(
-                llm_generate(system=system, user=user, model="llama3:8b", temperature=0.2)
-            ),
-            strict_generate_fn=lambda: _parse_and_validate(
-                llm_generate(system=system_strict, user=user, model="llama3:8b", temperature=0.15)
-            ),
-            validator_fn=lambda d: d is not None,
-        )
-        if parsed is not None:
-            parsed, _ = GroundingAgent().ground(parsed, brief)
-            _print_decisions_if_debug(parsed)
-            return parsed
-        fallback = self._extract_positioning_decisions_fallback(brief)
-        _print_decisions_if_debug(fallback)
-        return fallback
-
-    def _extract_positioning_decisions_fallback(self, brief: ClientBrief) -> dict:
-        """Fallback decision dict from brief when LLM output is invalid."""
-        product = clean_phrase(brief.product) or "Product"
-        audience = clean_phrase(brief.audience) or "Target audience"
-        pain = clean_sentence(brief.pain or "Core problem not yet articulated.")
-        offer = clean_phrase(brief.offer) or "A clearer, faster path to the outcome they need"
-        audience_lower = audience.lower().rstrip(".")
-        offer_lower = offer.lower().rstrip(".")
-        return {
-            "icp": audience,
-            "primary_problem": pain,
-            "current_alternative": (
-                f"Existing tools and manual approaches that {audience_lower} use today "
-                f"but were not built specifically for {offer_lower}."
-            ),
-            "desired_outcome": clean_sentence(offer) if offer else f"{product} helps {audience_lower} reach the outcome they care about.",
-            "category_frame": f"{product} for {audience_lower}.",
-            "differentiation": (
-                f"Built specifically for {audience_lower} — not a general-purpose tool repurposed for this problem. "
-                f"Focused entirely on {offer_lower}."
-            ),
-            "anti_positioning": (
-                f"Not a broad platform trying to do everything. "
-                f"Designed around the specific problem {audience_lower} face, not the category they sit in."
-            ),
-        }
+        from agents.extraction_agent import ExtractionAgent  # local import avoids circular dep
+        return ExtractionAgent().run(brief)
 
     def write_positioning(self, brief: ClientBrief) -> str:
         """Generate a first-class positioning document grounded in the Messaging Brain.
@@ -3597,69 +3483,12 @@ def _extract_slots(raw: str, schema: tuple) -> dict:
     }
 
 
-@dataclass
-class CriticAgent:
-    name: str = "CriticAgent"
-
-    def review_landing_page(self, draft: str, brief: ClientBrief) -> dict:
-        """Rule-based critique for writing quality and conversion clarity."""
-        text = (draft or "").strip()
-
-        flags = {
-            "generic_headline": False,
-            "weak_cta": False,
-            "missing_audience": False,
-            "missing_pain": False,
-        }
-        notes: list[str] = []
-
-        # Heuristics
-        generic_phrases = [
-            "messaging that actually converts",
-            "just like every other tool",
-            "sharp, specific language",
-        ]
-
-        # Headline quality
-        if "HEADLINE" in text and any(p in text for p in generic_phrases):
-            flags["generic_headline"] = True
-            notes.append("Headline feels generic. Prefer a concrete outcome or your specific offer.")
-
-        # Audience presence
-        audience = clean_phrase(brief.audience)
-        if audience and audience.lower() not in text.lower():
-            flags["missing_audience"] = True
-            notes.append("Audience is not explicit enough. Name who this is for in the hero.")
-
-        # Pain presence
-        pain = clean_phrase(brief.pain)
-        if pain and pain.lower()[:25] not in text.lower():
-            flags["missing_pain"] = True
-            notes.append("Pain is not specific. Tie the hero and problem section to the provided pain.")
-
-        # CTA strength
-        cta = clean_phrase(brief.cta)
-        if cta:
-            weak_words = ["start", "learn", "explore", "see", "discover"]
-            if any(w in cta.lower().split()[:2] for w in weak_words):
-                flags["weak_cta"] = True
-                notes.append("CTA is soft. Use a concrete action: 'Get a teardown', 'Book a working session', etc.")
-
-        # Score: start at 10 and subtract for flags
-        score = 10
-        score -= 2 if flags["generic_headline"] else 0
-        score -= 2 if flags["missing_audience"] else 0
-        score -= 2 if flags["missing_pain"] else 0
-        score -= 1 if flags["weak_cta"] else 0
-        score = max(1, score)
-
-        return {
-            "score": score,
-            "flags": flags,
-            "notes": notes,
-            # main.py can toggle this to include critique in output
-            "include_in_output": False,
-        }
+# ---------------------------------------------------------------------------
+# Agent re-exports — classes moved to their own files; re-exported here so
+# all existing callers (main.py, api/app.py, agent_loop.py) continue to work
+# without any import changes.
+# ---------------------------------------------------------------------------
+from agents.critic_agent import CriticAgent  # noqa: F401
 
 
 @dataclass
@@ -3698,70 +3527,7 @@ class GroundingAgent:
         return patched, notes
 
 
-@dataclass
-class FactGuardAgent:
-    """Strips numeric claims not grounded in the source brief (brief.examples / brief.context).
-
-    Percentage claims (73%) and dollar figures ($1M) that appear verbatim in neither
-    brief.examples nor brief.context are replaced with [VERIFY: <claim>] markers.
-    """
-
-    name: str = "FactGuardAgent"
-
-    def clean(self, text: str, brief: ClientBrief) -> str:
-        sources = " ".join(
-            filter(None, [(brief.examples or ""), (brief.context or "")])
-        ).lower()
-
-        def _guard(m: re.Match) -> str:
-            claim = m.group(0)
-            if claim.lower() in sources:
-                return claim
-            return f"[VERIFY: {claim}]"
-
-        text = re.sub(r"\b\d[\d,]*(?:\.\d+)?%", _guard, text)
-        text = re.sub(r"(?<!\w)\$[\d,]+(?:\.\d+)?[MKBmkb]?\b", _guard, text)
-        return text
+from agents.fact_guard_agent import FactGuardAgent  # noqa: F401
 
 
-@dataclass
-class StrategistAgent:
-    """Strategy layer suggesting positioning and copy tweaks."""
-
-    name: str = "StrategistAgent"
-
-    def suggest(self, brief: ClientBrief, draft: str, critique: Optional[dict] = None) -> dict:
-        text = (draft or "").lower()
-        positioning: list[str] = []
-        clarity_fixes: list[str] = []
-        cta_improvements: list[str] = []
-        must_include: list[str] = []
-
-        audience = clean_phrase(brief.audience) or "your ideal customers"
-        offer = clean_phrase(brief.offer) or "the core outcome the user needs"
-        pain = clean_phrase(brief.pain) or "the core problem the user faces"
-
-        if audience not in text:
-            positioning.append(f"Name the audience explicitly in the hero: '{audience}'.")
-
-        if pain[:25].lower() not in text:
-            clarity_fixes.append(f"Tie the problem section directly to this pain: '{pain}'.")
-
-        if "outcome" not in text and "results" not in text:
-            positioning.append("Add one concrete outcome (metric, saved time, or clear before/after).")
-
-        cta_text = (brief.cta or "").lower()
-        if not any(w in cta_text for w in ("get", "start", "try", "request", "book", "join", "apply")):
-            cta_improvements.append(
-                "Use a concrete CTA with a strong action verb tied to the product's desired outcome."
-            )
-
-        must_include.append(f"Audience: {audience}")
-        must_include.append(f"Offer: {offer}")
-
-        return {
-            "positioning": positioning,
-            "clarity_fixes": clarity_fixes,
-            "cta_improvements": cta_improvements,
-            "must_include": must_include,
-        }
+from agents.strategist_agent import StrategistAgent  # noqa: F401

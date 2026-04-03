@@ -683,6 +683,16 @@ def _run_idea_mode(idea_text: str, client_slug: str | None = None) -> tuple[dict
         print(f"Created initial brain: {profile_path}")
         print("Run --mode brain with a full brief to refine the brain.")
 
+        # Additive: run confidence engine and save report alongside the profile.
+        try:
+            from core.confidence_engine import save_confidence_report, score_decision_state
+            _conf_report = score_decision_state(profile, client_slug)
+            save_confidence_report(_conf_report, client_slug)
+            _conf_label = "ready" if _conf_report.generation_safe else "needs improvement"
+            print(f"Confidence: {_conf_report.overall_score:.0%} ({_conf_label})")
+        except Exception as _ce:
+            print(f"Confidence engine skipped: {_ce}")
+
     return result, profile_path
 
 
@@ -710,6 +720,17 @@ def _run_brain_mode(brief, client_slug: str | None) -> tuple["ProductProfile", P
     profile_path = Path("clients") / client_dir / "product_profile.json"
     profile.save(profile_path)
     print(f"Saved: {profile_path}")
+
+    # Additive: run confidence engine and save report alongside the profile.
+    try:
+        from core.confidence_engine import save_confidence_report, score_decision_state
+        _conf_report = score_decision_state(profile, client_dir)
+        save_confidence_report(_conf_report, client_dir)
+        _conf_label = "ready" if _conf_report.generation_safe else "needs improvement"
+        print(f"Confidence: {_conf_report.overall_score:.0%} ({_conf_label})")
+    except Exception as _ce:
+        print(f"Confidence engine skipped: {_ce}")
+
     print("\n--- BRAIN (product_profile) ---\n")
     print(json.dumps(profile.to_dict(), indent=2))
     print("\n--- END ---\n")
