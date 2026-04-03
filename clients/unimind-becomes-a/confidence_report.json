@@ -1,0 +1,87 @@
+{
+  "client_name": "unimind-becomes-a",
+  "generated_at": "2026-04-02T18:46:25.609965+00:00",
+  "brain_version": 1,
+  "overall_score": 0.74,
+  "generation_safe": false,
+  "blocker_count": 1,
+  "field_scores": [
+    {
+      "field_name": "problem",
+      "score": 0.35,
+      "status": "weak",
+      "is_critical": true,
+      "value_preview": "scattered messaging across multiple platforms causes information overload and lost leads",
+      "recommendation": "Problem mentions 'platform' \u2014 that describes a feature, not a pain. Describe the consequence the user experiences instead.",
+      "example": "e.g. 'owners spend hours on [specific task] with no reliable way to [desired action]' \u2014 name the consequence, not the missing feature"
+    },
+    {
+      "field_name": "category_frame",
+      "score": 0.65,
+      "status": "draft",
+      "is_critical": false,
+      "value_preview": "messaging management for entrepreneurs",
+      "recommendation": null,
+      "example": null
+    },
+    {
+      "field_name": "goal",
+      "score": 0.8,
+      "status": "strong",
+      "is_critical": false,
+      "value_preview": "streamline messaging to boost productivity and client engagement",
+      "recommendation": null,
+      "example": null
+    },
+    {
+      "field_name": "alternatives",
+      "score": 0.82,
+      "status": "strong",
+      "is_critical": false,
+      "value_preview": "spreadsheets, CRM tools, email filters, manual note-taking",
+      "recommendation": null,
+      "example": null
+    },
+    {
+      "field_name": "audience",
+      "score": 0.85,
+      "status": "strong",
+      "is_critical": true,
+      "value_preview": "one-person business owners",
+      "recommendation": null,
+      "example": null
+    },
+    {
+      "field_name": "tone",
+      "score": 0.85,
+      "status": "strong",
+      "is_critical": false,
+      "value_preview": "practical and organized",
+      "recommendation": null,
+      "example": null
+    },
+    {
+      "field_name": "advantage",
+      "score": 0.87,
+      "status": "strong",
+      "is_critical": true,
+      "value_preview": "auto-organizes messages into a structured 'brain' for easy tracking and follow-up",
+      "recommendation": null,
+      "example": null
+    },
+    {
+      "field_name": "product",
+      "score": 0.9,
+      "status": "strong",
+      "is_critical": true,
+      "value_preview": "AI-powered command center for WhatsApp/IG/Email messages",
+      "recommendation": null,
+      "example": null
+    }
+  ],
+  "summary": "Brain needs improvement before safe generation. 1 critical field(s) need attention: problem.",
+  "next_action": "Problem mentions 'platform' \u2014 that describes a feature, not a pain. Describe the consequence the user experiences instead.",
+  "threshold_strong": 0.8,
+  "threshold_draft": 0.5,
+  "threshold_generation_safe": 0.65
+}

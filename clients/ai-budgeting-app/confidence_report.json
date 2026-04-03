@@ -1,0 +1,87 @@
+{
+  "client_name": "ai-budgeting-app",
+  "generated_at": "2026-04-02T15:30:27.555046+00:00",
+  "brain_version": 1,
+  "overall_score": 0.88,
+  "generation_safe": true,
+  "blocker_count": 0,
+  "field_scores": [
+    {
+      "field_name": "category_frame",
+      "score": 0.65,
+      "status": "draft",
+      "is_critical": false,
+      "value_preview": "personal finance tracker",
+      "recommendation": null,
+      "example": null
+    },
+    {
+      "field_name": "goal",
+      "score": 0.8,
+      "status": "strong",
+      "is_critical": false,
+      "value_preview": "get a clear picture of spending habits",
+      "recommendation": null,
+      "example": null
+    },
+    {
+      "field_name": "alternatives",
+      "score": 0.82,
+      "status": "strong",
+      "is_critical": false,
+      "value_preview": "spreadsheets, Mint, You Need a Budget (YNAB), manual note-taking",
+      "recommendation": null,
+      "example": null
+    },
+    {
+      "field_name": "audience",
+      "score": 0.85,
+      "status": "strong",
+      "is_critical": true,
+      "value_preview": "young professionals on a budget",
+      "recommendation": null,
+      "example": null
+    },
+    {
+      "field_name": "tone",
+      "score": 0.85,
+      "status": "strong",
+      "is_critical": false,
+      "value_preview": "practical and straightforward",
+      "recommendation": null,
+      "example": null
+    },
+    {
+      "field_name": "advantage",
+      "score": 0.87,
+      "status": "strong",
+      "is_critical": true,
+      "value_preview": "uses machine learning to automatically categorize transactions, no manual tagging required",
+      "recommendation": null,
+      "example": null
+    },
+    {
+      "field_name": "product",
+      "score": 0.9,
+      "status": "strong",
+      "is_critical": true,
+      "value_preview": "Mobile app that tracks expenses and categorizes transactions",
+      "recommendation": null,
+      "example": null
+    },
+    {
+      "field_name": "problem",
+      "score": 0.9,
+      "status": "strong",
+      "is_critical": true,
+      "value_preview": "can't accurately track daily expenses without tedious spreadsheets or manual notes",
+      "recommendation": null,
+      "example": null
+    }
+  ],
+  "summary": "Brain is ready for generation. Critical field confidence: 88%.",
+  "next_action": null,
+  "threshold_strong": 0.8,
+  "threshold_draft": 0.5,
+  "threshold_generation_safe": 0.65
+}

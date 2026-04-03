@@ -1,0 +1,49 @@
+{
+  "product": "AI-powered positioning generator for founders' ideas",
+  "audience": "ambitious startup founders",
+  "problem": "can't articulate their product's unique value proposition",
+  "alternatives": "spreadsheets, CRM tools, agency briefs",
+  "advantage": "uses AI to analyze and structure founder ideas",
+  "tone": "practical and results-oriented",
+  "goal": "craft a compelling positioning statement",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "ambitious startup founders",
+      "confidence": 0.7,
+      "source_notes": "detected 'founders' in idea"
+    },
+    "primary_problem": {
+      "value": "can't articulate their product's unique value proposition",
+      "confidence": 0.7,
+      "source_notes": "detected 'messy' in idea"
+    },
+    "category_frame": {
+      "value": "positioning generators for startups",
+      "confidence": 0.7,
+      "source_notes": "mentions positioning and landing page"
+    },
+    "differentiation": {
+      "value": "uses AI to analyze and structure founder ideas",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "spreadsheets, CRM tools, agency briefs",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "craft a compelling positioning statement",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-04-02T13:05:16.395275+00:00",
+  "source_idea": "An AI tool that turns messy founder ideas into clear product positioning and landing pages.",
+  "client_name": "an-ai-tool",
+  "product_fingerprint": "dedf2b4293afbe5e",
+  "brain_version": 1,
+  "last_saved_at": "2026-04-02T13:05:16.395275+00:00"
+}

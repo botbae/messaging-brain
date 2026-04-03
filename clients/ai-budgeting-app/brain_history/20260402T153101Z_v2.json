@@ -1,0 +1,49 @@
+{
+  "product": "Mobile app that tracks expenses and categorizes transactions",
+  "audience": "young professionals on a budget",
+  "problem": "can't accurately track daily expenses without tedious spreadsheets or manual notes",
+  "alternatives": "spreadsheets, Mint, You Need a Budget (YNAB), manual note-taking",
+  "advantage": "uses machine learning to automatically categorize transactions, no manual tagging required",
+  "tone": "practical and straightforward",
+  "goal": "get a clear picture of spending habits",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "young professionals on a budget",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "primary_problem": {
+      "value": "can't accurately track daily expenses without tedious spreadsheets or manual notes",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "personal finance tracker",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "differentiation": {
+      "value": "uses machine learning to automatically categorize transactions, no manual tagging required",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "current_alternative": {
+      "value": "spreadsheets, Mint, You Need a Budget (YNAB), manual note-taking",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "get a clear picture of spending habits",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-04-02T15:31:01.020434+00:00",
+  "source_idea": "AI budgeting app",
+  "client_name": "ai-budgeting-app",
+  "product_fingerprint": "4f99aff79584df28",
+  "brain_version": 2,
+  "last_saved_at": "2026-04-02T15:31:01.020434+00:00"
+}

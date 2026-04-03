@@ -1,0 +1,87 @@
+{
+  "client_name": "a-fitness-app",
+  "generated_at": "2026-04-02T14:14:53.590358+00:00",
+  "brain_version": 1,
+  "overall_score": 0.88,
+  "generation_safe": true,
+  "blocker_count": 0,
+  "field_scores": [
+    {
+      "field_name": "category_frame",
+      "score": 0.65,
+      "status": "draft",
+      "is_critical": false,
+      "value_preview": "Personalized fitness apps",
+      "recommendation": null,
+      "example": null
+    },
+    {
+      "field_name": "goal",
+      "score": 0.8,
+      "status": "strong",
+      "is_critical": false,
+      "value_preview": "Achieve consistent exercise routine despite life's changes",
+      "recommendation": null,
+      "example": null
+    },
+    {
+      "field_name": "alternatives",
+      "score": 0.82,
+      "status": "strong",
+      "is_critical": false,
+      "value_preview": "Spreadsheets for tracking progress, fitness coaches, YouTube workout videos",
+      "recommendation": null,
+      "example": null
+    },
+    {
+      "field_name": "audience",
+      "score": 0.85,
+      "status": "strong",
+      "is_critical": true,
+      "value_preview": "Busy professionals with variable schedules",
+      "recommendation": null,
+      "example": null
+    },
+    {
+      "field_name": "tone",
+      "score": 0.85,
+      "status": "strong",
+      "is_critical": false,
+      "value_preview": "Motivational and supportive",
+      "recommendation": null,
+      "example": null
+    },
+    {
+      "field_name": "advantage",
+      "score": 0.87,
+      "status": "strong",
+      "is_critical": true,
+      "value_preview": "Adapts workouts daily based on user data, not fixed routines or generic plans",
+      "recommendation": null,
+      "example": null
+    },
+    {
+      "field_name": "product",
+      "score": 0.9,
+      "status": "strong",
+      "is_critical": true,
+      "value_preview": "Mobile app that adjusts daily workouts based on user consistency and energy levels",
+      "recommendation": null,
+      "example": null
+    },
+    {
+      "field_name": "problem",
+      "score": 0.9,
+      "status": "strong",
+      "is_critical": true,
+      "value_preview": "Struggle to maintain consistent exercise routine despite changing energy levels",
+      "recommendation": null,
+      "example": null
+    }
+  ],
+  "summary": "Brain is ready for generation. Critical field confidence: 88%.",
+  "next_action": null,
+  "threshold_strong": 0.8,
+  "threshold_draft": 0.5,
+  "threshold_generation_safe": 0.65
+}

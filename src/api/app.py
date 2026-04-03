@@ -28,7 +28,7 @@ if str(_src) not in sys.path:
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from agents.writing_agent import ClientBrief
 from core.brief import brief_from_file
@@ -60,9 +60,17 @@ app = FastAPI(
 # Local frontend prototyping — allow Next.js dev server to call this API.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
-    allow_methods=["POST", "GET", "OPTIONS"],
-    allow_headers=["Content-Type"],
+    allow_origins=[
+        "http://localhost:3000",
+        "http://localhost:3001",
+        "http://localhost:3002",
+        "http://127.0.0.1:3000",
+        "http://127.0.0.1:3001",
+        "http://127.0.0.1:3002",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
@@ -112,11 +120,31 @@ class GenerateRequest(BaseModel):
 
 
 class IdeaExtractData(BaseModel):
-    product: str = ""
-    icp: str = ""
-    problem: str = ""
-    category: str = ""
-    differentiation: str = ""
+    """Messaging brain fields from POST /brain/save.
+
+    Canonical keys match the frontend IdeaExtract. Legacy aliases are merged so
+    old clients (icp/category/differentiation/current_alternative) keep working.
+    Use Optional so omitted JSON keys do not overwrite stored values; explicit
+    empty strings clear fields.
+    """
+
+    model_config = ConfigDict(extra="ignore")
+
+    # Canonical (frontend IdeaExtract)
+    product: Optional[str] = None
+    audience: Optional[str] = None
+    problem: Optional[str] = None
+    alternatives: Optional[str] = None
+    advantage: Optional[str] = None
+    tone: Optional[str] = None
+    goal: Optional[str] = None
+    context: Optional[str] = None
+    # Legacy aliases
+    icp: Optional[str] = None
+    category: Optional[str] = None
+    differentiation: Optional[str] = None
+    current_alternative: Optional[str] = None
+    alternative: Optional[str] = None
 
 
 class BrainSaveRequest(BaseModel):
@@ -127,6 +155,10 @@ class BrainSaveRequest(BaseModel):
 class ClientInitRequest(BaseModel):
     client: str
     reset_brief: bool = False
+
+
+class BundleRequest(BaseModel):
+    client: str
 
 
 # ---------------------------------------------------------------------------
@@ -155,6 +187,77 @@ def _safe_profile(profile: ProductProfile) -> dict:
         "context": profile.context,
         "decisions": safe_decisions,
     }
+
+
+def _idea_extract_canonical_response(profile: ProductProfile) -> dict:
+    """Echo saved brain in frontend IdeaExtract shape."""
+    return {
+        "product": profile.product or "",
+        "audience": profile.audience or "",
+        "problem": profile.problem or "",
+        "alternatives": profile.alternatives or "",
+        "advantage": profile.advantage or "",
+        "tone": profile.tone or "",
+        "goal": profile.goal or "",
+        "context": profile.context or "",
+    }
+
+
+def _apply_idea_extract_to_profile(profile: ProductProfile, edits: IdeaExtractData) -> None:
+    """Apply save payload to ProductProfile; sync top-level fields with decisions dict."""
+
+    if edits.product is not None:
+        profile.product = edits.product.strip()
+
+    # audience <-> icp (canonical audience wins)
+    audience_src = edits.audience if edits.audience is not None else edits.icp
+    if audience_src is not None:
+        s = audience_src.strip()
+        profile.audience = s
+        profile.decisions["icp"] = s
+
+    if edits.problem is not None:
+        s = edits.problem.strip()
+        profile.problem = s
+        profile.decisions["primary_problem"] = s
+
+    # alternatives <-> current_alternative; legacy "alternative" from some extracts
+    alt_src = edits.alternatives
+    if alt_src is None:
+        alt_src = edits.current_alternative
+    if alt_src is None:
+        alt_src = edits.alternative
+    if alt_src is not None:
+        s = alt_src.strip()
+        profile.alternatives = s
+        profile.decisions["current_alternative"] = s
+
+    # advantage <-> differentiation (canonical advantage wins)
+    adv_src = edits.advantage if edits.advantage is not None else edits.differentiation
+    if adv_src is not None:
+        s = adv_src.strip()
+        profile.advantage = s
+        profile.decisions["differentiation"] = s
+
+    if edits.tone is not None:
+        s = edits.tone.strip()
+        profile.tone = s
+        profile.decisions["tone"] = s
+
+    if edits.goal is not None:
+        s = edits.goal.strip()
+        profile.goal = s
+        profile.decisions["desired_outcome"] = s
+
+    if edits.context is not None:
+        profile.context = edits.context.strip()
+
+    # Legacy category → category_frame; mirror to context when context not sent (QA / old clients)
+    if edits.category is not None:
+        s = edits.category.strip()
+        profile.decisions["category_frame"] = s
+        if edits.context is None:
+            profile.context = s
 
 
 def _normalize_brain_strength(raw) -> str | None:
@@ -192,12 +295,18 @@ def idea(req: IdeaRequest):
 
     brain_suggestions = None
     brain_strength = None
+    confidence_report = None
     if profile_path and Path(profile_path).exists():
         _profile = ProductProfile.load(profile_path)
         _suggestions = suggest_brain_improvements(_profile)
         if _suggestions:
             brain_suggestions = _suggestions
         brain_strength = _normalize_brain_strength(score_brain_strength(_profile))
+        try:
+            from core.confidence_engine import score_decision_state
+            confidence_report = score_decision_state(_profile, client_slug or "").model_dump()
+        except Exception:
+            pass
 
     return {
         "client": client_slug or "",
@@ -205,6 +314,7 @@ def idea(req: IdeaRequest):
         "idea_extract": result,
         "brain_suggestions": brain_suggestions,
         "brain_strength": brain_strength,
+        "confidence_report": confidence_report,
     }
 
 
@@ -226,11 +336,18 @@ def brain(req: BrainRequest):
     profile, _ = _run_brain_mode(brief, client_slug)
     _brain_suggestions = suggest_brain_improvements(profile)
     _brain_strength = _normalize_brain_strength(score_brain_strength(profile))
+    confidence_report = None
+    try:
+        from core.confidence_engine import score_decision_state
+        confidence_report = score_decision_state(profile, client_slug).model_dump()
+    except Exception:
+        pass
     return {
         "client": client_slug,
         "product_profile": _safe_profile(profile),
         "brain_suggestions": _brain_suggestions if _brain_suggestions else None,
         "brain_strength": _brain_strength,
+        "confidence_report": confidence_report,
     }
 
 
@@ -286,6 +403,12 @@ def generate_launch_pack(req: GenerateRequest):
     return _run_generate_endpoint(req, "launch_pack")
 
 
+@app.post("/generate/bundle")
+def generate_bundle_alias(req: BundleRequest):
+    """Alias for /generate/bundle registered before the {mode} catch-all."""
+    return generate_bundle(req)
+
+
 @app.post("/generate/{mode}")
 def generate_any(mode: str, req: GenerateRequest):
     """Generic generation endpoint for any supported mode."""
@@ -323,12 +446,14 @@ def check_readiness(client: str, mode: str):
 def brain_save(req: BrainSaveRequest):
     """Persist edited Messaging Brain fields back to the client's product_profile.json.
 
-    Field mapping (idea_extract → stored decisions):
-      icp            → decisions.icp
-      problem        → decisions.primary_problem  + top-level profile.problem
-      category       → decisions.category_frame
-      differentiation→ decisions.differentiation  + top-level profile.advantage
-    All other existing fields are preserved unchanged.
+    Canonical idea_extract keys match the frontend IdeaExtract (product, audience,
+    problem, alternatives, advantage, tone, goal, context). Legacy keys (icp,
+    category, differentiation, current_alternative, alternative) are merged:
+      audience / icp → profile.audience + decisions.icp
+      advantage / differentiation → profile.advantage + decisions.differentiation
+      alternatives / current_alternative / alternative → profile.alternatives +
+        decisions.current_alternative
+    Omitted keys leave existing values unchanged; explicit empty strings clear fields.
     """
     client_slug = clean_phrase(req.client)
     profile_path = Path("clients") / client_slug / "product_profile.json"
@@ -341,72 +466,454 @@ def brain_save(req: BrainSaveRequest):
 
     profile = ProductProfile.load(profile_path)
 
-    # Apply edits — only overwrite non-empty values so a partial save doesn't blank fields.
-    edits = req.idea_extract
-    if edits.product:
-        profile.product = edits.product.strip()
-    if edits.icp:
-        profile.decisions["icp"] = edits.icp
-    if edits.problem:
-        profile.decisions["primary_problem"] = edits.problem
-        profile.problem = edits.problem
-    if edits.category:
-        profile.decisions["category_frame"] = edits.category
-    if edits.differentiation:
-        profile.decisions["differentiation"] = edits.differentiation
-        profile.advantage = edits.differentiation
+    _apply_idea_extract_to_profile(profile, req.idea_extract)
 
     profile.save(profile_path)
     logger.info("POST /brain/save client=%s — profile updated", client_slug)
-    return {"client": client_slug, "product_profile": _safe_profile(profile)}
+
+    _suggestions = suggest_brain_improvements(profile)
+    _strength = _normalize_brain_strength(score_brain_strength(profile))
+    return {
+        "client": client_slug,
+        "product_profile": _safe_profile(profile),
+        "idea_extract": _idea_extract_canonical_response(profile),
+        "brain_suggestions": _suggestions if _suggestions else None,
+        "brain_strength": _strength,
+    }
+
+
+@app.get("/client/{slug}/confidence")
+def get_confidence(slug: str):
+    """Return the confidence report for a client's brain.
+
+    Loads the saved report from clients/<slug>/confidence_report.json.
+    If no saved report exists, scores the current brain on the fly and returns it.
+    Returns 404 if the client has no brain at all.
+    """
+    from core.confidence_engine import load_confidence_report, save_confidence_report, score_decision_state
+
+    client_slug = clean_phrase(slug)
+    logger.info("GET /client/%s/confidence", client_slug)
+
+    # Try saved report first (fast path)
+    report = load_confidence_report(client_slug)
+    if report is not None:
+        return report.model_dump()
+
+    # Fall back to scoring on the fly
+    profile = _load_profile_if_exists(client_slug)
+    if profile is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"No brain found for client '{client_slug}'. Run POST /idea or POST /brain first.",
+        )
+
+    report = score_decision_state(profile, client_slug)
+    save_confidence_report(report, client_slug)
+    return report.model_dump()
 
 
 # ---------------------------------------------------------------------------
 # Internal helpers
 # ---------------------------------------------------------------------------
 
-def _extract_slots_from_blueprint(text: str) -> dict:
-    """Extract landing page slots from a blueprint document.
 
-    Maps blueprint sections to the slot schema:
-      headline, subhead, problem, why_current_options_fail, what_this_is, primary_cta
-    """
-    import re
+# ---------------------------------------------------------------------------
+# Schema-population helpers for /generate/bundle (TASK 3)
+# ---------------------------------------------------------------------------
 
-    def _field(label: str) -> str:
-        """Extract a labeled field value like 'Headline: ...' from the text."""
-        pattern = rf'{re.escape(label)}\s*:\s*(.+)'
-        m = re.search(pattern, text, re.IGNORECASE)
-        return m.group(1).strip().strip('"\'') if m else ""
+def _profile_to_decision_state(profile: ProductProfile, client_slug: str) -> dict:
+    """Build a DecisionState dict from a ProductProfile for the bundle response."""
+    from schemas.decision_state import DecisionState
+    return DecisionState(
+        product=profile.product or "",
+        audience=profile.audience or "",
+        problem=profile.problem or "",
+        alternatives=profile.alternatives or "",
+        advantage=profile.advantage or "",
+        tone=profile.tone or "",
+        goal=profile.goal or "",
+        context=profile.context or "",
+        decisions=dict(profile.decisions) if profile.decisions else {},
+        client_name=client_slug,
+        brain_version=getattr(profile, "brain_version", 0) or 0,
+        last_saved_at=getattr(profile, "updated_at", "") or "",
+        source_idea=getattr(profile, "source_idea", "") or "",
+        overall_confidence=0.5,
+        generation_safe=True,
+    ).model_dump()
 
-    def _section_body(header: str, next_headers: tuple) -> str:
-        """Extract body text between a section header and the next header."""
-        idx = text.find(header)
+
+def _parse_positioning_doc(text: str, client_slug: str, now: str) -> dict:
+    """Parse positioning markdown into a PositioningDoc dict. Falls back to raw_markdown."""
+    from schemas.positioning_doc import PositioningDoc, PositioningSection
+    import re as _re
+
+    def _extract_section(header: str, all_headers: list[str], src: str) -> str:
+        idx = src.find(header)
         if idx < 0:
             return ""
         start = idx + len(header)
-        end = len(text)
-        for nh in next_headers:
-            ni = text.find(nh, start)
-            if 0 < ni < end:
-                end = ni
-        body = text[start:end].strip()
-        # Remove labeled sub-fields, keep just the prose
-        lines = [l.strip() for l in body.splitlines() if l.strip() and not re.match(r'^(Purpose|Headline|Subhead|Primary CTA|Proof line)\s*:', l)]
-        return " ".join(lines[:3])
+        end = len(src)
+        for h in all_headers:
+            if h == header:
+                continue
+            hi = src.find(h, start)
+            if 0 < hi < end:
+                end = hi
+        return src[start:end].strip()
 
-    _NEXT = ("POSITIONING SUMMARY", "HERO", "PROBLEM SECTION", "WHY CURRENT OPTIONS FAIL",
-             "PRODUCT EXPLANATION", "HOW IT WORKS", "PROOF / CREDIBILITY",
-             "FINAL CTA SECTION", "UX / CONTENT NOTES", "OPTIONAL FUTURE SECTIONS")
+    _HEADERS = [
+        "PRODUCT", "ICP", "CORE PROBLEM", "CURRENT ALTERNATIVE",
+        "WHY CURRENT OPTIONS FAIL", "DESIRED OUTCOME", "CATEGORY FRAME",
+        "DIFFERENTIATION", "ANTI-POSITIONING", "POSITIONING STATEMENT", "MESSAGING NOTES",
+    ]
 
-    return {
-        "headline": _field("Headline"),
-        "subhead": _field("Subhead"),
-        "problem": _section_body("PROBLEM SECTION", _NEXT),
-        "why_current_options_fail": _section_body("WHY CURRENT OPTIONS FAIL", _NEXT),
-        "what_this_is": _section_body("PRODUCT EXPLANATION", _NEXT),
-        "primary_cta": _field("Primary CTA"),
-    }
+    def _sec(header: str) -> Optional[PositioningSection]:
+        body = _extract_section(header, _HEADERS, text)
+        if not body:
+            return None
+        return PositioningSection(title=header.title(), content=body)
+
+    try:
+        doc = PositioningDoc(
+            client_name=client_slug,
+            generated_at=now,
+            value_proposition=_sec("POSITIONING STATEMENT") or _sec("PRODUCT"),
+            icp=_sec("ICP"),
+            problem_frame=_sec("CORE PROBLEM"),
+            differentiation=_sec("DIFFERENTIATION"),
+            category_frame=_sec("CATEGORY FRAME"),
+            tone_voice=_sec("MESSAGING NOTES"),
+            desired_outcome=_sec("DESIRED OUTCOME"),
+            extra_sections=[
+                s for s in [_sec("CURRENT ALTERNATIVE"), _sec("WHY CURRENT OPTIONS FAIL"), _sec("ANTI-POSITIONING")]
+                if s is not None
+            ],
+            raw_markdown=text,
+        )
+        return doc.model_dump()
+    except Exception:
+        from schemas.positioning_doc import PositioningDoc
+        return PositioningDoc(client_name=client_slug, generated_at=now, raw_markdown=text).model_dump()
+
+
+def _parse_landing_content(text: str, client_slug: str, now: str) -> dict:
+    """Parse landing page markdown into a LandingPageContent dict."""
+    from schemas.landing_page_content import LandingPageContent, LandingSection, CTAButton
+
+    def _section_body(header: str, next_headers: list[str], src: str) -> str:
+        idx = src.find(header)
+        if idx < 0:
+            return ""
+        start = idx + len(header)
+        end = len(src)
+        for h in next_headers:
+            hi = src.find(h, start)
+            if 0 < hi < end:
+                end = hi
+        return src[start:end].strip()
+
+    _H = [
+        "HEADLINE", "SUBHEADLINE", "WHAT THIS IS", "WHO IT IS FOR",
+        "THE PROBLEM", "WHY EXISTING TOOLS FAIL", "HOW IT WORKS",
+        "KEY BENEFITS", "CALL TO ACTION",
+        # blueprint variant headers
+        "POSITIONING SUMMARY", "HERO", "PROBLEM SECTION",
+        "WHY CURRENT OPTIONS FAIL", "PRODUCT EXPLANATION",
+        "HOW IT WORKS", "PROOF / CREDIBILITY", "FINAL CTA SECTION",
+    ]
+
+    def _field(label: str, src: str) -> str:
+        import re as _re
+        m = _re.search(rf'{_re.escape(label)}\s*[:\n]\s*(.+)', src, _re.IGNORECASE)
+        return m.group(1).strip().strip('"\'') if m else ""
+
+    try:
+        headline = _field("Headline", text) or _field("HEADLINE", text)
+        subhead = _field("Subhead", text) or _field("SUBHEADLINE", text)
+        cta_label = _field("Primary CTA", text) or _field("CALL TO ACTION", text)
+
+        sections = []
+        if headline:
+            sections.append(LandingSection(
+                id="hero", name="Hero",
+                headline=headline,
+                subheadline=subhead or None,
+                cta_buttons=[CTAButton(label=cta_label)] if cta_label else [],
+            ))
+        problem_body = _section_body("THE PROBLEM", _H, text) or _section_body("PROBLEM SECTION", _H, text)
+        if problem_body:
+            sections.append(LandingSection(id="problem", name="Problem", body=problem_body))
+        solution_body = _section_body("WHAT THIS IS", _H, text) or _section_body("PRODUCT EXPLANATION", _H, text)
+        if solution_body:
+            sections.append(LandingSection(id="solution", name="Solution", body=solution_body))
+        how_body = _section_body("HOW IT WORKS", _H, text)
+        if how_body:
+            sections.append(LandingSection(id="how_it_works", name="How It Works", body=how_body))
+
+        doc = LandingPageContent(
+            client_name=client_slug,
+            product="",
+            generated_at=now,
+            sections=sections,
+            raw_markdown=text,
+        )
+        return doc.model_dump()
+    except Exception:
+        from schemas.landing_page_content import LandingPageContent
+        return LandingPageContent(client_name=client_slug, generated_at=now, raw_markdown=text).model_dump()
+
+
+def _parse_ux_copy_map(text: str, client_slug: str, now: str) -> dict:
+    """Parse UX microcopy markdown into a UXCopyMap dict."""
+    from schemas.ux_copy_map import UXCopyMap, UXScreen, UXCopyState
+
+    _UX_HEADERS = ["UX CONTEXT", "ONBOARDING", "EMPTY STATE", "ERROR", "TOAST", "BUTTON LABELS"]
+
+    def _section_body(header: str, src: str) -> str:
+        idx = src.find(header)
+        if idx < 0:
+            return ""
+        start = idx + len(header)
+        end = len(src)
+        for h in _UX_HEADERS:
+            if h == header:
+                continue
+            hi = src.find(h, start)
+            if 0 < hi < end:
+                end = hi
+        return src[start:end].strip()
+
+    try:
+        screens = []
+        state_map = {
+            "ONBOARDING": "onboarding",
+            "EMPTY STATE": "empty",
+            "ERROR": "error",
+            "TOAST": "success",
+        }
+        for header, state_key in state_map.items():
+            body = _section_body(header, text)
+            if body:
+                screens.append(UXScreen(
+                    id=header.lower().replace(" ", "_"),
+                    name=header.title(),
+                    states=[UXCopyState(state=state_key, body=body)],
+                ))
+
+        button_body = _section_body("BUTTON LABELS", text)
+        global_labels: dict = {}
+        if button_body:
+            import re as _re
+            for m in _re.finditer(r'[-•]\s*(.+?):\s*(.+)', button_body):
+                global_labels[m.group(1).strip().lower()] = m.group(2).strip()
+
+        doc = UXCopyMap(
+            client_name=client_slug,
+            product="",
+            generated_at=now,
+            screens=screens,
+            global_labels=global_labels,
+            raw_markdown=text,
+        )
+        return doc.model_dump()
+    except Exception:
+        from schemas.ux_copy_map import UXCopyMap
+        return UXCopyMap(client_name=client_slug, generated_at=now, raw_markdown=text).model_dump()
+
+
+def _save_bundle_artifact(client_slug: str, filename: str, data: dict) -> None:
+    """Write a JSON artifact to clients/<slug>/<filename>."""
+    import json as _json
+    client_dir = Path("clients") / client_slug
+    client_dir.mkdir(parents=True, exist_ok=True)
+    out = client_dir / filename
+    with open(out, "w", encoding="utf-8") as f:
+        _json.dump(data, f, indent=2)
+
+
+@app.post("/generate/bundle")
+def generate_bundle(req: BundleRequest):
+    """Run the full artifact pipeline for a client and return an ArtifactBundle.
+
+    Steps:
+      1. Load ProductProfile (brain must exist — run POST /brain first)
+      2. Score confidence (load saved report or score on-the-fly)
+      3. StructuringAgent → LandingPageIA  (saved as landing_ia.json)
+      4. _run_generate for positioning, landing, ux  (each saved as versioned .md)
+      5. Return ArtifactBundle as JSON  (also saved as artifact_bundle.json)
+
+    Non-fatal errors in any step are captured in bundle.errors — the rest of
+    the pipeline continues.
+    """
+    import os as _os
+    import uuid as _uuid
+    from datetime import datetime, timezone
+    from agents.structuring_agent import StructuringAgent
+    from schemas.artifact_bundle import ArtifactBundle, ArtifactMeta
+
+    client_slug = clean_phrase(req.client)
+    if not client_slug:
+        raise HTTPException(status_code=400, detail="client is required")
+    logger.info("POST /generate/bundle client=%s", client_slug)
+
+    # -- Load brain --------------------------------------------------------
+    profile = _load_profile_if_exists(client_slug)
+    if profile is None:
+        raise HTTPException(
+            status_code=404,
+            detail=(
+                f"No brain found for client '{client_slug}'. "
+                "Run POST /idea or POST /brain first."
+            ),
+        )
+
+    # -- Confidence report -------------------------------------------------
+    confidence_report = None
+    try:
+        from core.confidence_engine import (
+            load_confidence_report,
+            save_confidence_report,
+            score_decision_state,
+        )
+        confidence_report = load_confidence_report(client_slug)
+        if confidence_report is None:
+            confidence_report = score_decision_state(profile, client_slug)
+            save_confidence_report(confidence_report, client_slug)
+    except Exception as _e:
+        logger.warning("bundle: confidence scoring failed — %s", _e)
+
+    # -- Bundle shell ------------------------------------------------------
+    now = datetime.now(timezone.utc).isoformat()
+    bundle_id = f"{client_slug}_{now[:19].replace(':', '-').replace('T', '_')}"
+    provider_used = (
+        _os.getenv("UNIMIND_MODEL_PROVIDER")
+        or _os.getenv("MODEL_PROVIDER")
+        or "ollama"
+    ).lower()
+
+    bundle = ArtifactBundle(
+        client_name=client_slug,
+        bundle_id=bundle_id,
+        created_at=now,
+        confidence_report=confidence_report,
+    )
+
+    # -- TASK 3: decision_state from ProfileProfile (always available) -----
+    try:
+        bundle.decision_state = _profile_to_decision_state(profile, client_slug)
+    except Exception as _e:
+        bundle.errors.append(f"decision_state: {_e}")
+        logger.warning("bundle: decision_state failed — %s", _e)
+
+    # -- Step 1: Landing IA via StructuringAgent ---------------------------
+    try:
+        ia = StructuringAgent().run(profile, confidence_report)
+        ia["client"] = client_slug
+        bundle.landing_page_ia = ia
+        bundle.artifact_meta.append(ArtifactMeta(
+            artifact_type="landing_page_ia",
+            generated_at=now,
+            generation_mode="ia",
+            provider_used=provider_used,
+        ))
+        _save_bundle_artifact(client_slug, "landing_ia.json", ia)
+        logger.info("bundle: landing_ia generated for %s", client_slug)
+    except Exception as _e:
+        bundle.errors.append(f"landing_ia: {_e}")
+        logger.warning("bundle: landing_ia failed — %s", _e)
+
+    # -- Steps 2-4: positioning + landing + ux via existing pipeline -------
+    brief_path = Path("clients") / client_slug / "brief.json"
+    brief = brief_from_file(str(brief_path)) if brief_path.exists() else None
+    gen_ctx = build_generation_context(brief=brief, profile=profile)
+    brain = gen_ctx.decisions if gen_ctx.decisions else None
+    merged_brief = context_to_brief(gen_ctx)
+    positioning_ctx, narrative_ctx = build_strategy_layers(gen_ctx)
+
+    for mode in ("positioning", "landing", "ux"):
+        try:
+            text, out_path, _ = _run_generate(
+                merged_brief, mode, client_slug,
+                brain=brain,
+                positioning=positioning_ctx,
+                narrative=narrative_ctx,
+            )
+            bundle.raw_outputs[mode] = text
+            bundle.artifact_meta.append(ArtifactMeta(
+                artifact_type=mode,
+                generated_at=now,
+                generation_mode=mode,
+                provider_used=provider_used,
+                output_path=str(out_path),
+            ))
+            logger.info("bundle: %s generated for %s", mode, client_slug)
+        except Exception as _e:
+            bundle.errors.append(f"{mode}: {_e}")
+            logger.warning("bundle: %s failed — %s", mode, _e)
+
+    # -- TASK 3: populate structured schema fields from raw_outputs ---------
+    positioning_text = bundle.raw_outputs.get("positioning", "")
+    landing_text = bundle.raw_outputs.get("landing", "")
+    ux_text = bundle.raw_outputs.get("ux", "")
+
+    if positioning_text:
+        try:
+            bundle.positioning_doc = _parse_positioning_doc(positioning_text, client_slug, now)
+        except Exception as _e:
+            bundle.errors.append(f"positioning_doc: {_e}")
+            logger.warning("bundle: positioning_doc parse failed — %s", _e)
+
+    if landing_text:
+        try:
+            bundle.landing_page_content = _parse_landing_content(landing_text, client_slug, now)
+        except Exception as _e:
+            bundle.errors.append(f"landing_page_content: {_e}")
+            logger.warning("bundle: landing_page_content parse failed — %s", _e)
+
+    if ux_text:
+        try:
+            bundle.ux_copy_map = _parse_ux_copy_map(ux_text, client_slug, now)
+        except Exception as _e:
+            bundle.errors.append(f"ux_copy_map: {_e}")
+            logger.warning("bundle: ux_copy_map parse failed — %s", _e)
+
+    # -- TASK 2: quality layer — CriticAgent + StrategistAgent on landing --
+    if landing_text and merged_brief:
+        from agents.critic_agent import CriticAgent
+        from agents.strategist_agent import StrategistAgent
+
+        try:
+            critique = CriticAgent().review_landing_page(landing_text, merged_brief)
+            # Strip internal flag before exposing to API consumers
+            bundle.critic_issues = {
+                "score": critique["score"],
+                "flags": critique["flags"],
+                "notes": critique["notes"],
+            }
+            logger.info("bundle: critic ran for %s — score %s", client_slug, critique["score"])
+        except Exception as _e:
+            bundle.errors.append(f"critic: {_e}")
+            logger.warning("bundle: critic failed — %s", _e)
+            critique = None
+
+        try:
+            bundle.recommendations = StrategistAgent().suggest(
+                merged_brief, landing_text, critique
+            )
+            logger.info("bundle: strategist ran for %s", client_slug)
+        except Exception as _e:
+            bundle.errors.append(f"strategist: {_e}")
+            logger.warning("bundle: strategist failed — %s", _e)
+
+    # -- Persist and return ------------------------------------------------
+    try:
+        _save_bundle_artifact(client_slug, "artifact_bundle.json", bundle.model_dump())
+    except Exception as _e:
+        bundle.errors.append(f"bundle_save: {_e}")
+
+    return bundle.model_dump()
 
 
 def _run_generate_endpoint(req: GenerateRequest, mode: str) -> dict:
@@ -474,10 +981,8 @@ def _run_generate_endpoint(req: GenerateRequest, mode: str) -> dict:
             content={"error": "generation_failed", "detail": str(e)},
         )
 
-    # Extract fixed-schema slots from the blueprint text (no second LLM call).
-    slots = None
     if mode == "landing":
-        slots = _extract_slots_from_blueprint(final_text)
+        return {"client": client_slug, "text": final_text}
 
     # Include brain strength if a profile was loaded
     _strength = _normalize_brain_strength(score_brain_strength(profile)) if profile else None
@@ -485,7 +990,6 @@ def _run_generate_endpoint(req: GenerateRequest, mode: str) -> dict:
     result = {
         "mode": mode,
         "text": final_text,
-        "slots": slots,
         "brain_strength": _strength,
         "latest_path": str(latest_path),
         "versioned_path": str(out_path),

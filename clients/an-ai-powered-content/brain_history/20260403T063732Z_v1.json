@@ -1,0 +1,49 @@
+{
+  "product": "AI-powered content recap inbox for busy startup founders",
+  "audience": "busy startup founders",
+  "problem": "can't efficiently stay up-to-date with market signals, action items, and key points from long-form content",
+  "alternatives": "spreadsheets for tracking updates, investor reports, Twitter threads, podcast notes, newsletters",
+  "advantage": "turns multiple sources into a single daily brief",
+  "tone": "practical and efficient",
+  "goal": "make informed decisions in 5 minutes",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "busy startup founders",
+      "confidence": 0.7,
+      "source_notes": "detected 'founders' in idea"
+    },
+    "primary_problem": {
+      "value": "can't efficiently stay up-to-date with market signals, action items, and key points from long-form content",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "content summarization tool",
+      "confidence": 0.7,
+      "source_notes": "detected 'content' in idea"
+    },
+    "differentiation": {
+      "value": "turns multiple sources into a single daily brief",
+      "confidence": 0.7,
+      "source_notes": "detected 'structured' in idea"
+    },
+    "current_alternative": {
+      "value": "spreadsheets for tracking updates, investor reports, Twitter threads, podcast notes, newsletters",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "make informed decisions in 5 minutes",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-04-03T06:37:32.095330+00:00",
+  "source_idea": "An AI-powered content recap inbox for busy startup founders that turns long-form content (podcasts, YouTube videos, investor updates, Twitter threads, and newsletters) into a single daily brief. Found",
+  "client_name": "an-ai-powered-content",
+  "product_fingerprint": "b4a911a06c438e6a",
+  "brain_version": 1,
+  "last_saved_at": "2026-04-03T06:37:32.095330+00:00"
+}

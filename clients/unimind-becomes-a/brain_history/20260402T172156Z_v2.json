@@ -1,0 +1,49 @@
+{
+  "product": "messaging management for solopreneurs tool for solopreneurs and small business owners",
+  "audience": "solopreneurs and small business owners",
+  "problem": "can't keep track of scattered messages from leads, clients, and tasks",
+  "alternatives": "WhatsApp groups, email filters, spreadsheets, CRM tools",
+  "advantage": "auto-organizes messages into a structured 'brain' for decision-making",
+  "tone": "practical and organized",
+  "goal": "make informed decisions with clarity and control",
+  "context": "Seeded from idea extraction. Run --mode brain with a full brief to refine.",
+  "decisions": {
+    "icp": {
+      "value": "solopreneurs and small business owners",
+      "confidence": 0.7,
+      "source_notes": "mentions businesses and solopreneurs"
+    },
+    "primary_problem": {
+      "value": "can't keep track of scattered messages from leads, clients, and tasks",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "category_frame": {
+      "value": "messaging management for solopreneurs",
+      "confidence": 0.7,
+      "source_notes": "mentions messaging and content"
+    },
+    "differentiation": {
+      "value": "auto-organizes messages into a structured 'brain' for decision-making",
+      "confidence": 0.7,
+      "source_notes": "detected 'structured' in idea"
+    },
+    "current_alternative": {
+      "value": "WhatsApp groups, email filters, spreadsheets, CRM tools",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "desired_outcome": {
+      "value": "make informed decisions with clarity and control",
+      "confidence": 0.7,
+      "source_notes": "inferred from idea text"
+    },
+    "anti_positioning": ""
+  },
+  "updated_at": "2026-04-02T17:21:56.721164+00:00",
+  "source_idea": "Unimind becomes a messaging command center that turns scattered WhatsApp/IG/Email messages into a structured \u201cbrain\u201d for one-person businesses: leads, clients, tasks, and content ideas\u2014all auto-organi",
+  "client_name": "unimind-becomes-a",
+  "product_fingerprint": "d703a7fac67b6c89",
+  "brain_version": 2,
+  "last_saved_at": "2026-04-02T17:21:56.721164+00:00"
+}
