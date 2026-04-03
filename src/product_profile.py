@@ -386,39 +386,31 @@ def _contextual_suggestion(field: str, profile: "ProductProfile") -> str:
         return "spreadsheets, manual workflows, agencies, or existing tools in this space"
 
     elif field == "problem":
-        if audience_noun:
-            return (
-                f"e.g. '{audience_noun} spend hours on [specific task] with no reliable way "
-                "to [desired action]' — name the consequence, not the missing feature"
-            )
-        return "e.g. 'teams lose deals because follow-ups fall through the cracks' — name what breaks"
+        return ""
 
     elif field == "goal":
         if audience_noun and product:
             prod_short = product[:40]
-            return (
-                f"e.g. '{audience_noun} get a working {prod_short[:25]} "
-                "without manual guesswork' — describe the transformation"
-            )
-        return "e.g. 'reduce churn by catching at-risk accounts earlier' — name the concrete outcome"
+            return f"{audience_noun} get a working {prod_short[:25]} without manual guesswork"
+        return ""
 
     elif field == "advantage":
         if category and audience_noun:
             cat_word = category.split()[0] if category.split() else "this"
             return (
-                f"e.g. 'Built specifically for {audience_noun}, unlike general-purpose "
-                f"{cat_word} tools that require heavy setup'"
+                f"Built specifically for {audience_noun}, unlike general-purpose "
+                f"{cat_word} tools that require heavy setup"
             )
         if problem:
             prob_short = problem[:40]
-            return f"e.g. 'Directly solves \"{prob_short}\" instead of leaving it to the user'"
-        return "e.g. 'Scoped to one outcome, not a broad multi-purpose platform'"
+            return f"Directly solves \"{prob_short}\" instead of leaving it to the user"
+        return ""
 
     elif field == "audience":
         if category:
             cat_word = category.split()[0].capitalize() if category.split() else "this"
-            return f"e.g. 'seed-stage B2B founders using {cat_word}' — name the specific role and context"
-        return "e.g. 'e-commerce teams managing 1k+ SKUs' — name the role, size, or use case"
+            return f"seed-stage B2B founders using {cat_word}"
+        return ""
 
     return ""
 
