@@ -403,7 +403,6 @@ def generate_launch_pack(req: GenerateRequest):
     return _run_generate_endpoint(req, "launch_pack")
 
 
-@app.post("/generate/bundle")
 def generate_bundle_alias(req: BundleRequest):
     """Alias for /generate/bundle registered before the {mode} catch-all."""
     return generate_bundle(req)
@@ -733,7 +732,6 @@ def _save_bundle_artifact(client_slug: str, filename: str, data: dict) -> None:
         _json.dump(data, f, indent=2)
 
 
-@app.post("/generate/bundle")
 def generate_bundle(req: BundleRequest):
     """Run the full artifact pipeline for a client and return an ArtifactBundle.
 
