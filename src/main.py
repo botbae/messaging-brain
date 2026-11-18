@@ -717,7 +717,9 @@ def _run_brain_mode(brief, client_slug: str | None) -> tuple["ProductProfile", P
         source_idea="",
         client_name=client_slug or "",
     )
-    client_dir = client_slug or slugify(brief.product or "product")
+    # Auto-generated folder names are cut to the 64-character limit that
+    # safe_client_dir() enforces, so long product names still save.
+    client_dir = client_slug or (slugify(brief.product or "product")[:64].strip("-") or "product")
     profile_path = safe_client_dir(client_dir) / "product_profile.json"
     profile.save(profile_path)
     print(f"Saved: {profile_path}")
