@@ -93,7 +93,7 @@ class UXCopyMap(BaseModel):
     target: Literal["operator", "product"] = Field(
         default="product",
         description=(
-            "operator: copy for the Unimind CLI / operator tools. "
+            "operator: copy for the Messaging Brain CLI / operator tools. "
             "product: copy for the end-user product being built by the client."
         ),
     )

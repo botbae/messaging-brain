@@ -1,5 +1,6 @@
 """Core text helpers used across agents."""
 
+import re
 from typing import Optional
 
 
@@ -34,3 +35,15 @@ def lower_first(s: str) -> str:
         first = first.lower()
     return first + rest
 
+
+
+_SAFE_CLIENT_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$")
+
+
+def is_safe_client_slug(slug: Optional[str]) -> bool:
+    """True if slug is a plain folder name (letters, digits, - and _ only).
+
+    Client slugs become folder names under clients/, so anything with
+    slashes, dots or leading separators could escape that folder.
+    """
+    return bool(slug) and bool(_SAFE_CLIENT_RE.match(slug))

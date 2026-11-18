@@ -5,7 +5,7 @@
 | Path | Purpose |
 |------|--------|
 | `src/main.py` | Orchestrator: parses CLI, loads brief and brain, runs the right mode, saves versioned + latest output, appends to manifest. |
-| `src/agents/` | Brains: `writing_agent.py` (WritingAgent, CriticAgent, StrategistAgent, FactGuardAgent, GroundingAgent). Decision extractor and all content generators live here. |
+| `src/agents/` | Brains: `writing_agent.py` (the `WritingAgent` entry point), `writing/` (one file per output type: landing, linkedin, ux, positioning, launch_pack), plus critic, strategist, fact guard, extraction and structuring agents. |
 | `src/core/` | Plumbing: `brief.py` (load brief from file/env/interactive), `output.py` (versioned paths), `llm.py` (Ollama API), `model_provider.py` (provider abstraction), `utils.py` (text helpers). |
 | `src/agent_loop.py` | Loops that run critic/strategist + rewrite for landing, LinkedIn, and other modes (when `AGENT_LOOP=true`). |
 | `src/product_profile.py` | ProductProfile dataclass: load/save `product_profile.json` (the Messaging Brain). |
@@ -15,7 +15,8 @@
 | `clients/<client>/outputs/` | Generated artifacts for that client: versioned `*_vN.md`, `*_latest.md`, and `_manifest.jsonl`. |
 | `outputs/<product-slug>/` | Same structure when no `--client` is used (e.g. `--brief briefs/sample.json`). |
 | `memory/` | System Brain: `system_rules.md`, `evolution/` log entries, `README.md`. |
-| `docs/` | Human and AI-readable documentation: PROMPTS.md, WALKTHROUGH.md, parked_modules.md. |
+| `docs/` | Documentation: ARCHITECTURE.md, API.md, PROMPTS.md, WALKTHROUGH.md, parked_modules.md. |
+| `tests/` | Pytest suite. Runs offline, no model needed: `python -m pytest`. |
 
 ---
 
@@ -89,13 +90,13 @@ python src/main.py --client <name> --mode linkedin
 ## Where to find latest outputs
 
 1. Run any mode, for example:
-   `python src/main.py --client unimind --mode landing`
+   `python src/main.py --client acme --mode landing`
 2. CLI prints both saved paths:
    - Versioned output path (`*_vN.md`)
    - Latest output path (`*_latest.md`)
 3. Open the latest files directly:
-   - `clients/unimind/outputs/landing_latest.md`
-   - `clients/unimind/outputs/ux_latest.md`
-   - `clients/unimind/outputs/linkedin_latest.md`
-   - `clients/unimind/outputs/positioning_latest.md`
+   - `clients/acme/outputs/landing_latest.md`
+   - `clients/acme/outputs/ux_latest.md`
+   - `clients/acme/outputs/linkedin_latest.md`
+   - `clients/acme/outputs/positioning_latest.md`
 4. `_manifest.jsonl` in the same folder appends one JSON line per run.

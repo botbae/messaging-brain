@@ -1,31 +1,35 @@
-"""Model provider abstraction for Unimind.
+"""Model provider abstraction for Messaging Brain.
 
-The active provider is selected via the UNIMIND_MODEL_PROVIDER environment variable:
-    UNIMIND_MODEL_PROVIDER=ollama      (default — local Ollama, free dev mode)
-    UNIMIND_MODEL_PROVIDER=anthropic   (all agents use Anthropic Claude)
-    UNIMIND_MODEL_PROVIDER=openai      (all agents use OpenAI)
-    UNIMIND_MODEL_PROVIDER=mixed       (per-agent routing via AGENT_MODEL_MAP)
+The active provider is selected via the MODEL_PROVIDER environment variable
+(or a .env file in the repo root):
+    MODEL_PROVIDER=ollama      (default: local Ollama, free)
+    MODEL_PROVIDER=anthropic   (all agents use Anthropic Claude)
+    MODEL_PROVIDER=openai      (all agents use OpenAI)
+    MODEL_PROVIDER=mixed       (per-agent routing via AGENT_MODEL_MAP)
 
-Legacy MODEL_PROVIDER env var is still honoured as a fallback when
-UNIMIND_MODEL_PROVIDER is not set, so existing callers are unaffected.
+UNIMIND_MODEL_PROVIDER (the project's old name) is still honoured as a fallback.
 
-Usage (anywhere in the codebase — unchanged from v1):
+Usage (anywhere in the codebase):
     from core.model_provider import generate
     text = generate(system="...", user="...", model="llama3:8b", temperature=0.3)
 
-New optional parameter (backward-compatible — defaults to None):
-    text = generate(system="...", user="...", model="...", temperature=0.3, agent_name="writing")
-
-When UNIMIND_MODEL_PROVIDER=mixed and agent_name is provided, the call is
-routed to the provider configured in AGENT_MODEL_MAP for that agent.
+Optional agent_name routes the call when MODEL_PROVIDER=mixed:
+    text = generate(system="...", user="...", agent_name="writing")
 """
 
 import os
 
+try:  # Load a local .env file if python-dotenv is installed. Never required.
+    from dotenv import load_dotenv
+
+    load_dotenv()
+except ImportError:  # pragma: no cover
+    pass
+
 from core.llm import generate as _ollama_generate
 
 # ---------------------------------------------------------------------------
-# Per-agent model routing table (used when UNIMIND_MODEL_PROVIDER=mixed)
+# Per-agent model routing table (used when MODEL_PROVIDER=mixed)
 # ---------------------------------------------------------------------------
 
 AGENT_MODEL_MAP: dict[str, dict[str, str]] = {
@@ -73,7 +77,7 @@ class AnthropicProvider:
         if not api_key:
             raise EnvironmentError(
                 "ANTHROPIC_API_KEY environment variable is not set. "
-                "Set it before using UNIMIND_MODEL_PROVIDER=anthropic."
+                "Set it before using MODEL_PROVIDER=anthropic."
             )
 
         import anthropic
@@ -120,7 +124,7 @@ class OpenAIProvider:
         if not api_key:
             raise EnvironmentError(
                 "OPENAI_API_KEY environment variable is not set. "
-                "Set it before using UNIMIND_MODEL_PROVIDER=openai."
+                "Set it before using MODEL_PROVIDER=openai."
             )
 
         import openai
@@ -148,12 +152,21 @@ class OpenAIProvider:
 # Provider selection
 # ---------------------------------------------------------------------------
 
+def active_provider_name() -> str:
+    """Provider name from MODEL_PROVIDER (or legacy UNIMIND_MODEL_PROVIDER), default ollama."""
+    return (
+        os.getenv("MODEL_PROVIDER")
+        or os.getenv("UNIMIND_MODEL_PROVIDER")
+        or "ollama"
+    ).strip().lower()
+
+
 def get_provider(provider_name: str | None = None):
     """Return a provider instance for the given name (or active env config).
 
     Resolution order for provider_name=None:
-        1. UNIMIND_MODEL_PROVIDER env var
-        2. MODEL_PROVIDER env var (legacy fallback)
+        1. MODEL_PROVIDER env var
+        2. UNIMIND_MODEL_PROVIDER env var (legacy fallback)
         3. "ollama" (default)
 
     Supported names: ollama, anthropic, openai, mixed
@@ -161,11 +174,7 @@ def get_provider(provider_name: str | None = None):
     ("cloud" is accepted as a legacy alias for "anthropic")
     """
     if provider_name is None:
-        provider_name = (
-            os.getenv("UNIMIND_MODEL_PROVIDER")
-            or os.getenv("MODEL_PROVIDER")
-            or "ollama"
-        ).lower()
+        provider_name = active_provider_name()
 
     if provider_name in ("ollama", "mixed"):
         return OllamaProvider()
@@ -176,7 +185,7 @@ def get_provider(provider_name: str | None = None):
 
     raise ValueError(
         f"Unknown provider {provider_name!r}. "
-        "Supported: ollama, anthropic, openai, mixed (via UNIMIND_MODEL_PROVIDER)."
+        "Supported: ollama, anthropic, openai, mixed (via MODEL_PROVIDER)."
     )
 
 
@@ -214,17 +223,13 @@ def generate(
     """Generate text using the configured model provider.
 
     Drop-in replacement for core.llm.generate — behaviour is identical when
-    UNIMIND_MODEL_PROVIDER=ollama (the default).
+    MODEL_PROVIDER=ollama (the default).
 
-    agent_name (optional): when set and UNIMIND_MODEL_PROVIDER=mixed, the call
+    agent_name (optional): when set and MODEL_PROVIDER=mixed, the call
     is routed to the provider and model specified in AGENT_MODEL_MAP for that
     agent. Ignored in all other modes.
     """
-    mode = (
-        os.getenv("UNIMIND_MODEL_PROVIDER")
-        or os.getenv("MODEL_PROVIDER")
-        or "ollama"
-    ).lower()
+    mode = active_provider_name()
 
     if mode == "mixed" and agent_name is not None:
         provider, resolved_model = _resolve_mixed(agent_name, model)
