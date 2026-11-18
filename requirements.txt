@@ -1,5 +1,5 @@
 # Runtime dependencies
-fastapi>=0.110
+fastapi>=0.163.1
 uvicorn>=0.29
 pydantic>=2.7,<3
 python-dotenv>=1.0
