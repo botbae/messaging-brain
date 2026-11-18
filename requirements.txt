@@ -1,7 +1,7 @@
 # Runtime dependencies
 fastapi>=0.110
 uvicorn>=0.29
-pydantic>=2.7,<3
+pydantic>=2.14.3,<3
 python-dotenv>=1.0
 
 # Optional: only needed if you use a cloud model provider
