@@ -2,7 +2,7 @@
 fastapi>=0.110
 uvicorn>=0.29
 pydantic>=2.7,<3
-python-dotenv>=1.0
+python-dotenv>=1.2.4
 
 # Optional: only needed if you use a cloud model provider
 anthropic>=0.79
