@@ -62,4 +62,4 @@ Brief state notes for modules that are parked, experimental, or have known activ
 - Every code change (use git history for that)
 - Output artifacts from generation runs
 - Temporary notes or in-progress work
-- Anything that duplicates what's already in CLAUDE.md or the code docstrings
+- Anything that duplicates what's already in the README, docs/ or the code docstrings

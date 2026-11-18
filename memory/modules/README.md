@@ -45,14 +45,14 @@ For full details see `docs/parked_modules.md`.
 | Module | Status | Location |
 |---|---|---|
 | WritingAgent | active | `src/agents/writing_agent.py` |
-| CriticAgent | active | `src/agents/writing_agent.py` |
-| StrategistAgent | active | `src/agents/writing_agent.py` |
-| FactGuardAgent | active | `src/agents/writing_agent.py` |
-| GroundingAgent | active | `src/agents/writing_agent.py` |
+| CriticAgent | active | `src/agents/critic_agent.py` |
+| StrategistAgent | active | `src/agents/strategist_agent.py` |
+| FactGuardAgent | active | `src/agents/fact_guard_agent.py` |
+| GroundingAgent | active | `src/agents/writing/grounding.py` |
 | ProductProfile | active | `src/product_profile.py` |
 | OllamaProvider | active | `src/core/model_provider.py` |
-| CloudProviderStub | parked | `src/core/model_provider.py` |
-| write_ux_microcopy() | legacy | `src/agents/writing_agent.py` |
+| AnthropicProvider / OpenAIProvider | active | `src/core/model_provider.py` |
+| write_ux_microcopy() | legacy | `src/agents/writing/ux.py` |
 | AGENT_LOOP (ux modes) | parked | `src/main.py` + `src/agent_loop.py` |
 | memory auto-injection | not started | — |
 | CTA consistency checker | not started | — |

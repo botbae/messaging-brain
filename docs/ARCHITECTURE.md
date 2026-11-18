@@ -74,7 +74,7 @@ Three primary generation modes, all driven by brain decisions:
 
 All generation functions accept the full `ClientBrief` for fallback fact-grounding, but decisions from `brain_decisions` take precedence.
 
-Entry: `src/agents/writing_agent.py`
+Entry: `src/agents/writing_agent.py` (the `WritingAgent` class). Each output type lives in its own file under `src/agents/writing/`: `landing.py`, `linkedin.py`, `ux.py`, `positioning.py`, `launch_pack.py`, plus `common.py` (shared checks) and `grounding.py`.
 
 ---
 
@@ -82,7 +82,7 @@ Entry: `src/agents/writing_agent.py`
 
 Each generation mode has a dedicated validator:
 
-- `_validate_landing_output()` — checks required headers, banned phrases, word counts
+- `_validate_blueprint_output()` — checks required landing blueprint headers and banned phrases
 - `_validate_ux_output()` — checks section headers, label word count, domain drift
 - `_validate_positioning_output()` — checks all 11 positioning headers present, min length
 
@@ -286,27 +286,20 @@ Anonymous runs (no `--client`) write to `outputs/<product-slug>/`.
 
 ## 7. Model Layer
 
-The LLM backend is selected via the `MODEL_PROVIDER` environment variable.
+The LLM backend is selected with the `MODEL_PROVIDER` environment variable (or a `.env` file):
 
 ```
-MODEL_PROVIDER=ollama   (default) — local Ollama at localhost:11434, model llama3:8b
-MODEL_PROVIDER=cloud    — stub; raises NotImplementedError
+MODEL_PROVIDER=ollama     (default) local Ollama at OLLAMA_BASE_URL, model llama3:8b
+MODEL_PROVIDER=anthropic  Anthropic Claude, needs ANTHROPIC_API_KEY
+MODEL_PROVIDER=openai     OpenAI, needs OPENAI_API_KEY
+MODEL_PROVIDER=mixed      per-agent routing via AGENT_MODEL_MAP in core/model_provider.py
 ```
+
+`UNIMIND_MODEL_PROVIDER` (the project's old name) still works as a fallback.
 
 All generation code imports `generate` from `core.model_provider`, not `core.llm` directly.
-
-### Adding a cloud provider
-
-Implement `CloudProviderStub.generate()` in `src/core/model_provider.py`:
-
-```python
-class CloudProviderStub:
-    def generate(self, prompt: str, system: str = "", temperature: float = 0.7) -> str:
-        # Replace with actual API call (Anthropic, OpenAI, etc.)
-        raise NotImplementedError
-```
-
-Then set `MODEL_PROVIDER=cloud` at runtime. No other files need to change.
+To add another provider, write a class with a `generate(system, user, model, temperature)` method
+in `src/core/model_provider.py` and register it in `get_provider()`.
 
 ---
 

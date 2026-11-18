@@ -9,6 +9,8 @@ Does NOT touch other clients. Requires explicit --client name.
 
 from pathlib import Path
 
+from .utils import is_safe_client_slug
+
 
 def init_client_state(client_slug: str, reset_brief: bool = False) -> dict:
     """Initialize or reset client directory so it has no brain/outputs and optionally no active brief.
@@ -24,6 +26,8 @@ def init_client_state(client_slug: str, reset_brief: bool = False) -> dict:
     """
     if not (client_slug or "").strip():
         return {"error": "client_slug is required"}
+    if not is_safe_client_slug(client_slug.strip()):
+        return {"error": "client_slug must be letters, digits, '-' or '_' only"}
 
     client_dir = Path("clients") / client_slug.strip()
     client_dir.mkdir(parents=True, exist_ok=True)

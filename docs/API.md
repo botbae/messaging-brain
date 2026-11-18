@@ -1,4 +1,4 @@
-# Unimind API
+# Messaging Brain API
 
 **Local prototyping only. No auth, no database, no production infra.**
 
@@ -66,7 +66,7 @@ and `clients/<client>/product_profile.json` (the Messaging Brain).
 {
   "client": "myproduct",
   "brief": {
-    "product": "Unimind",
+    "product": "Acme",
     "audience": "B2B SaaS founders",
     "pain": "Can't explain their product clearly to buyers",
     "offer": "AI-generated landing pages and UX copy",
@@ -193,7 +193,7 @@ curl -X POST http://localhost:8000/brain \
   -d '{
     "client": "myproduct",
     "brief": {
-      "product": "Unimind",
+      "product": "Acme",
       "audience": "B2B SaaS founders",
       "pain": "Cannot explain their product clearly to buyers",
       "offer": "AI-generated landing pages and UX copy",
