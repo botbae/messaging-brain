@@ -1,13 +1,9 @@
 version: 2
 updates:
-  # Keeps the pinned GitHub Actions versions in .github/workflows up to date
+  # Keeps the pinned GitHub Actions versions in .github/workflows up to date.
+  # Python packages are not bumped routinely: requirements.txt uses minimum
+  # versions on purpose. Dependabot security alerts still cover them.
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: monthly
-  # Python packages in requirements*.txt
-  - package-ecosystem: pip
-    directory: /
-    schedule:
-      interval: monthly
-    open-pull-requests-limit: 5

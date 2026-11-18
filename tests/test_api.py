@@ -40,3 +40,18 @@ def test_idea_reports_missing_model(client):
     r = client.post("/idea", json={"idea": "a reminder app for dentists"})
     assert r.status_code == 500
     assert "Ollama" in r.json()["detail"]
+
+
+def test_generation_errors_do_not_leak_details(client, sample_brief_dict, monkeypatch):
+    import api.app as app_module
+
+    client.post("/brain", json={"client": "acme", "brief": sample_brief_dict})
+
+    def boom(*args, **kwargs):
+        raise RuntimeError("secret internal path /home/someone/clients/acme")
+
+    monkeypatch.setattr(app_module, "_run_generate", boom)
+    r = client.post("/generate/positioning", json={"client": "acme"})
+    assert r.status_code == 500
+    assert r.json()["error"] == "generation_failed"
+    assert "/home/someone" not in r.text
