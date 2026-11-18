@@ -1,6 +1,7 @@
 """Local LLM integration via Ollama (stdlib only: urllib + json)."""
 
 import json
+import os
 import urllib.error
 import urllib.request
 
@@ -12,7 +13,8 @@ def generate(
     temperature: float = 0.4,
 ) -> str:
     """Call Ollama /api/generate and return the response text. Raises on HTTP/JSON errors."""
-    url = "http://localhost:11434/api/generate"
+    base = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434").rstrip("/")
+    url = f"{base}/api/generate"
     payload = {
         "model": model,
         "prompt": user,

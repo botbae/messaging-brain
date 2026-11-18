@@ -4,15 +4,9 @@ Components that exist or are planned but are not currently active. Documented he
 
 ---
 
-## 1. CloudProviderStub
+## 1. Cloud model providers (done)
 
-**What it is:** Placeholder class in `src/core/model_provider.py` for a future cloud LLM backend (e.g. Anthropic, OpenAI).
-
-**Current status:** Exists in code. `generate()` raises `NotImplementedError`. The routing hook is in place via `MODEL_PROVIDER=cloud` env var — the class just needs a real implementation.
-
-**Why parked:** The current backend is Ollama-local-only. Cloud provider adds cost, latency, and API key management that was not needed to ship the CLI.
-
-**To activate:** Implement `CloudProviderStub.generate()` in `src/core/model_provider.py`. The method signature is already defined. Register it (already done) in `get_provider()`. Set `MODEL_PROVIDER=cloud` when running.
+Anthropic and OpenAI providers are now implemented in `src/core/model_provider.py`. Pick one with `MODEL_PROVIDER=anthropic` or `MODEL_PROVIDER=openai`, or `MODEL_PROVIDER=mixed` for per-agent routing. Kept here only so the numbering below stays stable.
 
 ---
 
@@ -20,7 +14,7 @@ Components that exist or are planned but are not currently active. Documented he
 
 **What it is:** A planned feature where `product_profile.json` decisions would be automatically appended to every LLM prompt at load time — so generators always have the full brain context without explicit injection per mode.
 
-**Current status:** Not implemented. Decision injection is currently done manually, per generator method, in `src/agents/writing_agent.py`.
+**Current status:** Not implemented. Decision injection is currently done manually, per generator method, in the writers under `src/agents/writing/`.
 
 **Why parked:** Manual injection is more explicit and debuggable. Auto-injection risks silently over-stuffing prompts or causing context conflicts in smaller models. The priority was getting the pipeline working first.
 
@@ -36,7 +30,7 @@ Components that exist or are planned but are not currently active. Documented he
 
 **Why parked:** Good-enough validation was in place via `CriticAgent.review_landing_page()`. A semantic CTA/outcome matcher would need either LLM-based comparison or a small keyword/intent map.
 
-**To activate:** Add a `check_cta_alignment(cta: str, desired_outcome: str) -> bool` function in `agents/writing_agent.py` or a new `core/validators.py`. Wire it into `CriticAgent.review_landing_page()` and flag `cta_mismatch` in the critique dict.
+**To activate:** Add a `check_cta_alignment(cta: str, desired_outcome: str) -> bool` function in `agents/writing/common.py` or a new `core/validators.py`. Wire it into `CriticAgent.review_landing_page()` and flag `cta_mismatch` in the critique dict.
 
 ---
 

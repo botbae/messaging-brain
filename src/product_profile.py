@@ -160,6 +160,11 @@ class ProductProfile:
     brain_version: int = 0         # incremented on every save; 0 on profiles that predate this field
     last_saved_at: str = ""        # ISO 8601 UTC timestamp of the most recent save
 
+    def __post_init__(self) -> None:
+        # Callers sometimes pass a plain dict; normalise so get_entry() always exists.
+        if not isinstance(self.decisions, DecisionDict):
+            self.decisions = _load_decisions(dict(self.decisions or {}))
+
     def _compute_fingerprint(self) -> str:
         """SHA-256 of normalized core identity fields (product + audience + problem)."""
         raw = f"{(self.product or '').strip().lower()}|{(self.audience or '').strip().lower()}|{(self.problem or '').strip().lower()}"

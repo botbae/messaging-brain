@@ -1,4 +1,4 @@
-"""Pydantic schemas for structured Unimind artifacts.
+"""Pydantic schemas for structured Messaging Brain artifacts.
 
 These schemas are standalone — nothing in the existing generation flow imports
 them yet. They are the foundation for Phase 2 structured output and API response

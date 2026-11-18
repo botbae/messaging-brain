@@ -1,25 +1,20 @@
+# Secrets and local environment
 .env
-__pycache__/
-outputs/
+.venv/
+venv/
 
-# Client generated outputs
-clients/*/outputs/
-
-# Runtime artifacts
-.claude/
-clients/*/product_profile.json
-clients/*/idea_extract.json
-clients/*/outputs/
-
-# Python cache
+# Python
 __pycache__/
 *.pyc
+.pytest_cache/
 
-# Local environment
-.env
-.venv
+# Generated data (client brains, outputs, QA runs)
+outputs/
+clients/
+qa_runs/
+
+# Local tool folders
+.claude/
 .DS_Store
-clients/
-qa_runs/
-clients/
-qa_runs/
+.idea/
+.vscode/

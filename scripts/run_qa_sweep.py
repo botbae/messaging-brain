@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-QA Sweep — 50-case harness for the Unimind backend API.
+QA Sweep — 50-case harness for the Messaging Brain backend API.
 
 Usage:
     python scripts/run_qa_sweep.py [--base-url http://127.0.0.1:8001] [--timeout 180] [--max-cases 50]
@@ -400,7 +400,7 @@ def run_sweep(
 
     header = (
         f"\n{'='*60}\n"
-        f"  Unimind QA Sweep — {total} cases\n"
+        f"  Messaging Brain QA Sweep — {total} cases\n"
         f"  Backend: {base_url}\n"
         f"  Output:  {out_dir}\n"
         f"  Timeout: {timeout}s | Pause/case: {pause_between_cases}s | Pause/step: {pause_between_steps}s\n"
@@ -660,7 +660,7 @@ def generate_report(results: list[dict], out_dir: Path) -> Path:
     nice_to_have = [(issue, count) for issue, count in top_n(all_issues, 20) if count < len(results) * 0.15]
 
     report_lines = [
-        "# Unimind QA Sweep Report",
+        "# Messaging Brain QA Sweep Report",
         f"\n_Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}_",
         f"_Cases run: {len(results)} | Alpha-ready: {len(passes)} | Failed: {len(fails)} | Avg score: {avg_score:.1f}/10_",
         "\n---\n",
@@ -919,7 +919,7 @@ def generate_report(results: list[dict], out_dir: Path) -> Path:
 # ---------------------------------------------------------------------------
 
 def main():
-    parser = argparse.ArgumentParser(description="Unimind QA Sweep")
+    parser = argparse.ArgumentParser(description="Messaging Brain QA Sweep")
     parser.add_argument("--base-url", default="http://127.0.0.1:8001", help="Backend base URL")
     parser.add_argument("--timeout", type=int, default=180, help="Per-request timeout in seconds (default: 180)")
     parser.add_argument("--max-cases", type=int, default=50, help="Number of cases to run (max 50)")

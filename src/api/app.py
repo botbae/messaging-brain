@@ -1,11 +1,11 @@
-"""Thin FastAPI wrapper for the Unimind backend.
+"""Thin FastAPI wrapper for the Messaging Brain backend.
 
 Local prototyping only — no auth, no database, no production infra.
 
 Run from the repo root:
-    PYTHONPATH=src uvicorn src.api.app:app --reload --port 8001
+    PYTHONPATH=src uvicorn src.api.app:app --reload --port 8000
 
-Interactive docs: http://localhost:8001/docs
+Interactive docs: http://localhost:8000/docs
 """
 
 import logging
@@ -42,7 +42,7 @@ from core.strategy_context import (
     build_strategy_layers,
 )
 from core.client_state import init_client_state
-from core.utils import clean_phrase
+from core.utils import clean_phrase, is_safe_client_slug
 from main import (
     _load_profile_if_exists,
     _run_brain_mode,
@@ -52,10 +52,21 @@ from main import (
 from product_profile import ProductProfile, score_brain_strength, suggest_brain_improvements
 
 app = FastAPI(
-    title="Unimind API",
+    title="Messaging Brain API",
     description="Local prototyping API — not for production use.",
     version="0.1.0",
 )
+
+def _client_slug(raw: Optional[str]) -> str:
+    """Clean a client name and reject anything that is not a plain folder name."""
+    slug = clean_phrase(raw)
+    if not is_safe_client_slug(slug):
+        raise HTTPException(
+            status_code=400,
+            detail="client must be 1-64 letters, digits, '-' or '_' (no spaces, dots or slashes)",
+        )
+    return slug
+
 
 # Local frontend prototyping — allow Next.js dev server to call this API.
 app.add_middleware(
@@ -287,7 +298,7 @@ def _normalize_brain_strength(raw) -> str | None:
 @app.post("/idea")
 def idea(req: IdeaRequest):
     """Extract ICP, problem, category, and differentiation from a product idea string."""
-    client_slug = clean_phrase(req.client) if req.client else None
+    client_slug = _client_slug(req.client) if req.client else None
     logger.info("POST /idea client=%s", client_slug or "(anonymous)")
     result, profile_path = _run_idea_mode(req.idea, client_slug=client_slug)
     if result is None:
@@ -321,7 +332,7 @@ def idea(req: IdeaRequest):
 @app.post("/brain")
 def brain(req: BrainRequest):
     """Run full positioning LLM pass and save product_profile.json for the client."""
-    client_slug = clean_phrase(req.client)
+    client_slug = _client_slug(req.client)
     logger.info("POST /brain client=%s", client_slug)
     brief = ClientBrief(
         product=req.brief.product,
@@ -358,7 +369,7 @@ def client_init(req: ClientInitRequest):
     Removes brain, idea extract, and output files for a fresh start.
     Optionally invalidates an existing brief (reset_brief=true).
     """
-    client_slug = clean_phrase(req.client)
+    client_slug = _client_slug(req.client)
     if not client_slug:
         raise HTTPException(status_code=400, detail="client is required")
     logger.info("POST /client/init client=%s reset_brief=%s", client_slug, req.reset_brief)
@@ -421,7 +432,7 @@ def generate_any(mode: str, req: GenerateRequest):
 @app.get("/readiness/{client}/{mode}")
 def check_readiness(client: str, mode: str):
     """Check whether a client has enough data for a given output mode."""
-    client_slug = clean_phrase(client)
+    client_slug = _client_slug(client)
     profile = _load_profile_if_exists(client_slug)
     brief_path = Path("clients") / client_slug / "brief.json"
     brief = brief_from_file(str(brief_path)) if brief_path.exists() else None
@@ -454,7 +465,7 @@ def brain_save(req: BrainSaveRequest):
         decisions.current_alternative
     Omitted keys leave existing values unchanged; explicit empty strings clear fields.
     """
-    client_slug = clean_phrase(req.client)
+    client_slug = _client_slug(req.client)
     profile_path = Path("clients") / client_slug / "product_profile.json"
 
     if not profile_path.exists():
@@ -491,7 +502,7 @@ def get_confidence(slug: str):
     """
     from core.confidence_engine import load_confidence_report, save_confidence_report, score_decision_state
 
-    client_slug = clean_phrase(slug)
+    client_slug = _client_slug(slug)
     logger.info("GET /client/%s/confidence", client_slug)
 
     # Try saved report first (fast path)
@@ -745,13 +756,12 @@ def generate_bundle(req: BundleRequest):
     Non-fatal errors in any step are captured in bundle.errors — the rest of
     the pipeline continues.
     """
-    import os as _os
     import uuid as _uuid
     from datetime import datetime, timezone
     from agents.structuring_agent import StructuringAgent
     from schemas.artifact_bundle import ArtifactBundle, ArtifactMeta
 
-    client_slug = clean_phrase(req.client)
+    client_slug = _client_slug(req.client)
     if not client_slug:
         raise HTTPException(status_code=400, detail="client is required")
     logger.info("POST /generate/bundle client=%s", client_slug)
@@ -785,11 +795,8 @@ def generate_bundle(req: BundleRequest):
     # -- Bundle shell ------------------------------------------------------
     now = datetime.now(timezone.utc).isoformat()
     bundle_id = f"{client_slug}_{now[:19].replace(':', '-').replace('T', '_')}"
-    provider_used = (
-        _os.getenv("UNIMIND_MODEL_PROVIDER")
-        or _os.getenv("MODEL_PROVIDER")
-        or "ollama"
-    ).lower()
+    from core.model_provider import active_provider_name
+    provider_used = active_provider_name()
 
     bundle = ArtifactBundle(
         client_name=client_slug,
@@ -915,7 +922,7 @@ def generate_bundle(req: BundleRequest):
 
 
 def _run_generate_endpoint(req: GenerateRequest, mode: str) -> dict:
-    client_slug = clean_phrase(req.client)
+    client_slug = _client_slug(req.client)
     logger.info("POST /generate/%s client=%s", mode, client_slug)
 
     # Load stored data
