@@ -111,6 +111,10 @@ Forks are welcome. Some easy places to start:
 - **New model provider**: add a class with a `generate()` method in `src/core/model_provider.py`.
 - **A frontend**: the API already allows a local dev server on ports 3000 to 3002 (CORS).
 
+## Contributing
+
+Ideas and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
 ## License
 
 [MIT](LICENSE). Use it, change it, ship it. Just keep the license notice.
