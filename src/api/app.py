@@ -981,10 +981,15 @@ def _run_generate_endpoint(req: GenerateRequest, mode: str) -> dict:
             merged_brief, mode, client_slug, brain=brain,
             positioning=positioning, narrative=narrative,
         )
-    except Exception as e:
+    except Exception:
+        # Log the full error here; never send internal details back to the caller.
+        logger.exception("generation failed for client=%s mode=%s", client_slug, mode)
         return JSONResponse(
             status_code=500,
-            content={"error": "generation_failed", "detail": str(e)},
+            content={
+                "error": "generation_failed",
+                "detail": "Generation failed. Check the server log for details.",
+            },
         )
 
     if mode == "landing":
