@@ -7,7 +7,8 @@ from pathlib import Path
 from typing import Optional, Tuple
 
 from agents.writing_agent import ClientBrief
-from .utils import clean_phrase
+from .paths import client_dir as safe_client_dir
+from .utils import clean_phrase, is_safe_client_slug
 
 
 def _brief_from_profile_path(profile_path: Path) -> Optional[ClientBrief]:
@@ -140,6 +141,11 @@ def build_brief_and_mode() -> Tuple[ClientBrief, str, Optional[str], Optional[Pa
     args = parser.parse_args()
 
     client_slug = clean_phrase(args.client) if args.client else None
+    if args.client and not is_safe_client_slug(client_slug):
+        parser.error(
+            f"--client {args.client!r} is not a valid name. "
+            "Use letters, digits, '-' or '_' only (for example: acme or my-startup)."
+        )
     idea_text = getattr(args, "idea", None) or None
     reset_brief = getattr(args, "reset_brief", False)
 
@@ -175,7 +181,7 @@ def build_brief_and_mode() -> Tuple[ClientBrief, str, Optional[str], Optional[Pa
     brief_path_used: Optional[Path] = None
 
     if client_slug:
-        client_root = Path("clients") / client_slug
+        client_root = safe_client_dir(client_slug)
         client_root.mkdir(parents=True, exist_ok=True)
         client_brief_path = client_root / "brief.json"
 

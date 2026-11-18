@@ -26,3 +26,11 @@ def test_safe_client_slugs(slug):
 @pytest.mark.parametrize("slug", ["", "/etc", "../x", "a/b", ".", "has space", "x" * 65])
 def test_unsafe_client_slugs(slug):
     assert not is_safe_client_slug(slug)
+
+
+def test_trailing_newline_is_not_a_safe_slug():
+    assert not is_safe_client_slug("acme\n")
+
+
+def test_unicode_letters_are_allowed():
+    assert is_safe_client_slug("café")

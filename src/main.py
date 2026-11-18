@@ -34,6 +34,7 @@ from core.strategy_context import (
 )
 from core.client_state import init_client_state
 from core.output import next_output_path, slugify
+from core.paths import client_dir as safe_client_dir
 from core.utils import clean_phrase
 from product_profile import DecisionDict, ProductProfile
 
@@ -481,7 +482,7 @@ def _load_profile_if_exists(client_slug: str | None) -> "ProductProfile | None":
     """Load the full ProductProfile from clients/<client>/product_profile.json if it exists."""
     if not client_slug:
         return None
-    profile_path = Path("clients") / client_slug / "product_profile.json"
+    profile_path = safe_client_dir(client_slug) / "product_profile.json"
     if not profile_path.exists():
         return None
     return ProductProfile.load(profile_path)
@@ -531,7 +532,7 @@ def _invalidate_stale_brief(client_slug: str, profile: ProductProfile) -> None:
     Renames clients/<client>/brief.json -> brief.json.stale so it cannot leak
     into generation, but is preserved for recovery.
     """
-    brief_path = Path("clients") / client_slug / "brief.json"
+    brief_path = safe_client_dir(client_slug) / "brief.json"
     if not brief_path.exists():
         return
     stale_path = brief_path.with_suffix(".json.stale")
@@ -650,7 +651,7 @@ def _run_idea_mode(idea_text: str, client_slug: str | None = None) -> tuple[dict
 
     profile_path = None
     if client_slug:
-        client_dir = Path("clients") / client_slug
+        client_dir = safe_client_dir(client_slug)
         client_dir.mkdir(parents=True, exist_ok=True)
 
         extract_path = client_dir / "idea_extract.json"
@@ -716,8 +717,10 @@ def _run_brain_mode(brief, client_slug: str | None) -> tuple["ProductProfile", P
         source_idea="",
         client_name=client_slug or "",
     )
-    client_dir = client_slug or slugify(brief.product or "product")
-    profile_path = Path("clients") / client_dir / "product_profile.json"
+    # Auto-generated folder names are cut to the 64-character limit that
+    # safe_client_dir() enforces, so long product names still save.
+    client_dir = client_slug or (slugify(brief.product or "product")[:64].strip("-") or "product")
+    profile_path = safe_client_dir(client_dir) / "product_profile.json"
     profile.save(profile_path)
     print(f"Saved: {profile_path}")
 
@@ -903,7 +906,7 @@ def _check_client_integrity(
     - Brain file must be loadable if it exists
     - If cross-product is detected AND brain has no core data, we cannot proceed
     """
-    client_dir = Path("clients") / client_slug
+    client_dir = safe_client_dir(client_slug)
     brain_path = client_dir / "product_profile.json"
 
     # If client directory has a brain file but it wasn't loaded, something is wrong
@@ -973,8 +976,8 @@ def run() -> None:
 
     # --- Debug print: always show resolved context ---
     if client_slug:
-        brain_path = Path("clients") / client_slug / "product_profile.json"
-        brief_path_client = Path("clients") / client_slug / "brief.json"
+        brain_path = safe_client_dir(client_slug) / "product_profile.json"
+        brief_path_client = safe_client_dir(client_slug) / "brief.json"
         _print_resolved_context(
             client=client_slug,
             gen_ctx=gen_ctx,

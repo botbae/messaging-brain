@@ -3,6 +3,7 @@
 from pathlib import Path
 
 from .utils import clean_phrase
+from .paths import client_dir as safe_client_dir
 
 
 def slugify(text: str) -> str:
@@ -23,7 +24,7 @@ def slugify(text: str) -> str:
 
 def next_output_path(product: str, mode: str, client_slug: str | None) -> Path:
     if client_slug:
-        base_dir = Path("clients") / clean_phrase(client_slug) / "outputs"
+        base_dir = safe_client_dir(clean_phrase(client_slug)) / "outputs"
     else:
         product_slug = slugify(product)
         base_dir = Path("outputs") / product_slug
