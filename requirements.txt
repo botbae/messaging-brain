@@ -6,4 +6,4 @@ python-dotenv>=1.0
 
 # Optional: only needed if you use a cloud model provider
 anthropic>=0.79
-openai>=1.83
+openai>=3.51.0
