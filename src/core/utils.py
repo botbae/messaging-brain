@@ -37,7 +37,7 @@ def lower_first(s: str) -> str:
 
 
 
-_SAFE_CLIENT_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$")
+_SAFE_CLIENT_RE = re.compile(r"\w[\w-]{0,63}")
 
 
 def is_safe_client_slug(slug: Optional[str]) -> bool:
@@ -46,4 +46,4 @@ def is_safe_client_slug(slug: Optional[str]) -> bool:
     Client slugs become folder names under clients/, so anything with
     slashes, dots or leading separators could escape that folder.
     """
-    return bool(slug) and bool(_SAFE_CLIENT_RE.match(slug))
+    return bool(slug) and bool(_SAFE_CLIENT_RE.fullmatch(slug))

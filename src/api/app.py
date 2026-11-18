@@ -42,6 +42,7 @@ from core.strategy_context import (
     build_strategy_layers,
 )
 from core.client_state import init_client_state
+from core.paths import client_dir as safe_client_dir
 from core.utils import clean_phrase, is_safe_client_slug
 from main import (
     _load_profile_if_exists,
@@ -434,7 +435,7 @@ def check_readiness(client: str, mode: str):
     """Check whether a client has enough data for a given output mode."""
     client_slug = _client_slug(client)
     profile = _load_profile_if_exists(client_slug)
-    brief_path = Path("clients") / client_slug / "brief.json"
+    brief_path = safe_client_dir(client_slug) / "brief.json"
     brief = brief_from_file(str(brief_path)) if brief_path.exists() else None
 
     if not profile and not brief:
@@ -466,7 +467,7 @@ def brain_save(req: BrainSaveRequest):
     Omitted keys leave existing values unchanged; explicit empty strings clear fields.
     """
     client_slug = _client_slug(req.client)
-    profile_path = Path("clients") / client_slug / "product_profile.json"
+    profile_path = safe_client_dir(client_slug) / "product_profile.json"
 
     if not profile_path.exists():
         raise HTTPException(
@@ -736,7 +737,7 @@ def _parse_ux_copy_map(text: str, client_slug: str, now: str) -> dict:
 def _save_bundle_artifact(client_slug: str, filename: str, data: dict) -> None:
     """Write a JSON artifact to clients/<slug>/<filename>."""
     import json as _json
-    client_dir = Path("clients") / client_slug
+    client_dir = safe_client_dir(client_slug)
     client_dir.mkdir(parents=True, exist_ok=True)
     out = client_dir / filename
     with open(out, "w", encoding="utf-8") as f:
@@ -830,7 +831,7 @@ def generate_bundle(req: BundleRequest):
         logger.warning("bundle: landing_ia failed — %s", _e)
 
     # -- Steps 2-4: positioning + landing + ux via existing pipeline -------
-    brief_path = Path("clients") / client_slug / "brief.json"
+    brief_path = safe_client_dir(client_slug) / "brief.json"
     brief = brief_from_file(str(brief_path)) if brief_path.exists() else None
     gen_ctx = build_generation_context(brief=brief, profile=profile)
     brain = gen_ctx.decisions if gen_ctx.decisions else None
@@ -927,7 +928,7 @@ def _run_generate_endpoint(req: GenerateRequest, mode: str) -> dict:
 
     # Load stored data
     profile = _load_profile_if_exists(client_slug)
-    brief_path = Path("clients") / client_slug / "brief.json"
+    brief_path = safe_client_dir(client_slug) / "brief.json"
     brief = brief_from_file(str(brief_path)) if brief_path.exists() else None
 
     if not profile and not brief:

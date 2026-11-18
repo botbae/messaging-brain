@@ -114,3 +114,5 @@ Forks are welcome. Some easy places to start:
 ## License
 
 [MIT](LICENSE). Use it, change it, ship it. Just keep the license notice.
+
+Found a security problem? Please report it privately, see [SECURITY.md](SECURITY.md).

@@ -28,6 +28,7 @@ from product_profile import (
     _ROLE_NOUNS,
 )
 from schemas.confidence_report import ConfidenceReport, FieldScore
+from core.paths import client_dir as safe_client_dir
 
 
 # ---------------------------------------------------------------------------
@@ -329,7 +330,7 @@ def score_decision_state(
 
 def save_confidence_report(report: ConfidenceReport, client_slug: str) -> Path:
     """Persist confidence report to clients/<client>/confidence_report.json."""
-    path = Path("clients") / client_slug / "confidence_report.json"
+    path = safe_client_dir(client_slug) / "confidence_report.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
         json.dump(report.model_dump(), f, indent=2)
@@ -338,7 +339,7 @@ def save_confidence_report(report: ConfidenceReport, client_slug: str) -> Path:
 
 def load_confidence_report(client_slug: str) -> Optional[ConfidenceReport]:
     """Load saved confidence report from clients/<client>/confidence_report.json."""
-    path = Path("clients") / client_slug / "confidence_report.json"
+    path = safe_client_dir(client_slug) / "confidence_report.json"
     if not path.exists():
         return None
     try:
